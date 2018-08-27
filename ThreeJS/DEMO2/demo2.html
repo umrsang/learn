@@ -1,0 +1,138 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>drawStar</title>
+    <style type="text/css">
+        body{background-color: #000;margin: 0;overflow: hidden;}
+    </style>
+</head>
+<body>
+    <script src="../three.js" type="text/javascript" charset="utf-8"></script>
+    <script src="../CanvasRenderer.js" type="text/javascript" charset="utf-8"></script>
+    <script src="../Projector.js" type="text/javascript" charset="utf-8"></script>
+    <script type="text/javascript">
+    //全局变量
+        //three的三要素 
+        var camera,scene,renderer,
+
+        //跟踪鼠标位置
+        mouseX = 0, mouseY = 0 ,
+
+        //一个数组，用于存储我们的粒子
+        particles = [];
+
+        // 初始化
+
+        init();
+
+        function init() {
+            //照相机的参数
+            camera = new THREE.PerspectiveCamera(80, window.innerWidth/window.innerHeight, 1,4000);
+
+            //将相机屏幕外移动
+            camera.position.z = 1000;
+
+            //场景
+            scene = new THREE.Scene();
+            
+            scene.add(camera);
+
+            //渲染器
+            renderer = new THREE.CanvasRenderer();
+            //设置2Dcanvas的大小
+            renderer.setSize(window.innerWidth,window.innerHeight);
+
+
+            //将渲染器的canvas domElement加入到body中
+            document.body.appendChild(renderer.domElement);
+
+            makeParticles();
+
+            //设置鼠标移动监听
+            document.addEventListener( 'mousemove', onMouseMove, false );
+
+            //每秒渲染30次
+            setInterval(update,1000/30);
+
+
+        }
+
+        function update(){
+            //作用是将粒子向前移动
+            updateParticles();
+            //从相机的视角渲染场景
+            renderer.render(scene,camera);
+        }   
+
+        function makeParticles() {
+
+            var particle, material; //创建粒子和材质
+
+            for (var zpos = -1000; zpos < 1000; zpos += 20) {
+                
+                //创建材质
+                material = new THREE.ParticleSystemMaterial( {
+                    
+                    color: getRandomColor(),
+                    // color: 0xffffff,
+                    
+                    program: particleRender, 
+
+                });
+
+                //创建粒子
+                particle = new THREE.Particle(material);
+
+                particle.position.x = Math.random() * 1000 - 500;
+                particle.position.y = Math.random() * 1000 - 500;
+
+                particle.position.z = zpos;
+
+                //将其放大一点
+                particle.scale.x = particle.scale.y = 10;
+
+                //放入到场景中
+                scene.add(particle)
+
+                //将粒子加入到particles数组中
+                particles.push(particle)
+
+            }
+        }
+
+        function particleRender( context ) {
+            context.beginPath();
+            context.arc( 0, 0, 1, 0, Math.PI * 2,true );
+            context.fill();
+        };
+
+        function getRandomColor() {
+
+            var r = 255*Math.random()|0,
+                g = 255*Math.random()|0,
+                b = 255*Math.random()|0;
+            // console.log( parseInt(r, 16) );
+            return ('0x' + parseInt(r, 16) + parseInt(g, 16) + parseInt( b, 16));
+        }
+
+        function updateParticles() {
+
+            for (var i = 0; i < particles.length; i++) {
+                particle = particles[i];
+
+                particle.position.z += mouseY * 0.1;
+
+                if (particle.position.z>1000) 
+
+                    particle.position.z -=2000;
+            }
+        }
+
+        function onMouseMove( event ) {
+            mouseX = event.cilentX;
+            mouseY = event.clientY;
+        }
+    </script>
+</body>
+</html>
