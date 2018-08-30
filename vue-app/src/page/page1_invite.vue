@@ -1,0 +1,43 @@
+<template>
+<transition name="fade">
+   <div class="invite wh pa"> 
+     <button class="go btn pa" @click="handleClick"></button>
+   </div>
+</transition>
+</template>
+
+<script>
+export default {
+  name: 'invite',
+  props: {
+    msg: String
+  },
+  methods: {
+    handleClick() {
+      this.$emit('step', 2)
+    }
+  },
+}
+</script>
+
+<!-- Add "scoped" attribute to limit CSS to this component only -->
+<style scoped>
+.invite{
+  top: 0;
+  left: 0;
+  background: url(../assets/img/1.jpg);
+  background-size: cover;
+}
+.go{
+  bottom: 0.8rem;
+  left: 3rem;
+  width: 4.8rem;
+  height: 2.77rem;
+  background: url(../assets/img/go.png);
+  background-size: cover;
+}
+span{
+  color: #fff;
+}
+
+</style>

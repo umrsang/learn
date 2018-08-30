@@ -1,0 +1,93 @@
+html{-webkit-text-size-adjust:none;}
+html{overflow-y:scroll;*overflow:auto;}
+body,div,h1,h2,h3,h4,h5,h6,ul,ol,li,dl,dd,dt,p,hr,blockquote,address,pre,code,form,fieldset,legend,textarea,input,button,th,td{margin:0;padding:0;}
+body,button, input, select, textarea {font: 14px/1.5 "Helvetica Neue",Helvetica,arial,'Hiragino Sans GB',"\5FAE\8F6F\96C5\9ED1",tahoma,'微软雅黑', "\5b8b\4f53",sans-serif;}
+h1, h2, h3, h4, h5, h6, button, input, select, textarea {font-size: 100%;}
+fieldset,img {border: 0;}
+/* input,textarea */
+textarea,input{
+	-webkit-appearance: none;
+}
+/* a */
+a {color: initial;text-decoration: none;}
+a:hover {text-decoration: underline;}
+a,img,button,input,textarea{-webkit-tap-highlight-color:rgba(255,255,255,0);}
+/* ol&ul */
+li{list-style:none}
+.lil li{float:left;display:inline;}
+.lir li{float:right;display:inline;}
+/* table */
+table {border-collapse: collapse; border-spacing: 0;}
+
+/* Hack */
+.clearfix,.lil,.lir{display: block;*zoom:1;}
+.clearfix:after,.lil:after,.lir:after{content: "\20";display: block;height: 0;clear: both;visibility: hidden;overflow:hidden;}
+.bfc{overflow: hidden;zoom: 1;}
+
+/* width&height */
+.w{width:100%;}
+.h{height:100%;}
+.wh{width:100%;height: 100%;}
+/* margin */
+.mC{margin: 0 auto;}
+/* blank */
+.clear{clear:both;}
+.blank{clear:both;overflow:hidden;}
+/* overflow */
+.oh{overflow:hidden;}
+.ov{overflow:visible;}
+._oh{_overflow:hidden;}
+.toh{white-space:nowrap; text-overflow:ellipsis; -o-text-overflow:ellipsis; overflow: hidden;}
+.wbk{word-break: normal;	word-wrap: break-word;}
+/* float */
+.l{float:left;display:inline;}
+.r{float:right;display:inline;}
+/* position */
+.pa{position:absolute;}
+.pr{position:relative;}
+.pf{position:fixed;}
+/* display */
+.dn,.hide{display:none;}
+.di{display:inline;}
+.db{display:block;}
+.dib-wrap {font-size:0;*word-spacing:-1px;}
+.dib-wrap .dib{font-size: 12px;letter-spacing: normal;word-spacing: normal;vertical-align:top;}
+@media screen and (-webkit-min-device-pixel-ratio:0){.dib-wrap{letter-spacing:-5px;}}
+.dib {display: inline-block;*display:inline;*zoom:1;}
+/* text */
+.tC{text-align:center;}
+.tR{text-align:right;}
+.tL{text-align:left;}
+.tid{text-indent:-9999px;}
+/* vertical-align */
+.vm{vertical-align:middle;}
+.vtb{vertical-align:text-bottom;}
+.vb{vertical-align:bottom;}
+.vt{vertical-align:top;}
+/* font */
+.fn{font-weight:normal; font-style:normal;}
+.fb{font-weight:bold;}
+.fi{font-style:italic;}
+
+/* clearStyle */
+.cS{border:none;outline: none;background:none;resize:none;}
+
+/* button */
+.btn{
+	border: 0;
+	outline: none;
+	transition: all 0.2s;
+}
+.btn:active{
+	opacity: 0.8;
+	transform: scale(0.9);
+}
+
+/* transition */
+.fade-enter-active, .fade-leave-active {
+	transition: all .5s;
+}
+.fade-enter, .fade-leave-to /* .fade-leave-active below version 2.1.8 */ {
+	opacity: 0;
+	transform: scale(2);
+}
