@@ -82,12 +82,14 @@ table {border-collapse: collapse; border-spacing: 0;}
 	opacity: 0.8;
 	transform: scale(0.9);
 }
-
 /* transition */
-.fade-enter-active, .fade-leave-active {
-	transition: all .5s;
+.fade-enter-active,
+.fade-leave-active {
+  transition: all 0.5s;
 }
-.fade-enter, .fade-leave-to /* .fade-leave-active below version 2.1.8 */ {
-	opacity: 0;
-	transform: scale(2);
+/* .fade-leave-active below version 2.1.8 */
+.fade-enter,
+.fade-leave-to {
+  opacity: 0;
+  transform:  scale(2);
 }

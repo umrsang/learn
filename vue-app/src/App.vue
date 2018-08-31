@@ -19,8 +19,10 @@ export default {
 <style>
 html,
 body {
-  width: 10.8rem;
-  height: 19.8rem;
+  /* width: 10.8rem;
+  height: 19.8rem; */
+  width: 100%;
+  height: 100%;
 }
 
 #app {

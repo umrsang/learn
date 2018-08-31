@@ -1,7 +1,8 @@
 <template>
 <transition name="fade">
    <div class="invite wh pa"> 
-     <button class="go btn pa" @click="handleClick"></button>
+      <div class="logo pa"></div>  
+     <button class="next btn pa" @click="handleClick"></button>
    </div>
 </transition>
 </template>
@@ -26,14 +27,6 @@ export default {
   top: 0;
   left: 0;
   background: url(../assets/img/1.jpg);
-  background-size: cover;
-}
-.go{
-  bottom: 0.8rem;
-  left: 3rem;
-  width: 4.8rem;
-  height: 2.77rem;
-  background: url(../assets/img/go.png);
   background-size: cover;
 }
 span{
