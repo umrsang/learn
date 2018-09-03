@@ -1,14 +1,92 @@
 <!DOCTYPE html>
 <html>
+
 <head>
     <meta charset="utf-8" />
     <meta http-equiv="X-UA-Compatible" content="IE=edge">
     <title>Page Title</title>
     <meta name="viewport" content="width=device-width, initial-scale=1">
-    <script src="//cdn.bootcss.com/EaselJS/0.8.0/easeljs.min.js" charset="utf-8"></script>
-    <script src="main.js"></script>
+    <script src="../create.js" charset="utf-8"></script>
+    <!-- <script src="../preload.min.js" charset="utf-8"></script> -->
+    <script src="./main.js"></script>
 </head>
-<body>
-    <a href="https://jq.qq.com/?_wv=1027&k=5BKJDmN">一键加群！！！</a>
+<style>
+    * { margin: 0; padding: 0; }
+    html, body, canvas { width: 100%; height: 100%; }
+</style>
+
+<body onload="main();">
+    <canvas id="canvas" >
 </body>
+<script>
+
+    var loader, stage, go;
+    function main() {
+        resourceLoader();
+    }
+    
+
+    function init() {
+        var canvas = document.querySelector('#canvas');
+        // canvas.width = window.innerWidth ;
+        // canvas.height = window.innerHeight;
+        canvas.width = 1080 ;
+        canvas.height = 1920 ;
+        
+
+        //创建舞台
+
+        stage = new createjs.Stage(canvas);
+        var contain = new createjs.Container(); 
+        stage.addChild(contain);//将容器放在舞台上
+        createjs.Touch.enable(stage);//使移动端支持createjs的鼠标事件
+
+        var bg1_img = loader.getResult("step_1_bg");
+        var bg1 = new createjs.Bitmap(bg1_img);
+        bg1.scaleX = 2.5;
+        bg1.scaleY = 2.5;
+        
+        contain.addChild(bg1);
+
+        var go_img = loader.getResult("go");
+        go = new createjs.Bitmap(go_img);
+        go.x = 530;
+        go.y = 1600;
+
+        go.regX = 250;
+        go.regY = 150;
+        contain.addChild(go);
+        go.addEventListener("click",goClickHandler)
+
+       
+
+        createjs.Ticker.setFPS(30);
+        createjs.Ticker.addEventListener("tick", function(){
+            stage.update();
+        });
+
+    }
+
+    function goClickHandler(event){
+        createjs.Tween.get(go).to({scaleX:0.96, scaleY:0.96}, 100)
+        .to({scaleX:1, scaleY: 1}, 100);
+
+    }
+
+
+    function resourceLoader(){
+        loader = new createjs.LoadQueue();
+        loader.installPlugin(createjs.Sound);
+        loader.on("complete", handleComplete, this);
+        loader.loadManifest([
+            {id: "step_1_bg", src:"./img/step_1_bg.jpg"},
+            {id: "go", src:"./img/go.png"}
+        ]);
+
+        function handleComplete() {
+            init();
+        }
+    }
+</script>
+
 </html>
