@@ -16,11 +16,11 @@ function View() {
     this.pageMain = this.addPage("pageMain");
     this.line = new TimelineMax();
     this.clothes = {
-        acc_back: [null, 1],
+        acc_back: ["acc_1_b", 1],
         hair_back: [null, 2],
         role: ["main_role", 2],
-        hair: ["hair_0", 5],
-        acc: [null, 6],
+        hair: ["hair_2", 5],
+        acc: ["acc_1", 6],
         shoes: [null, 5],
         dress: ["dress_0", 5],
         dress_back:[null, 3]
@@ -68,7 +68,7 @@ View.prototype.showView = function (step) {
 
 View.prototype.before_enter_Page = function(pageName){
     this[pageName].x = this.width / 2;
-    this.line.set(this[pageName], {pixi:{brightness:0, scaleX:1.2, scaleY:1.2}})
+    TweenMax.set(this[pageName], {pixi:{brightness:0, scaleX:1.2, scaleY:1.2}})
 }
 
 View.prototype.enter_Page = function(pageName){
@@ -77,10 +77,10 @@ View.prototype.enter_Page = function(pageName){
 
 View.prototype.leave_Page = function(pageName, cb){
     var me = this;
-    this.line.to(this[pageName], 0.5, {pixi:{ brightness:0, scaleX:1.2, scaleY:1.2}}).to(this[pageName], 0, {pixi:{x: this.width*2}});
+    this.line.to(this[pageName], 0.5, {pixi:{ brightness:0, scaleX:1.2, scaleY:1.2}}).set(this[pageName], {pixi:{x: this.width*2}});
     setTimeout(() => {
         cb&&cb();
-    }, 500);
+    }, 600);
 }
 
 View.prototype.getSprite = function(label, resourcesName, addTO ,x, y, scaleX, scaleY, anchorX, anchorY, alpha){
@@ -104,9 +104,8 @@ View.prototype.enter_mission = function () {
         this.before_enter_Page("page_mission");
         var container = this.page_mission;
         var pool = this.SpritePool;
-
-        this.enter_Page("page_mission");
         this.getSprite("invate_bg", "invate_bg", container, 0, 0);
+        
         this.getSprite("role", "invate_role_" + main.role, container, this.width,
         28);
         this.getSprite("card", "invate_card_" + main.role, container, 230, 320, 3, 3, 0.5, 0.5, 0);
@@ -121,7 +120,8 @@ View.prototype.enter_mission = function () {
             me.showView(me.step+1)
         });
     
-        this.line.to(pool.card, 0.3, {pixi:{scaleX:1, scaleY:1, alpha:1}})
+        this.enter_Page("page_mission");
+        this.line.to(pool.card, 0.3, {pixi:{scaleX:1, scaleY:1, alpha:1},delay:0.3 })
             .to(pool.color, 0.2, {pixi:{scaleX:1, scaleY:1, alpha:1}})
             .to(pool.theme, 0.2, {pixi:{scaleX:1, scaleY:1, alpha:1}})
         this.line.to(pool.role, 0.3, {pixi:{x: this.width - pool.role.width}})
@@ -138,7 +138,7 @@ View.prototype.enter_mission = function () {
                 star = this.getSprite('star_'+i, "invate_star_empty", container, starPos[i][0],
                 starPos[i][1], 3, 3, 0.5, 0.5, 0)
             }
-            this.line.to(star, 0.15, {pixi:{scaleX:1, scaleY:1, alpha:1}})
+            this.line.to(star, 0.1, {pixi:{scaleX:1, scaleY:1, alpha:1}})
         }
         this.line.to(pool.btn_next, 0.3, {pixi:{ y: 1000}});
         this.line.to(pool.btn_next, 1, {pixi:{ y: 1020}, ease: Power1.easeInOut, repeat:-1, yoyo: true});
@@ -163,7 +163,7 @@ View.prototype.enter_clothing = function (){
 
         var clothing_room = this.addContainer("clothing_room", container, -508, 0);
         this.dressTheRole();
-        this.line.to(clothing_room, 0.5, {pixi:{x: 0}, ease: Back.easeOut.config(2)});
+        this.line.to(clothing_room, 0.8, {pixi:{x: 0}, ease: Back.easeOut.config(2)});
 
         this.getSprite("btn_go", "btn_go", container, 15, this.height, 1, 1, 0, 0, 1);
         pool.btn_go.interactive = true;
@@ -188,9 +188,22 @@ View.prototype.initClothingBtn = function(){
     btnList.map(function(item, index){
         var panel = me.addContainer(item[0], container, item[1]||me.width, 0); //添加一个按钮面板
         me.getSprite(item[0] + "cebian", "cebian", panel, 0, 0, 1, 1, 0, 0, 1);
-        item[4]||me.getSprite(item[0] + "return", "return", panel, 28, 0, 1, 1, 0, 0, 1);
+        if(!item[4]){
+            var btn_return = me.getSprite(item[0] + "return", "return", panel, 28, 0, 1, 1, 0, 0, 1);        
+            btn_return.interactive = true;
+            btn_return.buttonMode = true;
+            btn_return.on('pointerdown', function(e){
+                console.log(e)
+            });
+        }
         resources[item[0]].map(function(kid, num){
-            me.getSprite(kid[0], kid[0], panel, item[2]||36, 86+num*(item[3]||180), 1, 1, 0, 0, 1);
+            var btn = me.getSprite(kid[0], kid[0], panel, item[2]||36, 86+num*(item[3]||180), 1, 1, 0, 0, 1);
+            btn.interactive = true;
+            btn.buttonMode = true;
+            btn.on('pointerdown', function(e){
+                console.log(e.currentTarget)
+                me.line.to(e.currentTarget.parent, 0.5, {pixi:{ x: me.width}});
+            });
         })
     })
 }
