@@ -4,7 +4,7 @@ resources.loader =  new PIXI.loaders.Loader();
 
 resources.assetLoad = function (cb) {
     var arr = this.list.concat(this["role_" + main.role])
-                        .concat(this.clothing_btn)
+                        .concat(this.btn_clothesType)
                         .concat(this.hair)
                         .concat(this.shoes)
                         .concat(this.acc)
@@ -16,13 +16,13 @@ resources.assetLoad = function (cb) {
 
     var loader = this.loader;
     var len = arr.length;
-    console.log(arr)
+    // console.log(arr)
     for (var i = 0; i < len; i++) {
         loader.add(arr[i][0], arr[i][1]);
     }
 
     loader.onProgress.add((loader, res) => {
-        console.log(Math.round(loader.progress));
+        // console.log(Math.round(loader.progress));
     })
 
     loader.onComplete.add((a, b) => {
@@ -49,25 +49,25 @@ resources.list = [
     ['hair_0', './img/clothing/hair_0.png'],
     ['dress_0', './img/clothing/dress_0.png']
 ]
-resources.clothing_btn = [
+resources.btn_clothesType = [
     ['btn_dress', './img/clothing/btn_dress.png'],
-    ['btn_shose', './img/clothing/btn_shose.png'],
+    ['btn_shoes', './img/clothing/btn_shoes.png'],
     ['btn_acc', './img/clothing/btn_acc.png'],
     ['btn_hair', './img/clothing/btn_hair.png'],
 ]
 resources.btn_hair = [
     ['btn_hair_1', './img/clothing/btn_hair_1.png'],
-    ['btn_hair_2', './img/clothing/btn_hair_2.png'],
+    ['btn_hair_2', './img/clothing/btn_hair_2.png', 'hair_2_b'],
     ['btn_hair_3', './img/clothing/btn_hair_3.png'],
-    ['btn_hair_4', './img/clothing/btn_hair_4.png'],
+    ['btn_hair_4', './img/clothing/btn_hair_4.png', 'hair_4_b'],
     ['btn_hair_5', './img/clothing/btn_hair_5.png'],
     ['btn_hair_6', './img/clothing/btn_hair_6.png']
 ]
 resources.hair = [
     ['hair_1', './img/clothing/hair_1.png'],
-    ['hair_2', './img/clothing/hair_2.png', 'hair_2_b'],
+    ['hair_2', './img/clothing/hair_2.png'],
     ['hair_3', './img/clothing/hair_3.png'],
-    ['hair_4', './img/clothing/hair_4.png', 'hair_4_b'],
+    ['hair_4', './img/clothing/hair_4.png'],
     ['hair_5', './img/clothing/hair_5.png'],
     ['hair_6', './img/clothing/hair_6.png'],
     ['hair_2_b', './img/clothing/hair_2_b.png'],
@@ -90,7 +90,7 @@ resources.shoes = [
     ['shoes_6', './img/clothing/shoes_6.png']
 ]
 resources.btn_acc = [
-    ['btn_acc_1', './img/clothing/btn_acc_1.png'],
+    ['btn_acc_1', './img/clothing/btn_acc_1.png', "acc_1_b"],
     ['btn_acc_2', './img/clothing/btn_acc_2.png'],
     ['btn_acc_3', './img/clothing/btn_acc_3.png'],
     ['btn_acc_4', './img/clothing/btn_acc_4.png'],
@@ -111,7 +111,7 @@ resources.btn_dress = [
     ['btn_dress_2', './img/clothing/btn_dress_2.png'],
     ['btn_dress_3', './img/clothing/btn_dress_3.png'],
     ['btn_dress_4', './img/clothing/btn_dress_4.png'],
-    ['btn_dress_5', './img/clothing/btn_dress_5.png'],
+    ['btn_dress_5', './img/clothing/btn_dress_5.png', "dress_5_b"],
     ['btn_dress_6', './img/clothing/btn_dress_6.png']
 ]
 resources.dress = [

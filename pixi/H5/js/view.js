@@ -16,14 +16,14 @@ function View() {
     this.pageMain = this.addPage("pageMain");
     this.line = new TimelineMax();
     this.clothes = {
-        acc_back: ["acc_1_b", 1],
-        hair_back: [null, 2],
-        role: ["main_role", 2],
-        hair: ["hair_2", 5],
-        acc: ["acc_1", 6],
-        shoes: [null, 5],
-        dress: ["dress_0", 5],
-        dress_back:[null, 3]
+        acc_back: ["acc_1_b", 0],
+        hair_back: ["hair_2_b", 0],
+        main_role: ["main_role", 1],
+        hair: ["hair_0", 1],
+        acc: ["acc_1", 0],
+        shoes: ["shoes_1", 1],
+        dress: ["dress_0", 1],
+        dress_back:["dress_5_b", 0]
     }
 
 }
@@ -72,12 +72,14 @@ View.prototype.before_enter_Page = function(pageName){
 }
 
 View.prototype.enter_Page = function(pageName){
-    this.line.to(this[pageName], 0.5, {pixi:{brightness:1, scaleX:1, scaleY:1}});
+    TweenMax.to(this[pageName], 0.5, {pixi:{brightness:1, scaleX:1, scaleY:1}});
 }
 
 View.prototype.leave_Page = function(pageName, cb){
     var me = this;
-    this.line.to(this[pageName], 0.5, {pixi:{ brightness:0, scaleX:1.2, scaleY:1.2}}).set(this[pageName], {pixi:{x: this.width*2}});
+    var line = new TimelineMax();
+    line.to(this[pageName], 0.5, {pixi:{ brightness:0, scaleX:1.2, scaleY:1.2}})
+        .set(this[pageName], {pixi:{x: this.width*2}});
     setTimeout(() => {
         cb&&cb();
     }, 600);
@@ -102,6 +104,7 @@ View.prototype.enter_mission = function () {
         var me = this;
         this.addPage("page_mission");
         this.before_enter_Page("page_mission");
+        this.enter_Page("page_mission");
         var container = this.page_mission;
         var pool = this.SpritePool;
         this.getSprite("invate_bg", "invate_bg", container, 0, 0);
@@ -119,12 +122,11 @@ View.prototype.enter_mission = function () {
         pool.btn_next.on('pointerdown', function(){
             me.showView(me.step+1)
         });
-    
-        this.enter_Page("page_mission");
-        this.line.to(pool.card, 0.3, {pixi:{scaleX:1, scaleY:1, alpha:1},delay:0.3 })
-            .to(pool.color, 0.2, {pixi:{scaleX:1, scaleY:1, alpha:1}})
-            .to(pool.theme, 0.2, {pixi:{scaleX:1, scaleY:1, alpha:1}})
-        this.line.to(pool.role, 0.3, {pixi:{x: this.width - pool.role.width}})
+        var line = new TimelineMax();
+        line.to(pool.card, 0.3, {pixi:{scaleX:1, scaleY:1, alpha:1}, delay: 0.5})
+            .to(pool.color, 0.3, {pixi:{scaleX:1, scaleY:1, alpha:1}})
+            .to(pool.theme, 0.3, {pixi:{scaleX:1, scaleY:1, alpha:1}})
+            .to(pool.role, 0.3, {pixi:{x: this.width - pool.role.width}})
         
         var starPos = [
             [128, 959, 0.5],[210, 959, 1.5],[280, 959, 0.5],[165, 1000, 0.12],[262, 1000, 1],
@@ -138,10 +140,10 @@ View.prototype.enter_mission = function () {
                 star = this.getSprite('star_'+i, "invate_star_empty", container, starPos[i][0],
                 starPos[i][1], 3, 3, 0.5, 0.5, 0)
             }
-            this.line.to(star, 0.1, {pixi:{scaleX:1, scaleY:1, alpha:1}})
+            line.to(star, 0.2, {pixi:{scaleX:1, scaleY:1, alpha:1}})
         }
-        this.line.to(pool.btn_next, 0.3, {pixi:{ y: 1000}});
-        this.line.to(pool.btn_next, 1, {pixi:{ y: 1020}, ease: Power1.easeInOut, repeat:-1, yoyo: true});
+        line.to(pool.btn_next, 0.2, {pixi:{ y: 1000}});
+        line.to(pool.btn_next, 1, {pixi:{ y: 1020}, ease: Power1.easeInOut, repeat:-1, yoyo: true});
 
     }else{
         this.before_enter_Page("page_mission");
@@ -184,27 +186,65 @@ View.prototype.enter_clothing = function (){
 View.prototype.initClothingBtn = function(){
     var me = this;
     var container = this.page_clothing;
-    var btnList = [["clothing_btn", 540, 20, 150, 'needReturn'], ["btn_hair"], ["btn_shoes"], ["btn_acc"], ["btn_dress"]];
+    var pool = this.containerPool;
+    var panel_x = 540 ;
+
+    ["btn_clothesType", 540, 20, 150, 'needReturn']
+
+    var panel = me.addContainer("btn_clothesType", container, panel_x, 0); //添加一个按钮面板
+    me.getSprite("btn_clothesType" + "cebian", "cebian", panel, 0, 0, 1, 1, 0, 0, 1);
+
+    resources["btn_clothesType"].map(function(kid, num){
+        var btn = me.getSprite(kid[0], kid[0], panel, 20, 86+num*150, 1, 1, 0, 0, 1);
+        btn.interactive = true;
+        btn.buttonMode = true;
+        btn.panel = kid[0];
+        btn.on('pointerdown', function(e){
+            var panel = e.currentTarget.panel;
+            var line = new TimelineMax();
+            line.to(e.currentTarget.parent, 0.3, {pixi:{ x: me.width}})
+                .to(pool[panel], 0.3, {pixi:{ x: panel_x }});
+        });
+    })
+
+    var btnList = [["btn_hair"], ["btn_shoes"], ["btn_acc"], ["btn_dress"]];
+        
     btnList.map(function(item, index){
-        var panel = me.addContainer(item[0], container, item[1]||me.width, 0); //添加一个按钮面板
+        var panel = me.addContainer(item[0], container, me.width, 0); //添加一个按钮面板
         me.getSprite(item[0] + "cebian", "cebian", panel, 0, 0, 1, 1, 0, 0, 1);
-        if(!item[4]){
-            var btn_return = me.getSprite(item[0] + "return", "return", panel, 28, 0, 1, 1, 0, 0, 1);        
-            btn_return.interactive = true;
-            btn_return.buttonMode = true;
-            btn_return.on('pointerdown', function(e){
-                console.log(e)
-            });
-        }
+       
+        var btn_return = me.getSprite(item[0] + "return", "return", panel, 28, 0, 1, 1, 0, 0, 1);        
+        btn_return.interactive = true;
+        btn_return.buttonMode = true;
+        btn_return.on('pointerdown', function(e){
+            var line = new TimelineMax();
+            line.to(e.currentTarget.parent, 0.3, {pixi:{ x: me.width}})
+                .to(pool["btn_clothesType"], 0.3, {pixi:{ x: panel_x}});
+        });
+
         resources[item[0]].map(function(kid, num){
-            var btn = me.getSprite(kid[0], kid[0], panel, item[2]||36, 86+num*(item[3]||180), 1, 1, 0, 0, 1);
+            var btn = me.getSprite(kid[0], kid[0], panel, 36, 86+num*(180), 1, 1, 0, 0, 1);
             btn.interactive = true;
             btn.buttonMode = true;
+            btn.img = kid[0].replace("btn_", "");
+            btn.clothes = btn.img.split("_")[0];
+            btn.clothes_back = kid[2];
+
             btn.on('pointerdown', function(e){
-                console.log(e.currentTarget)
-                me.line.to(e.currentTarget.parent, 0.5, {pixi:{ x: me.width}});
+                var img = e.currentTarget.img;
+                var clothes = e.currentTarget.clothes;
+                var clothes_back = e.currentTarget.clothes_back;
+                var pool = me.SpritePool;
+
+                me.clothes[clothes][0] = img;
+                me.clothes[clothes][1] = 1;
+                if(me.clothes[clothes+"_back"]){
+                    me.clothes[clothes+"_back"][0] = clothes_back;
+                    me.clothes[clothes+"_back"][1] = clothes_back?1:0;
+                }                
+                me.dressTheRole();
             });
-        })
+        }) 
     })
 }
 
@@ -213,17 +253,16 @@ View.prototype.dressTheRole = function(){
     var pool = this.SpritePool;
     for(var prop in this.clothes){
         var val = this.clothes[prop];
-        if(val[0]){
-            if(pool[prop]){
-                pool[prop].texture = this.resources[val[0]].texture;
-            } else{
-                this.getSprite(prop, val[0], container, 0, 0, 1, 1, 0, 0, 1);
+        if(pool[prop]){
+            if(val[0]){
+                pool[prop].texture = this.imgList[val[0]].texture;
             }
-        }else{
-            if(pool[prop]){
-                pool[prop].alpha = 0 ;
-            }
+            pool[prop].alpha = val[1]?1:0 ;
+
+        } else{
+            this.getSprite(prop, val[0], container, 0, 0, 1, 1, 0, 0, val[1]);
         }
+     
     }
 }
 
