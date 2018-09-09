@@ -12,7 +12,8 @@ resources.assetLoad = function (cb) {
                         .concat(this.btn_hair)
                         .concat(this.btn_shoes)
                         .concat(this.btn_acc)
-                        .concat(this.btn_dress);
+                        .concat(this.btn_dress)
+                        .concat(this.page_rating);
 
     var loader = this.loader;
     var len = arr.length;
@@ -150,4 +151,14 @@ resources.role_hesang = [
     ['invate_color_hesang', './img/invate/color_hesang.png'],
     ['invate_role_hesang', './img/invate/role_hesang.png'],
     ['invate_theme_hesang', './img/invate/theme_hesang.png']
+]
+
+resources.page_rating = [
+    ['bg_rating', './img/rating/bg_rating.jpg'],
+    ['bg_flower', './img/rating/bg_flower.png'],
+    ['bg_white', './img/rating/bg_white.png'],
+    ['flower', './img/rating/flower.png'],
+    ['bg_result', './img/rating/bg_result.jpg'],
+    ['border_face', './img/rating/border_face.png'],
+    ['border_back', './img/rating/border_back.png']
 ]

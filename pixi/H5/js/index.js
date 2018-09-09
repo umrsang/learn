@@ -4,7 +4,7 @@ window.onload = function () {
   main = new Main();
   resources.assetLoad(function () {
     view = new View();
-    view.showView(0);
+    view.showView(1);
   });
 }
 
