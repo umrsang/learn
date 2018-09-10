@@ -123,10 +123,10 @@ View.prototype.enter_mission = function () {
             me.showView(me.step+1)
         });
         var line = new TimelineMax();
-        line.to(pool.card, 0.1, {pixi:{scaleX:1, scaleY:1, alpha:1}, delay: 0.5})
+        line.to(pool.card, 0.2, {pixi:{scaleX:1, scaleY:1, alpha:1}, delay: 0.5})
             .to(pool.color, 0.1, {pixi:{scaleX:1, scaleY:1, alpha:1}})
             .to(pool.theme, 0.1, {pixi:{scaleX:1, scaleY:1, alpha:1}})
-            .to(pool.role, 0.1, {pixi:{x: this.width - pool.role.width}})
+            .to(pool.role, 0.2, {pixi:{x: this.width - pool.role.width}})
         
         var starPos = [
             [128, 959, 0.5],[210, 959, 1.5],[280, 959, 0.5],[165, 1000, 0.12],[262, 1000, 1],
@@ -287,23 +287,27 @@ View.prototype.enter_rating = function(){
         clothing_room.setParent(container)
         var line = new TimelineMax();
         line.set(clothing_room, {pixi:{x: -40, y: -300, scaleX: 1.5, scaleY: 1.5, alpha: 0}})
-        .to(bg_white, 0.3, {pixi:{x: 0, y: 0}})
+        .to(bg_white, 0.3, {pixi:{x: 0, y: 0}, delay: 0.5})
         .to(bg_flower, 0.3, {pixi:{x: 0, y: 0}})
         .to(clothing_room, 0.3, {pixi:{x: 100, y: 30, alpha: 1, scaleX: 1, scaleY: 1}, ease: Back.easeOut.config(2)});
 
         var bg_result = this.getSprite("bg_result", "bg_result", container, 0, -me.height, 1, 1, 0, 0, 1);
         var result = me.addContainer("result", container, 0, me.height);
         var border_back = this.getSprite("border_back", "border_back", result, 0, 0, 1, 1, 0, 0, 1);
-        line.to(bg_result, 1, {pixi:{ y: 0, alpha: 1}, delay: 0.2,ease: Power1.easeOut, onComplete: function(){
+        line.to(bg_result, 0.3, {pixi:{ y: 0, alpha: 1}, delay: 2, ease: Power1.easeOut, onComplete: function(){
             clothing_room.setParent(result);
             clothing_room.scale.set(0.8, 0.8);
-            clothing_room.x = 150;
+            clothing_room.x = 100;
             me.getSprite("border_face", "border_face", result, 0, 0, 1, 1, 0, 0, 1);
-        }}).set(result, {pixi:{x: -190, y: -300, scaleX:1.5, scaleY:1.5, alpha: 0}})
-            .to(result, 0.5, {pixi:{ x: 0, y: 0, scaleX:1, scaleY:1, alpha: 1}, ease: Power1.easeOut, onComplete: function(){
-                var img = document.getElementById("img");
-                img.src = view.app.renderer.plugins.extract.image(result).src;
         }})
+        // .set(result, {pixi:{x: -80, y: 40, scaleX: 1.5, scaleY:1.5, alpha: 0}})
+        .set(result, {pixi:{x: 20, y: 40, scaleX: 1.15, scaleY:1.15, alpha: 1}, onComplete: function(){
+             var img = document.getElementById("img");
+            img.style.zIndex = 100;
+            view.base64 = view.app.renderer.plugins.extract.base64(view.page_rating);
+            img.src = view.base64;
+            result.alpha = 0;
+        }}).to(result, 0.3, {pixi:{ x: 70, y: 40, scaleX:1, scaleY:1, alpha: 1}, ease: Power1.easeOut})
 
         
         

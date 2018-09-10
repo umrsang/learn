@@ -11,22 +11,24 @@ window.onload = function () {
 function InitCanvas() {
   var width = window.innerWidth;
   var height = window.innerHeight;
+  var container = document.getElementById("container");
   var cav = document.getElementById("cav");
+
   var ratio = width / height
   var setW = 750;
   var setH = 1218;
   var setRatio = 750 / 1218;
 
   if (setW / ratio < setH) {
-    cav.style.height = height + 'px';
-    cav.style.width = height * setRatio + 'px';
-    cav.style.marginTop = -(height / 2) + 'px';
-    cav.style.marginLeft = -(height * setRatio / 2) + 'px';
+    container.style.height = height + 'px';
+    container.style.width = height * setRatio + 'px';
+    container.style.marginTop = -(height / 2) + 'px';
+    container.style.marginLeft = -(height * setRatio / 2) + 'px';
   } else {
-    cav.style.width = width + 'px';
-    cav.style.height = width / setRatio + 'px';
-    cav.style.marginTop = -(width / setRatio / 2) + 'px';
-    cav.style.marginLeft = -(width / 2) + 'px';
+    container.style.width = width + 'px';
+    container.style.height = width / setRatio + 'px';
+    container.style.marginTop = -(width / setRatio / 2) + 'px';
+    container.style.marginLeft = -(width / 2) + 'px';
   }
 
   cav.width = setW;

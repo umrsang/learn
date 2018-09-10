@@ -51,10 +51,10 @@ resources.list = [
     ['dress_0', './img/clothing/dress_0.png']
 ]
 resources.btn_clothesType = [
+    ['btn_hair', './img/clothing/btn_hair.png'],
+    ['btn_acc', './img/clothing/btn_acc.png'],
     ['btn_dress', './img/clothing/btn_dress.png'],
     ['btn_shoes', './img/clothing/btn_shoes.png'],
-    ['btn_acc', './img/clothing/btn_acc.png'],
-    ['btn_hair', './img/clothing/btn_hair.png'],
 ]
 resources.btn_hair = [
     ['btn_hair_1', './img/clothing/btn_hair_1.png'],
