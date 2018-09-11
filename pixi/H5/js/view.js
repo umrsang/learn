@@ -1,5 +1,5 @@
 function View() {
-    this.list = ['mission', 'clothing', 'mission', 'invate', 'clothing', "grading", "result"];
+    this.list = ['mission', 'clothing', 'rating', 'invate', 'clothing', "grading", "result"];
     this.step = 0;
     this.element = document.getElementById("cav");
     this.width = this.element.width;
@@ -100,7 +100,7 @@ View.prototype.getSprite = function(label, resourcesName, addTO ,x, y, scaleX, s
 
 View.prototype.enter_mission = function () {
 
-    if(!this.page_mission){
+    // if(!this.page_mission){
         var me = this;
         this.addPage("page_mission");
         this.before_enter_Page("page_mission");
@@ -123,10 +123,10 @@ View.prototype.enter_mission = function () {
             me.showView(me.step+1)
         });
         var line = new TimelineMax();
-        line.to(pool.card, 0.3, {pixi:{scaleX:1, scaleY:1, alpha:1}, delay: 0.5})
-            .to(pool.color, 0.3, {pixi:{scaleX:1, scaleY:1, alpha:1}})
-            .to(pool.theme, 0.3, {pixi:{scaleX:1, scaleY:1, alpha:1}})
-            .to(pool.role, 0.3, {pixi:{x: this.width - pool.role.width}})
+        line.to(pool.card, 0.2, {pixi:{scaleX:1, scaleY:1, alpha:1}, delay: 0.5})
+            .to(pool.color, 0.1, {pixi:{scaleX:1, scaleY:1, alpha:1}})
+            .to(pool.theme, 0.1, {pixi:{scaleX:1, scaleY:1, alpha:1}})
+            .to(pool.role, 0.2, {pixi:{x: this.width - pool.role.width}})
         
         var starPos = [
             [128, 959, 0.5],[210, 959, 1.5],[280, 959, 0.5],[165, 1000, 0.12],[262, 1000, 1],
@@ -140,19 +140,19 @@ View.prototype.enter_mission = function () {
                 star = this.getSprite('star_'+i, "invate_star_empty", container, starPos[i][0],
                 starPos[i][1], 3, 3, 0.5, 0.5, 0)
             }
-            line.to(star, 0.2, {pixi:{scaleX:1, scaleY:1, alpha:1}})
+            line.to(star, 0.1, {pixi:{scaleX:1, scaleY:1, alpha:1}})
         }
-        line.to(pool.btn_next, 0.2, {pixi:{ y: 1000}});
+        line.to(pool.btn_next, 0.1, {pixi:{ y: 1000}});
         line.to(pool.btn_next, 1, {pixi:{ y: 1020}, ease: Power1.easeInOut, repeat:-1, yoyo: true});
 
-    }else{
-        this.before_enter_Page("page_mission");
-        this.enter_Page("page_mission");
-    }
+    // }else{
+    //     this.before_enter_Page("page_mission");
+    //     this.enter_Page("page_mission");
+    // }
 }
 
 View.prototype.enter_clothing = function (){
-    if(!this.page_clothing){
+    // if(!this.page_clothing){
         var me = this;
         this.addPage("page_clothing");
         this.before_enter_Page("page_clothing");
@@ -164,8 +164,8 @@ View.prototype.enter_clothing = function (){
         this.enter_Page("page_clothing");
 
         var clothing_room = this.addContainer("clothing_room", container, -508, 0);
-        this.dressTheRole();
-        this.line.to(clothing_room, 0.8, {pixi:{x: 0}, ease: Back.easeOut.config(2)});
+        this.dressTheRole(clothing_room);
+        this.line.to(clothing_room, 0.5, {pixi:{x: 0}, delay: 0.5, ease: Back.easeOut.config(2)});
 
         this.getSprite("btn_go", "btn_go", container, 15, this.height, 1, 1, 0, 0, 1);
         pool.btn_go.interactive = true;
@@ -173,13 +173,13 @@ View.prototype.enter_clothing = function (){
         pool.btn_go.on('pointerdown', function(){
             me.showView(me.step+1)
         });
-        this.line.to(pool.btn_go, 0.3, {pixi:{ y: 1000}});
+        this.line.to(pool.btn_go, 0.1, {pixi:{ y: 1000}});
         this.line.to(pool.btn_go, 1, {pixi:{ y: 1020}, ease: Power1.easeInOut, repeat:-1, yoyo: true});
         this.initClothingBtn();
-    }else{
-        this.before_enter_Page("page_clothing");
-        this.enter_Page("page_clothing");
-    }
+    // }else{
+    //     this.before_enter_Page("page_clothing");
+    //     this.enter_Page("page_clothing");
+    // }
 
 }
 
@@ -223,7 +223,7 @@ View.prototype.initClothingBtn = function(){
         });
 
         resources[item[0]].map(function(kid, num){
-            var btn = me.getSprite(kid[0], kid[0], panel, 36, 86+num*(180), 1, 1, 0, 0, 1);
+            var btn = me.getSprite(kid[0], kid[0], panel, 114, 170+num*(180), 1, 1, 0.5, 0.5, 1);
             btn.interactive = true;
             btn.buttonMode = true;
             btn.img = kid[0].replace("btn_", "");
@@ -234,7 +234,10 @@ View.prototype.initClothingBtn = function(){
                 var img = e.currentTarget.img;
                 var clothes = e.currentTarget.clothes;
                 var clothes_back = e.currentTarget.clothes_back;
-                var pool = me.SpritePool;
+                
+                var line = new TimelineMax();
+                line.to(e.currentTarget, 0.06, {pixi:{scaleX:0.95, scaleY:0.95}})
+                    .to(e.currentTarget, 0.06, {pixi:{scaleX:1, scaleY:1}})
 
                 me.clothes[clothes][0] = img;
                 me.clothes[clothes][1] = 1;
@@ -242,14 +245,14 @@ View.prototype.initClothingBtn = function(){
                     me.clothes[clothes+"_back"][0] = clothes_back;
                     me.clothes[clothes+"_back"][1] = clothes_back?1:0;
                 }                
-                me.dressTheRole();
+                me.dressTheRole(pool.clothing_room);
             });
         }) 
     })
 }
 
-View.prototype.dressTheRole = function(){
-    var container = this.containerPool.clothing_room;
+View.prototype.dressTheRole = function(container, enter){
+    // var container = this.containerPool.clothing_room;
     var pool = this.SpritePool;
     for(var prop in this.clothes){
         var val = this.clothes[prop];
@@ -258,11 +261,59 @@ View.prototype.dressTheRole = function(){
                 pool[prop].texture = this.imgList[val[0]].texture;
             }
             pool[prop].alpha = val[1]?1:0 ;
-
+            container.addChild(pool[prop]);
         } else{
             this.getSprite(prop, val[0], container, 0, 0, 1, 1, 0, 0, val[1]);
         }
-     
     }
 }
 
+View.prototype.enter_rating = function(){
+    // if(!this.page_rating){
+        var me = this;
+        this.addPage("page_rating");
+        this.before_enter_Page("page_rating");
+
+        var container = this.page_rating;
+        var pool = this.SpritePool;
+        var clothing_room = this.containerPool.clothing_room;
+
+        this.getSprite("bg_rating", "bg_rating", container);
+        this.enter_Page("page_rating");
+        
+        var bg_white = this.getSprite("bg_white", "bg_white", container, -this.width, 443);
+        var bg_flower = this.getSprite("bg_flower", "bg_flower", container, this.width, -436);
+
+        clothing_room.setParent(container)
+        var line = new TimelineMax();
+        line.set(clothing_room, {pixi:{x: -40, y: -300, scaleX: 1.5, scaleY: 1.5, alpha: 0}})
+        .to(bg_white, 0.3, {pixi:{x: 0, y: 0}, delay: 0.5})
+        .to(bg_flower, 0.3, {pixi:{x: 0, y: 0}})
+        .to(clothing_room, 0.3, {pixi:{x: 100, y: 30, alpha: 1, scaleX: 1, scaleY: 1}, ease: Back.easeOut.config(2)});
+
+        var bg_result = this.getSprite("bg_result", "bg_result", container, 0, -me.height, 1, 1, 0, 0, 1);
+        var result = me.addContainer("result", container, 0, me.height);
+        var border_back = this.getSprite("border_back", "border_back", result, 0, 0, 1, 1, 0, 0, 1);
+        line.to(bg_result, 0.3, {pixi:{ y: 0, alpha: 1}, delay: 2, ease: Power1.easeOut, onComplete: function(){
+            clothing_room.setParent(result);
+            clothing_room.scale.set(0.8, 0.8);
+            clothing_room.x = 100;
+            me.getSprite("border_face", "border_face", result, 0, 0, 1, 1, 0, 0, 1);
+        }})
+        // .set(result, {pixi:{x: -80, y: 40, scaleX: 1.5, scaleY:1.5, alpha: 0}})
+        .set(result, {pixi:{x: 20, y: 40, scaleX: 1.15, scaleY:1.15, alpha: 1}, onComplete: function(){
+             var img = document.getElementById("img");
+            img.style.zIndex = 100;
+            view.base64 = view.app.renderer.plugins.extract.base64(view.page_rating);
+            img.src = view.base64;
+            result.alpha = 0;
+        }}).to(result, 0.3, {pixi:{ x: 70, y: 40, scaleX:1, scaleY:1, alpha: 1}, ease: Power1.easeOut})
+
+        
+        
+    // }else{
+    //     this.before_enter_Page("page_rating");
+    //     this.enter_Page("page_rating");
+    // }
+
+}

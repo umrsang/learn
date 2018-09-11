@@ -10,9 +10,25 @@ html, body{
     background: #000;
 }
 
-#cav{
+#container{
     position: absolute;
     top: 50%;
     left: 50%;
     background: #000;
+    z-index: 10;
+}
+
+#img{
+    position: absolute;
+    width: 100%;
+    height: 88%;
+    opacity: 0;
+    z-index: 0;
+}
+
+#cav{
+    position: relative;
+    width: 100%;
+    /* height: 100%; */
+    z-index: 10;
 }
