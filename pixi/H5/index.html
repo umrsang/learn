@@ -36,17 +36,15 @@
     </div>
 </body>    
 <script>
-    (function () { 
-        var script = document.createElement('script'); 
-        script.src="http://eruda.liriliri.io/eruda.min.js"; 
-        document.body.appendChild(script); 
-        script.onload = function () {
-                eruda.init() 
-            } 
-    })()
+    (function () {
+        var src = './js/eruda.min.js';
+        if (!/eruda=true/.test(window.location) && localStorage.getItem('active-eruda') != 'true') return;
+        document.write('<scr' + 'ipt src="' + src + '"></scr' + 'ipt>');
+        document.write('<scr' + 'ipt>eruda.init();</scr' + 'ipt>');
+    })();
 </script>
-<script src="https://cdnjs.cloudflare.com/ajax/libs/gsap/2.0.2/plugins/PixiPlugin.min.js"></script>
-<script src="https://cdnjs.cloudflare.com/ajax/libs/gsap/1.20.0/TweenMax.min.js"></script>
+<script src="./js/PixiPlugin.min.js"></script>
+<script src="./js/TweenMax.min.js"></script>
 <script src="./js/pixi.min.js"></script>
 <script src="./js/resource.js"></script>
 <script src="./js/view.js"></script>

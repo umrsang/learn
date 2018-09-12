@@ -73,7 +73,7 @@ View.prototype.showView = function (step) {
 
 View.prototype.before_enter_Page = function(pageName){
     this[pageName].x = this.width / 2;
-    TweenMax.set(this[pageName], {pixi:{brightness:0, scaleX:1.2, scaleY:1.2}})
+    TweenMax.set(this[pageName], {pixi:{brightness:0, scaleX:1.1, scaleY:1.1}})
 }
 
 View.prototype.enter_Page = function(pageName){
@@ -83,7 +83,7 @@ View.prototype.enter_Page = function(pageName){
 View.prototype.leave_Page = function(pageName, cb){
     var me = this;
     var line = new TimelineMax();
-    line.to(this[pageName], 0.5, {pixi:{ brightness:0, scaleX:1.2, scaleY:1.2}})
+    line.to(this[pageName], 0.5, {pixi:{ brightness:0, scaleX:1.1, scaleY:1.1}})
         .set(this[pageName], {pixi:{x: this.width*2}});
     setTimeout(() => {
         cb&&cb();
@@ -141,11 +141,8 @@ View.prototype.enter_request = function () {
     TweenMax.to(btn_start, 1, {pixi:{ y: 1020}, ease: Power1.easeInOut, repeat:-1, yoyo: true});
 }
 
-
-
 View.prototype.enter_mission = function () {
 
-    // if(!this.page_mission){
         var me = this;
         this.addPage("page_mission");
         this.before_enter_Page("page_mission");
@@ -190,14 +187,10 @@ View.prototype.enter_mission = function () {
         line.to(pool.btn_next, 0.1, {pixi:{ y: 1000}});
         line.to(pool.btn_next, 1, {pixi:{ y: 1020}, ease: Power1.easeInOut, repeat:-1, yoyo: true});
 
-    // }else{
-    //     this.before_enter_Page("page_mission");
-    //     this.enter_Page("page_mission");
-    // }
 }
 
 View.prototype.enter_clothing = function (){
-    // if(!this.page_clothing){
+
         var me = this;
         this.addPage("page_clothing");
         this.before_enter_Page("page_clothing");
@@ -221,12 +214,8 @@ View.prototype.enter_clothing = function (){
         this.line.to(pool.btn_go, 0.1, {pixi:{ y: 1000}});
         this.line.to(pool.btn_go, 1, {pixi:{ y: 1020}, ease: Power1.easeInOut, repeat:-1, yoyo: true});
         this.initClothingBtn();
-    // }else{
-    //     this.before_enter_Page("page_clothing");
-    //     this.enter_Page("page_clothing");
-    // }
 
-}
+   }
 
 View.prototype.initClothingBtn = function(){
     var me = this;
@@ -297,7 +286,6 @@ View.prototype.initClothingBtn = function(){
 }
 
 View.prototype.dressTheRole = function(container, enter){
-    // var container = this.containerPool.clothing_room;
     var pool = this.SpritePool;
     for(var prop in this.clothes){
         var val = this.clothes[prop];
@@ -314,7 +302,6 @@ View.prototype.dressTheRole = function(container, enter){
 }
 
 View.prototype.enter_rating = function(){
-    // if(!this.page_rating){
         var me = this;
         this.addPage("page_rating");
         this.before_enter_Page("page_rating");
@@ -344,21 +331,20 @@ View.prototype.enter_rating = function(){
         }, ease: Back.easeOut.config(2)});
 
         line.to(bg_result, 0.5, {pixi:{ y: 0, alpha: 1}, delay: 1, ease: Power1.easeOut})
-            .set(result, {pixi:{x: 20, y: me.height, scaleX: 1.15, scaleY:1.15, alpha: 0}, onComplete: function(){
+            .set(result, {pixi:{ x: this.width / 2, y: me.height, scaleX: 1.15, scaleY:1.15, alpha: 0}, onComplete: function(){
+                result.pivot.set(307, 0);
                 clothing_room.setParent(result);
                 clothing_room.scale.set(0.8, 0.8);
                 clothing_room.x = 100;
                 me.getSprite("border_face", "border_face", result, 0, 0, 1, 1, 0, 0, 1);
             }})
-            .to(result, 0.3, {pixi:{ x: 40, y: 60, scaleX: 1.1, scaleY:1.1, alpha: 1}, onComplete: function(){
+            .to(result, 0.5, {pixi:{ y: 30, alpha: 1}, onComplete: function(){
                 var img = document.getElementById("img");
                 img.style.zIndex = 100;
                 view.base64 = view.app.renderer.plugins.extract.base64(view.page_rating);
                 img.src = view.base64;
-            }, ease: Power1.easeOut})
-            .to(result, 0.5, {pixi:{ x: 70, y: 60, scaleX:1, scaleY:1, alpha: 1}, delay: 0.5, onComplete: function(){
-                
             }})
+            .to(result, 0.5, {pixi:{ y: 60, scaleX:1, scaleY:1, alpha: 1}, delay: 0.5})
 
         var btn_restart = this.getSprite("btn_restart", "btn_restart", container, 524, me.height, 1, 1, 0, 0, 0);
         var btn_save = this.getSprite("btn_save", "btn_save", container, 120,  me.height, 1, 1, 0, 0, 0);
@@ -397,6 +383,4 @@ View.prototype.enter_rating = function(){
             var img = document.getElementById("img");
             img.style.zIndex = 0;
         });  
-
-
 }
