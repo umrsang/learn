@@ -8,19 +8,20 @@ window.onload = function () {
   videoEnd = false;
   resources.assetLoad(function () {
     view = new View();
-    if(!videoEnd){
-      view.showView(0);
-    }
-    var video = document.getElementById("video");
-    video.onended = function() {
-      if(!videoEnd){
-        videoEnd = true;
-        view.showView(1);
-      }
-      var line = new TimelineMax();
-      line.to(video, 0.5, {opacity: 0})
-          .set(video, {zIndex: 0,});
-    };
+    view.showView(3);
+    // if(!videoEnd){
+    //   view.showView(0);
+    // }
+    // var video = document.getElementById("video");
+    // video.onended = function() {
+    //   if(!videoEnd){
+    //     videoEnd = true;
+    //     view.showView(1);
+    //   }
+    //   var line = new TimelineMax();
+    //   line.to(video, 0.5, {opacity: 0})
+    //       .set(video, {zIndex: 0,});
+    // };
   });
 
  
@@ -54,10 +55,20 @@ window.onresize = InitCanvas;
 function Main() {
   this.currStep = 0
   this.roleList = ['sakan', 'aolinv', 'qiaoka', 'hesang'];
-  this.starList = [3, 2, 3, 3];
+  this.roleInfo = [
+    {star: 5, color: 'brown', style: "森系"},
+    {star: 5, color: 'blue', style: "性感"},
+    {star: 4, color: 'green', style: "典雅"},
+    {star: 4, color: 'black', style: "可爱"}
+  ]
+ 
   this.roleIndex = Math.floor(Math.random() * 4);
-  this.star = this.starList[this.roleIndex];
   this.role = this.roleList[this.roleIndex];
+  this.star = this.roleInfo[this.roleIndex].star;
+  this.color = this.roleInfo[this.roleIndex].color;
+  this.style = this.roleInfo[this.roleIndex].style;
+  this.score = 75;
+  this.flower = [3, 3, 4, 5]
 }
 
 Main.prototype.init = function () {

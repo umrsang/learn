@@ -70,12 +70,12 @@ resources.btn_hair = [
     ['btn_hair_6', './img/clothing/btn_hair_6.png']
 ]
 resources.hair = [
-    ['hair_1', './img/clothing/hair_1.png'],
-    ['hair_2', './img/clothing/hair_2.png'],
-    ['hair_3', './img/clothing/hair_3.png'],
-    ['hair_4', './img/clothing/hair_4.png'],
-    ['hair_5', './img/clothing/hair_5.png'],
-    ['hair_6', './img/clothing/hair_6.png'],
+    ['hair_1', './img/clothing/hair_1.png', {color: 'golden', style: '性感'}],
+    ['hair_2', './img/clothing/hair_2.png', {color: 'pink', style: '干扰'}],
+    ['hair_3', './img/clothing/hair_3.png', {color: 'purple', style: '干扰'}],
+    ['hair_4', './img/clothing/hair_4.png', {color: 'grey', style: '可爱'}],
+    ['hair_5', './img/clothing/hair_5.png', {color: '干扰', style: '典雅'}],
+    ['hair_6', './img/clothing/hair_6.png', {color: '干扰', style: '森系'}],
     ['hair_2_b', './img/clothing/hair_2_b.png'],
     ['hair_4_b', './img/clothing/hair_4_b.png'],
 ]
@@ -88,12 +88,12 @@ resources.btn_shoes = [
     ['btn_shoes_6', './img/clothing/btn_shoes_6.png']
 ]
 resources.shoes = [
-    ['shoes_1', './img/clothing/shoes_1.png'],
-    ['shoes_2', './img/clothing/shoes_2.png'],
-    ['shoes_3', './img/clothing/shoes_3.png'],
-    ['shoes_4', './img/clothing/shoes_4.png'],
-    ['shoes_5', './img/clothing/shoes_5.png'],
-    ['shoes_6', './img/clothing/shoes_6.png']
+    ['shoes_1', './img/clothing/shoes_1.png', {color: '干扰'}],
+    ['shoes_2', './img/clothing/shoes_2.png', {color: '干扰'}],
+    ['shoes_3', './img/clothing/shoes_3.png', {color: '干扰'}],
+    ['shoes_4', './img/clothing/shoes_4.png', {color: '干扰'}],
+    ['shoes_5', './img/clothing/shoes_5.png', {color: '干扰'}],
+    ['shoes_6', './img/clothing/shoes_6.png', {color: '干扰'}]
 ]
 resources.btn_acc = [
     ['btn_acc_1', './img/clothing/btn_acc_1.png', "acc_1_b"],
@@ -104,13 +104,13 @@ resources.btn_acc = [
     ['btn_acc_6', './img/clothing/btn_acc_6.png']
 ]
 resources.acc = [
-    ['acc_1', './img/clothing/acc_1.png'],
+    ['acc_1', './img/clothing/acc_1.png', {color: '干扰'}],
+    ['acc_2', './img/clothing/acc_2.png', {color: '干扰'}],
+    ['acc_3', './img/clothing/acc_3.png', {color: '干扰'}],
+    ['acc_4', './img/clothing/acc_4.png', {color: '干扰'}],
+    ['acc_5', './img/clothing/acc_5.png', {color: '干扰'}],
+    ['acc_6', './img/clothing/acc_6.png', {color: '干扰'}],
     ['acc_1_b', './img/clothing/acc_1_b.png'],
-    ['acc_2', './img/clothing/acc_2.png'],
-    ['acc_3', './img/clothing/acc_3.png'],
-    ['acc_4', './img/clothing/acc_4.png'],
-    ['acc_5', './img/clothing/acc_5.png'],
-    ['acc_6', './img/clothing/acc_6.png']
 ]
 resources.btn_dress = [
     ['btn_dress_1', './img/clothing/btn_dress_1.png'],
@@ -121,13 +121,13 @@ resources.btn_dress = [
     ['btn_dress_6', './img/clothing/btn_dress_6.png']
 ]
 resources.dress = [
-    ['dress_1', './img/clothing/dress_1.png'],
-    ['dress_2', './img/clothing/dress_2.png'],
-    ['dress_3', './img/clothing/dress_3.png'],
-    ['dress_4', './img/clothing/dress_4.png'],
-    ['dress_5', './img/clothing/dress_5.png'],
+    ['dress_1', './img/clothing/dress_1.png', {color: '干扰', style: '干扰'}],
+    ['dress_2', './img/clothing/dress_2.png', {color: '干扰', style: '森系'}],
+    ['dress_3', './img/clothing/dress_3.png', {color: '干扰', style: '性感'}],
+    ['dress_4', './img/clothing/dress_4.png', {color: '干扰', style: '干扰'}],
+    ['dress_5', './img/clothing/dress_5.png', {color: '干扰', style: '典雅'}],
+    ['dress_6', './img/clothing/dress_6.png', {color: '干扰', style: '可爱'}],
     ['dress_5_b', './img/clothing/dress_5_b.png'],
-    ['dress_6', './img/clothing/dress_6.png']
 ]
 
 resources.role_sakan = [

@@ -1,5 +1,5 @@
 function View() {
-    this.list = ['skip_video',  'request' ,'mission', 'clothing', 'rating', 'invate', 'clothing', "grading", "result"];
+    this.list = ['skip_video',  'request' ,'mission', 'clothing', 'rating'];
     this.step = 0;
     var container = document.getElementById("container");
     var cav = container.querySelector("canvas")
@@ -20,16 +20,15 @@ function View() {
     this.pageMain = this.addPage("pageMain");
     this.line = new TimelineMax();
     this.clothes = {
-        acc_back: ["acc_1_b", 0],
-        hair_back: ["hair_2_b", 0],
-        main_role: ["main_role", 1],
-        hair: ["hair_0", 1],
-        acc: ["acc_1", 0],
-        shoes: ["shoes_1", 0],
-        dress: ["dress_0", 1],
-        dress_back:["dress_5_b", 0]
-    }
-
+        acc_back: {skin: "acc_1_b", alpha: 0, check: true},
+        hair_back: {skin: "hair_2_b", alpha: 0, check: true},
+        main_role: {skin: "main_role", alpha: 1, check: true},
+        hair: {skin: "hair_0", alpha: 1, check: true},
+        acc: {skin: "acc_1", alpha: 0, check: true},
+        shoes: {skin: "shoes_1", alpha: 0, check: true},
+        dress: {skin: "dress_0", alpha: 1, check: true},
+        dress_back: {skin: "dress_5_b", alpha: 0, check: true},
+    };
 }
 
 View.prototype.addPage = function(name){
@@ -171,7 +170,7 @@ View.prototype.enter_mission = function () {
             .to(pool.role, 0.2, {pixi:{x: this.width - pool.role.width}})
         
         var starPos = [
-            [128, 959, 0.5],[210, 959, 1.5],[280, 959, 0.5],[165, 1000, 0.12],[262, 1000, 1],
+            [128, 959, 30],[210, 959, 5],[280, 959, -30],[165, 1000, -20],[262, 1000, 35],
         ]
         var star;
         for(var i=0; i<5; i++){
@@ -182,7 +181,7 @@ View.prototype.enter_mission = function () {
                 star = this.getSprite('star_'+i, "invate_star_empty", container, starPos[i][0],
                 starPos[i][1], 3, 3, 0.5, 0.5, 0)
             }
-            line.to(star, 0.1, {pixi:{scaleX:1, scaleY:1, alpha:1}})
+            line.to(star, 0.1, {pixi:{scaleX:1, scaleY:1, alpha:1, rotation: starPos[i][2]}})
         }
         line.to(pool.btn_next, 0.1, {pixi:{ y: 1000}});
         line.to(pool.btn_next, 1, {pixi:{ y: 1020}, ease: Power1.easeInOut, repeat:-1, yoyo: true});
@@ -273,11 +272,11 @@ View.prototype.initClothingBtn = function(){
                 line.to(e.currentTarget, 0.06, {pixi:{scaleX:0.95, scaleY:0.95}})
                     .to(e.currentTarget, 0.06, {pixi:{scaleX:1, scaleY:1}})
 
-                me.clothes[clothes][0] = img;
-                me.clothes[clothes][1] = 1;
+                me.clothes[clothes].skin = img;
+                me.clothes[clothes].alpha = 1;
                 if(me.clothes[clothes+"_back"]){
-                    me.clothes[clothes+"_back"][0] = clothes_back;
-                    me.clothes[clothes+"_back"][1] = clothes_back?1:0;
+                    me.clothes[clothes+"_back"].skin = clothes_back;
+                    me.clothes[clothes+"_back"].alpha = clothes_back?1:0;
                 }                
                 me.dressTheRole(pool.clothing_room);
             });
@@ -290,13 +289,13 @@ View.prototype.dressTheRole = function(container, enter){
     for(var prop in this.clothes){
         var val = this.clothes[prop];
         if(pool[prop]){
-            if(val[0]){
-                pool[prop].texture = this.imgList[val[0]].texture;
+            if(val.skin){
+                pool[prop].texture = this.imgList[val.skin].texture;
             }
-            pool[prop].alpha = val[1]?1:0 ;
+            pool[prop].alpha = val.alpha ;
             container.addChild(pool[prop]);
         } else{
-            this.getSprite(prop, val[0], container, 0, 0, 1, 1, 0, 0, val[1]);
+            this.getSprite(prop, val.skin, container, 0, 0, 1, 1, 0, 0, val.alpha);
         }
     }
 }
@@ -317,26 +316,27 @@ View.prototype.enter_rating = function(){
         var bg_flower = this.getSprite("bg_flower", "bg_flower", container, this.width, -436);
 
         clothing_room.setParent(container)
-
-        var bg_result = this.getSprite("bg_result", "bg_result", container, 0, -me.height, 1, 1, 0, 0, 1);
-        var result = me.addContainer("result", container, 0, me.height);
-        var border_back = this.getSprite("border_back", "border_back", result, 0, 0, 1, 1, 0, 0, 1);
         
         var line = new TimelineMax();
         line.set(clothing_room, {pixi:{x: -40, y: -300, scaleX: 1.5, scaleY: 1.5, alpha: 0}})
         .to(bg_white, 0.3, {pixi:{x: 0, y: 0}, delay: 0.5})
         .to(bg_flower, 0.3, {pixi:{x: 0, y: 0}})
-        .to(clothing_room, 0.3, {pixi:{x: 100, y: 30, alpha: 1, scaleX: 1, scaleY: 1}, onComplete: function(){
+        .to(clothing_room, 0.3, {pixi:{x: 100, y: 30, alpha: 1, scaleX: 1, scaleY: 1}, ease: Back.easeOut.config(2)});
 
-        }, ease: Back.easeOut.config(2)});
+        this.showflower(1, function(){
 
-        line.to(bg_result, 0.5, {pixi:{ y: 0, alpha: 1}, delay: 1, ease: Power1.easeOut})
-            .set(result, {pixi:{ x: this.width / 2, y: me.height, scaleX: 1.15, scaleY:1.15, alpha: 0}, onComplete: function(){
+            var bg_result = me.getSprite("bg_result", "bg_result", container, 0, -me.height, 1, 1, 0, 0, 1);
+            var result = me.addContainer("result", container, 0, me.height);
+            var border_back = me.getSprite("border_back", "border_back", result, 0, 0, 1, 1, 0, 0, 1);
+            
+            line.to(bg_result, 0.5, {pixi:{ y: 0, alpha: 1}, delay: 1, ease: Power1.easeOut})
+            .set(result, {pixi:{ x: me.width / 2, y: me.height, scaleX: 1.15, scaleY:1.15, alpha: 0}, onComplete: function(){
                 result.pivot.set(307, 0);
                 clothing_room.setParent(result);
                 clothing_room.scale.set(0.8, 0.8);
                 clothing_room.x = 100;
                 me.getSprite("border_face", "border_face", result, 0, 0, 1, 1, 0, 0, 1);
+                me.showflower(2)
             }})
             .to(result, 0.5, {pixi:{ y: 30, alpha: 1}, onComplete: function(){
                 var img = document.getElementById("img");
@@ -346,41 +346,91 @@ View.prototype.enter_rating = function(){
             }})
             .to(result, 0.5, {pixi:{ y: 60, scaleX:1, scaleY:1, alpha: 1}, delay: 0.5})
 
-        var btn_restart = this.getSprite("btn_restart", "btn_restart", container, 524, me.height, 1, 1, 0, 0, 0);
-        var btn_save = this.getSprite("btn_save", "btn_save", container, 120,  me.height, 1, 1, 0, 0, 0);
-        var btn_download = this.getSprite("btn_download", "btn_download", container, 323,  me.height, 1, 1, 0, 0, 0);
-        var share_top = this.getSprite("share_top", "share_top", container, 550, -100, 1, 1, 0.5, 0.5, 0);
-        var tips_save = this.getSprite("tips_save", "tips_save", container, 375, 450, 1, 1, 0.5, 0.5, 0);
+            var btn_restart = me.getSprite("btn_restart", "btn_restart", container, 524, me.height, 1, 1, 0, 0, 0);
+            var btn_save = me.getSprite("btn_save", "btn_save", container, 120,  me.height, 1, 1, 0, 0, 0);
+            var btn_download = me.getSprite("btn_download", "btn_download", container, 323,  me.height, 1, 1, 0, 0, 0);
+            var share_top = me.getSprite("share_top", "share_top", container, 550, -100, 1, 1, 0.5, 0.5, 0);
+            var tips_save = me.getSprite("tips_save", "tips_save", container, 375, 450, 1, 1, 0.5, 0.5, 0);
+        
+            line.to(btn_save, 0.3, {pixi:{ y: 1080, alpha: 1 }})
+                .to(btn_download, 0.3, {pixi:{ y: 1080 , alpha: 1}})
+                .to(btn_restart, 0.3, {pixi:{ y: 1080 , alpha: 1}})
+                .to(share_top, 0.3, {pixi:{ y: 35 , alpha: 1}})
+            TweenMax.to(tips_save, 0.3, {pixi:{ scaleX: 0.9 , scaleY: 0.9}, repeat: -1, yoyo: true})
+            TweenMax.to(share_top, 0.4, {pixi:{ scaleX: 0.96 , scaleY: 0.96}, repeat: -1, yoyo: true})
+
+            btn_save.interactive = true;
+            btn_save.buttonMode = true;
+            btn_save.on('pointerdown', function(){
+                line.to(tips_save, 0.3, {pixi:{ alpha: 1 }})
+                    .to(tips_save, 0.3, {pixi:{ alpha: 0 }, delay: 1})
+            });
+
+            btn_download.interactive = true;
+            btn_download.buttonMode = true;
+            btn_download.on('pointerdown', function(){
+                window.location = "http://www.100bt.com/waltz/main.html?baidu";
+            });   
+
+            btn_restart.interactive = true;
+            btn_restart.buttonMode = true;
+            btn_restart.on('pointerdown', function(){
+                // window.location.reload();
+                view.app.destroy(true);
+                main = new Main();
+                view = new View();
+                view.showView(1);
+                var img = document.getElementById("img");
+                img.style.zIndex = 0;
+            });
+        })
+}
+
+View.prototype.getScore = function() {
+
+
+
+
+
+
+}
+
+View.prototype.showflower = function(type, callBack){
+    var me = this;
+    var x = type==1?110:168;
+    var y = type==1?38:898;
+    var deltax = type==1?40:222;
+    var deltay = type==1?49:29;
+
+    var pos1 = [[x, deltay*0+y], [x, deltay*1+y], [x, deltay*2+y], [x, deltay*3+y]];
+    var pos2 = [[x, y], [x+deltax, y], [x, y+deltay], [x+deltax, y+deltay]];
     
-        line.to(btn_save, 0.3, {pixi:{ y: 1080, alpha: 1 }})
-            .to(btn_download, 0.3, {pixi:{ y: 1080 , alpha: 1}})
-            .to(btn_restart, 0.3, {pixi:{ y: 1080 , alpha: 1}})
-            .to(share_top, 0.3, {pixi:{ y: 35 , alpha: 1}})
-        TweenMax.to(tips_save, 0.3, {pixi:{ scaleX: 0.9 , scaleY: 0.9}, repeat: -1, yoyo: true})
-        TweenMax.to(share_top, 0.4, {pixi:{ scaleX: 0.96 , scaleY: 0.96}, repeat: -1, yoyo: true})
+    var pos = type==1? pos1: pos2; console.log(pos) 
+    var scale = type==1? 1: 0.8;
+    var deltaPos = type==1? 45: 28;
+    var container = type==1? this.page_rating: this.containerPool.result;
 
-        btn_save.interactive = true;
-        btn_save.buttonMode = true;
-        btn_save.on('pointerdown', function(){
-            line.to(tips_save, 0.3, {pixi:{ alpha: 1 }})
-                .to(tips_save, 0.3, {pixi:{ alpha: 0 }, delay: 1})
-        });
-
-        btn_download.interactive = true;
-        btn_download.buttonMode = true;
-        btn_download.on('pointerdown', function(){
-            window.location = "http://www.100bt.com/waltz/main.html?baidu";
-        });   
-
-        btn_restart.interactive = true;
-        btn_restart.buttonMode = true;
-        btn_restart.on('pointerdown', function(){
-            // window.location.reload();
-            view.app.destroy(true);
-            main = new Main();
-            view = new View();
-            view.showView(1);
-            var img = document.getElementById("img");
-            img.style.zIndex = 0;
-        });  
+    console.log(container == this.containerPool.result)
+    var line = new TimelineMax();
+    var count = 0;
+    pos.map(function(item, index){
+        var delta = 0
+        line.set(container, {delay: 0.3})
+        for(var i=0; i<main.flower[index]; i++){
+            if(type == 1){
+                var star = me.getSprite("flower_"+type+"_"+count, "flower", container, item[0]+delta, item[1], 3, 3, 0.5, 0.5, 0);
+                line.to(star, 0.05, {pixi:{scaleX: 3, scaleY: 3, alpha: 0}})
+                .to(star, 0.05, {pixi:{scaleX: scale, scaleY: scale, alpha: 1}})
+            }else{
+                me.getSprite("flower_"+type+"_"+count, "flower", container, item[0]+delta, item[1], 0.8, 0.8, 0.5, 0.5, 1);
+            }
+            delta += deltaPos;
+            count += 1;
+        }
+    })
+    if(type == 1){
+        line.set(container, {onComplete: function(){
+            callBack&&callBack();
+        }})
+    }
 }
