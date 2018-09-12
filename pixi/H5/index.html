@@ -1,22 +1,55 @@
 <!DOCTYPE html>
 <html lang="en">
+
 <head>
     <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <meta content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=0" name="viewport">
+    <meta content="yes" name="apple-mobile-web-app-capable">     
+    <meta content="black" name="apple-mobile-web-app-status-bar-style">     
+    <meta content="telephone=no" name="format-detection">
+    <!-- <meta name="viewport" content="width=device-width, initial-scale=1.0"> -->
     <meta http-equiv="X-UA-Compatible" content="ie=edge">
     <title>这支螺旋圆舞曲，你会跳吗？</title>
     <link rel="stylesheet" href="./css/style.css">
-    <script src="https://cdnjs.cloudflare.com/ajax/libs/gsap/2.0.2/plugins/PixiPlugin.min.js"></script>
-    <script src="https://cdnjs.cloudflare.com/ajax/libs/gsap/1.20.0/TweenMax.min.js"></script>
-    <script src="../resource/pixi.min.js"></script>
-    <script src="./js/resource.js"></script>
-    <script src="./js/view.js"></script>
-    <script src="./js/index.js"></script>
 </head>
+
 <body>
+
     <div id="container">
+        <audio id="bgm" src="./img/bgm.mp3" autoplay></audio>
+        <!-- <img src="./img/rating/bg_rating.jpg" alt="" id="loading"> -->
         <img id="img" src="" alt="">
-        <canvas id="cav"></canvas>
+        <video id="video"  src="" autoplay preload="auto" 
+            webkit-playsinline  playsinline
+            x5-video-player-fullscreen="false"
+            x5-video-player-type="h5">
+        </video>
+        <script> 
+            video.src = "./img/bg_story/bg_2.mp4"
+            document.addEventListener("WeixinJSBridgeReady", function () { //微信
+                var bgm = document.getElementById("bgm");
+                var video = document.getElementById("video");
+                bgm.play();
+                video.play();
+            }, false);
+        </script>
     </div>
-</body>
-</html> 
+</body>    
+<script>
+    (function () { 
+        var script = document.createElement('script'); 
+        script.src="http://eruda.liriliri.io/eruda.min.js"; 
+        document.body.appendChild(script); 
+        script.onload = function () {
+                eruda.init() 
+            } 
+    })()
+</script>
+<script src="https://cdnjs.cloudflare.com/ajax/libs/gsap/2.0.2/plugins/PixiPlugin.min.js"></script>
+<script src="https://cdnjs.cloudflare.com/ajax/libs/gsap/1.20.0/TweenMax.min.js"></script>
+<script src="./js/pixi.min.js"></script>
+<script src="./js/resource.js"></script>
+<script src="./js/view.js"></script>
+<script src="./js/index.js"></script>
+
+</html>

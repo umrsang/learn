@@ -1,15 +1,19 @@
 function View() {
-    this.list = ['mission', 'clothing', 'rating', 'invate', 'clothing', "grading", "result"];
+    this.list = ['skip_video',  'request' ,'mission', 'clothing', 'rating', 'invate', 'clothing', "grading", "result"];
     this.step = 0;
-    this.element = document.getElementById("cav");
-    this.width = this.element.width;
-    this.height = this.element.height;
+    var container = document.getElementById("container");
+    var cav = container.querySelector("canvas")
+    if(cav){
+        cav.remove();
+    }
+    this.width = 750;
+    this.height = 1218;
     this.app = new PIXI.Application({
-        view: this.element,
         width: this.width,
         height: this.height,
-        backgroundColor: 0x000000
+        transparent: true,
     });
+    container.appendChild(this.app.view);
     this.SpritePool = {};
     this.containerPool = {};
     this.imgList = resources.loader.resources;
@@ -21,7 +25,7 @@ function View() {
         main_role: ["main_role", 1],
         hair: ["hair_0", 1],
         acc: ["acc_1", 0],
-        shoes: ["shoes_1", 1],
+        shoes: ["shoes_1", 0],
         dress: ["dress_0", 1],
         dress_back:["dress_5_b", 0]
     }
@@ -57,12 +61,13 @@ View.prototype.showView = function (step) {
     if(step!=undefined && step>-1){
         me.step = step;
     }
+    var enter = 'enter_'+ me.list[me.step];
     if(me[page]){
         this.leave_Page( page, function(){
-            me['enter_'+ me.list[me.step]]();
+            me[enter]();
         });
     }else{
-        me['enter_'+ me.list[me.step]]();
+        me[enter]();
     }
 }
 
@@ -97,6 +102,46 @@ View.prototype.getSprite = function(label, resourcesName, addTO ,x, y, scaleX, s
     addTO.addChild(sprite);
     return sprite;
 }
+View.prototype.enter_skip_video = function () {
+    var me = this;
+    this.addPage("page_skip_video");
+    this.before_enter_Page("page_skip_video");
+    this.enter_Page("page_skip_video");
+    var container = this.page_skip_video;
+    var pool = this.SpritePool;
+
+    var btn_skip = this.getSprite("btn_skip", "btn_start", container, 412, me.height);
+    btn_skip.interactive = true;
+    btn_skip.buttonMode = true;
+    btn_skip.on('pointerdown', function(){
+        me.showView(me.step+1);
+        videoEnd = true;
+    });
+    var line = new TimelineMax();
+    line.to(btn_skip, 0.8, {pixi:{ y: 1000}, ease: Power1.easeInOut})
+        .to(btn_skip, 1, {pixi:{ y: 1020}, ease: Power1.easeInOut, repeat:-1, yoyo: true});
+}
+
+View.prototype.enter_request = function () {
+    var me = this;
+    this.addPage("page_request");
+    this.before_enter_Page("page_request");
+    this.enter_Page("page_request");
+    var container = this.page_request;
+    var pool = this.SpritePool;
+
+    this.getSprite("bg_story", "bg_story", container, 0, 0);
+
+    var btn_start = this.getSprite("btn_start", "btn_start", container, 412, 1000);
+    btn_start.interactive = true;
+    btn_start.buttonMode = true;
+    btn_start.on('pointerdown', function(){
+        me.showView(me.step+1)
+    });
+    TweenMax.to(btn_start, 1, {pixi:{ y: 1020}, ease: Power1.easeInOut, repeat:-1, yoyo: true});
+}
+
+
 
 View.prototype.enter_mission = function () {
 
@@ -109,9 +154,9 @@ View.prototype.enter_mission = function () {
         var pool = this.SpritePool;
         this.getSprite("invate_bg", "invate_bg", container, 0, 0);
         
-        this.getSprite("role", "invate_role_" + main.role, container, this.width,
-        28);
-        this.getSprite("card", "invate_card_" + main.role, container, 230, 320, 3, 3, 0.5, 0.5, 0);
+
+        this.getSprite("card", "invate_card_" + main.role, container, 230, 320, 3, 3, 0.5, 0.5, 0);        
+        this.getSprite("role", "invate_role_" + main.role, container, this.width, 28);
         this.getSprite("theme", "invate_theme_" + main.role, container, 90, 644, 3, 3, 0.5, 0.5, 0);
         this.getSprite("color", "invate_color_" + main.role, container, 220, 800, 3, 3, 0.5, 0.5, 0);
         this.getSprite("desc", "invate_desc", container, 33, 610);
@@ -285,35 +330,73 @@ View.prototype.enter_rating = function(){
         var bg_flower = this.getSprite("bg_flower", "bg_flower", container, this.width, -436);
 
         clothing_room.setParent(container)
-        var line = new TimelineMax();
-        line.set(clothing_room, {pixi:{x: -40, y: -300, scaleX: 1.5, scaleY: 1.5, alpha: 0}})
-        .to(bg_white, 0.3, {pixi:{x: 0, y: 0}, delay: 0.5})
-        .to(bg_flower, 0.3, {pixi:{x: 0, y: 0}})
-        .to(clothing_room, 0.3, {pixi:{x: 100, y: 30, alpha: 1, scaleX: 1, scaleY: 1}, ease: Back.easeOut.config(2)});
 
         var bg_result = this.getSprite("bg_result", "bg_result", container, 0, -me.height, 1, 1, 0, 0, 1);
         var result = me.addContainer("result", container, 0, me.height);
         var border_back = this.getSprite("border_back", "border_back", result, 0, 0, 1, 1, 0, 0, 1);
-        line.to(bg_result, 0.3, {pixi:{ y: 0, alpha: 1}, delay: 2, ease: Power1.easeOut, onComplete: function(){
-            clothing_room.setParent(result);
-            clothing_room.scale.set(0.8, 0.8);
-            clothing_room.x = 100;
-            me.getSprite("border_face", "border_face", result, 0, 0, 1, 1, 0, 0, 1);
-        }})
-        // .set(result, {pixi:{x: -80, y: 40, scaleX: 1.5, scaleY:1.5, alpha: 0}})
-        .set(result, {pixi:{x: 20, y: 40, scaleX: 1.15, scaleY:1.15, alpha: 1}, onComplete: function(){
-             var img = document.getElementById("img");
-            img.style.zIndex = 100;
-            view.base64 = view.app.renderer.plugins.extract.base64(view.page_rating);
-            img.src = view.base64;
-            result.alpha = 0;
-        }}).to(result, 0.3, {pixi:{ x: 70, y: 40, scaleX:1, scaleY:1, alpha: 1}, ease: Power1.easeOut})
+        
+        var line = new TimelineMax();
+        line.set(clothing_room, {pixi:{x: -40, y: -300, scaleX: 1.5, scaleY: 1.5, alpha: 0}})
+        .to(bg_white, 0.3, {pixi:{x: 0, y: 0}, delay: 0.5})
+        .to(bg_flower, 0.3, {pixi:{x: 0, y: 0}})
+        .to(clothing_room, 0.3, {pixi:{x: 100, y: 30, alpha: 1, scaleX: 1, scaleY: 1}, onComplete: function(){
 
-        
-        
-    // }else{
-    //     this.before_enter_Page("page_rating");
-    //     this.enter_Page("page_rating");
-    // }
+        }, ease: Back.easeOut.config(2)});
+
+        line.to(bg_result, 0.5, {pixi:{ y: 0, alpha: 1}, delay: 1, ease: Power1.easeOut})
+            .set(result, {pixi:{x: 20, y: me.height, scaleX: 1.15, scaleY:1.15, alpha: 0}, onComplete: function(){
+                clothing_room.setParent(result);
+                clothing_room.scale.set(0.8, 0.8);
+                clothing_room.x = 100;
+                me.getSprite("border_face", "border_face", result, 0, 0, 1, 1, 0, 0, 1);
+            }})
+            .to(result, 0.3, {pixi:{ x: 40, y: 60, scaleX: 1.1, scaleY:1.1, alpha: 1}, onComplete: function(){
+                var img = document.getElementById("img");
+                img.style.zIndex = 100;
+                view.base64 = view.app.renderer.plugins.extract.base64(view.page_rating);
+                img.src = view.base64;
+            }, ease: Power1.easeOut})
+            .to(result, 0.5, {pixi:{ x: 70, y: 60, scaleX:1, scaleY:1, alpha: 1}, delay: 0.5, onComplete: function(){
+                
+            }})
+
+        var btn_restart = this.getSprite("btn_restart", "btn_restart", container, 524, me.height, 1, 1, 0, 0, 0);
+        var btn_save = this.getSprite("btn_save", "btn_save", container, 120,  me.height, 1, 1, 0, 0, 0);
+        var btn_download = this.getSprite("btn_download", "btn_download", container, 323,  me.height, 1, 1, 0, 0, 0);
+        var share_top = this.getSprite("share_top", "share_top", container, 550, -100, 1, 1, 0.5, 0.5, 0);
+        var tips_save = this.getSprite("tips_save", "tips_save", container, 375, 450, 1, 1, 0.5, 0.5, 0);
+    
+        line.to(btn_save, 0.3, {pixi:{ y: 1080, alpha: 1 }})
+            .to(btn_download, 0.3, {pixi:{ y: 1080 , alpha: 1}})
+            .to(btn_restart, 0.3, {pixi:{ y: 1080 , alpha: 1}})
+            .to(share_top, 0.3, {pixi:{ y: 35 , alpha: 1}})
+        TweenMax.to(tips_save, 0.3, {pixi:{ scaleX: 0.9 , scaleY: 0.9}, repeat: -1, yoyo: true})
+        TweenMax.to(share_top, 0.4, {pixi:{ scaleX: 0.96 , scaleY: 0.96}, repeat: -1, yoyo: true})
+
+        btn_save.interactive = true;
+        btn_save.buttonMode = true;
+        btn_save.on('pointerdown', function(){
+            line.to(tips_save, 0.3, {pixi:{ alpha: 1 }})
+                .to(tips_save, 0.3, {pixi:{ alpha: 0 }, delay: 1})
+        });
+
+        btn_download.interactive = true;
+        btn_download.buttonMode = true;
+        btn_download.on('pointerdown', function(){
+            window.location = "http://www.100bt.com/waltz/main.html?baidu";
+        });   
+
+        btn_restart.interactive = true;
+        btn_restart.buttonMode = true;
+        btn_restart.on('pointerdown', function(){
+            // window.location.reload();
+            view.app.destroy(true);
+            main = new Main();
+            view = new View();
+            view.showView(1);
+            var img = document.getElementById("img");
+            img.style.zIndex = 0;
+        });  
+
 
 }

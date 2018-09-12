@@ -3,7 +3,10 @@ var resources = {};
 resources.loader =  new PIXI.loaders.Loader();
 
 resources.assetLoad = function (cb) {
-    var arr = this.list.concat(this["role_" + main.role])
+    var arr = this.list.concat(this["role_" + "sakan"])
+                        .concat(this["role_" + "aolinv"])
+                        .concat(this["role_" + "qiaoka"])
+                        .concat(this["role_" + "hesang"])
                         .concat(this.btn_clothesType)
                         .concat(this.hair)
                         .concat(this.shoes)
@@ -48,7 +51,9 @@ resources.list = [
     ['return', './img/clothing/return.png'],
     ['btn_go', './img/clothing/btn_go.png'],
     ['hair_0', './img/clothing/hair_0.png'],
-    ['dress_0', './img/clothing/dress_0.png']
+    ['dress_0', './img/clothing/dress_0.png'],
+    ['bg_story', './img/bg_story/bg_story.jpg'],
+    ['btn_start', './img/bg_story/btn_start.png'],
 ]
 resources.btn_clothesType = [
     ['btn_hair', './img/clothing/btn_hair.png'],
@@ -160,5 +165,10 @@ resources.page_rating = [
     ['flower', './img/rating/flower.png'],
     ['bg_result', './img/rating/bg_result.jpg'],
     ['border_face', './img/rating/border_face.png'],
-    ['border_back', './img/rating/border_back.png']
+    ['border_back', './img/rating/border_back.png'],
+    ['btn_restart', './img/rating/restart.png'],
+    ['btn_save', './img/rating/btn_save.png'],
+    ['btn_download', './img/rating/download.png'],
+    ['share_top', './img/rating/share_top.png'],
+    ['tips_save', './img/rating/tips_save.png'],
 ]
