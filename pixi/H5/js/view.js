@@ -20,15 +20,31 @@ function View() {
     this.pageMain = this.addPage("pageMain");
     this.line = new TimelineMax();
     this.clothes = {
-        acc_back: {skin: "acc_1_b", alpha: 0, check: true},
-        hair_back: {skin: "hair_2_b", alpha: 0, check: true},
-        main_role: {skin: "main_role", alpha: 1, check: true},
-        hair: {skin: "hair_0", alpha: 1, check: true},
-        acc: {skin: "acc_1", alpha: 0, check: true},
-        shoes: {skin: "shoes_1", alpha: 0, check: true},
-        dress: {skin: "dress_0", alpha: 1, check: true},
-        dress_back: {skin: "dress_5_b", alpha: 0, check: true},
-    };
+        acc_back: {skin: "acc_1_b", alpha: 0, check: false, dressed: false},
+        hair_back: {skin: "hair_2_b", alpha: 0, check: false, dressed: false},
+        main_role: {skin: "main_role", alpha: 1, check: false, dressed: false},
+        hair: {skin: "hair_0", alpha: 1, check: true, dressed: false},
+        acc: {skin: "acc_1", alpha: 0, check: true, dressed: false},
+        shoes: {skin: "shoes_1", alpha: 0, check: true, dressed: false},
+        dress: {skin: "dress_0", alpha: 1, check: true, dressed: false},
+        dress_back: {skin: "dress_5_b", alpha: 0, check: false, dressed: false},
+    };  
+    this.score = 0;
+    this.flower = [3, 3, 3, 3] //性感,森系,可爱,典雅
+    this.clothesTitle = "时尚绝缘体";
+    this.clothesComment = "哪来的乡巴佬，拉低了整个凡瑟尔\n的审美";
+    this.commentList = [
+        {minPoint: 0, title: "时尚绝缘体", comment: "哪来的乡巴佬，拉低了整个凡瑟尔\n的审美"},
+        {minPoint: 25, title: "蜜汁审美", comment: "恕我直言…您的搭配…有点辣眼睛\n"},
+        {minPoint: 35, title: "穿搭小白", comment: "你直接套上窗帘来舞会吧，也许\n还好看一点呢"},
+        {minPoint: 50, title: "新手上路", comment: "看看大家的眼神，明白差距了么？"},
+        {minPoint: 65, title: "颜值担当", comment: "搭配差一些也没关系，可你是贵\n族小姐啊！"},
+        {minPoint: 75, title: "时尚icon", comment: "还算孺子可教，答应我下次要做\n得更好！"},
+        {minPoint: 85, title: "倾城佳人", comment: "快停止散发魅力吧！你这迷人的\n小仙女！"},
+        {minPoint: 100, title: "盛世美颜", comment: "惊为天人！凡瑟尔年度最佳搭配\n非你莫属！"},
+    ]
+
+
 }
 
 View.prototype.addPage = function(name){
@@ -101,6 +117,29 @@ View.prototype.getSprite = function(label, resourcesName, addTO ,x, y, scaleX, s
     addTO.addChild(sprite);
     return sprite;
 }
+
+View.prototype.getText = function(str, conttainer, x, y, style ){
+
+    var Text = new PIXI.Text(str, style);
+    // {
+    //     fontWeight: 'bold',
+    //     fontStyle: 'italic',
+    //     fontSize: 60,
+    //     fontFamily: 'Arvo',
+    //     fill: '#3e1707',
+    //     align: 'center',
+    //     stroke: '#a4410e',
+    //     strokeThickness: 7
+    // }
+    Text.anchor.x = 0.5;
+    Text.x = x;
+    Text.y = y;
+
+    conttainer.addChild(Text);
+}
+
+
+
 View.prototype.enter_skip_video = function () {
     var me = this;
     this.addPage("page_skip_video");
@@ -200,20 +239,33 @@ View.prototype.enter_clothing = function (){
         this.getSprite("clothing_bg", "clothing_bg", container);
         this.enter_Page("page_clothing");
 
-        var clothing_room = this.addContainer("clothing_room", container, -508, 0);
+        var clothing_room = this.addContainer("clothing_room", container, -508, 100);
         this.dressTheRole(clothing_room);
         this.line.to(clothing_room, 0.5, {pixi:{x: 0}, delay: 0.5, ease: Back.easeOut.config(2)});
 
-        this.getSprite("btn_go", "btn_go", container, 15, this.height, 1, 1, 0, 0, 1);
-        pool.btn_go.interactive = true;
-        pool.btn_go.buttonMode = true;
-        pool.btn_go.on('pointerdown', function(){
-            me.showView(me.step+1)
-        });
-        this.line.to(pool.btn_go, 0.1, {pixi:{ y: 1000}});
-        this.line.to(pool.btn_go, 1, {pixi:{ y: 1020}, ease: Power1.easeInOut, repeat:-1, yoyo: true});
+
         this.initClothingBtn();
 
+        var clothes_tips = me.getSprite("clothes_tips", "clothes_tips", container, 275, 450, 1, 1, 0.5, 0.5, 0);
+        TweenMax.to(clothes_tips, 0.3, {pixi:{ scaleX: 0.9 , scaleY: 0.9}, repeat: -1, yoyo: true})
+
+        var btn_go = this.getSprite("btn_go", "btn_go", container, 15, this.height, 1, 1, 0, 0, 1);
+
+        this.line.to(pool.btn_go, 0.1, {pixi:{ y: 1000}});
+        this.line.to(pool.btn_go, 1, {pixi:{ y: 1020}, ease: Power1.easeInOut, repeat:-1, yoyo: true});
+
+        btn_go.interactive = true;
+        btn_go.buttonMode = true;
+        btn_go.on('pointerdown', function(){
+            me.getScore()
+            if(me.getScore()){
+                me.showView(me.step+1)
+            }else{
+                var line = new TimelineMax();
+                line.to(clothes_tips, 0.3, {pixi:{ alpha: 1 }})
+                    .to(clothes_tips, 0.3, {pixi:{ alpha: 0 }, delay: 1})
+            }
+        });
    }
 
 View.prototype.initClothingBtn = function(){
@@ -261,7 +313,9 @@ View.prototype.initClothingBtn = function(){
             btn.buttonMode = true;
             btn.img = kid[0].replace("btn_", "");
             btn.clothes = btn.img.split("_")[0];
-            btn.clothes_back = kid[2];
+            btn.clothes_back = kid[2].back;
+            btn.color = kid[2].color;
+            btn.style = kid[2].style;
 
             btn.on('pointerdown', function(e){
                 var img = e.currentTarget.img;
@@ -274,10 +328,14 @@ View.prototype.initClothingBtn = function(){
 
                 me.clothes[clothes].skin = img;
                 me.clothes[clothes].alpha = 1;
+                me.clothes[clothes].color = e.currentTarget.color;
+                me.clothes[clothes].style = e.currentTarget.style;
+                me.clothes[clothes].dressed = true;
                 if(me.clothes[clothes+"_back"]){
                     me.clothes[clothes+"_back"].skin = clothes_back;
                     me.clothes[clothes+"_back"].alpha = clothes_back?1:0;
                 }                
+                console.log(me.clothes[clothes])
                 me.dressTheRole(pool.clothing_room);
             });
         }) 
@@ -298,6 +356,53 @@ View.prototype.dressTheRole = function(container, enter){
             this.getSprite(prop, val.skin, container, 0, 0, 1, 1, 0, 0, val.alpha);
         }
     }
+}
+
+View.prototype.getScore = function() {
+    var me = this; 
+    var unready = false;
+    var score = 0;
+    var scorelist = {dress: 35, acc: 25, hair: 25, shoes: 15};
+    var flowerIndex = {sexy: 0, mori: 1, lovely: 2, classic: 3};
+    // this.flower = [3, 3, 3, 3] //性感sexy,森系mori,可爱lovely,典雅classic
+    for(var prop in me.clothes){
+        var item = me.clothes[prop];
+        if(item.check){
+            if(!item.dressed){
+                return false
+            }
+            if(item.style == main.style){
+                score = score + scorelist[prop]
+            }
+            // if(item.color == main.color && "dress_hair".indexOf(prop) > -1 ){
+            //     var index = flowerIndex[item.style];
+            //     var flower = this.flower[index];
+            //     this.flower[index] = flower>5?5:flower+1
+            // }
+            if("dress_hair".indexOf(prop) > -1 ){
+                var index = flowerIndex[item.style];
+                var flower = this.flower[index];
+                this.flower[index] = flower>5?5:flower+1
+            }
+        }
+    }
+
+    this.commentList.map(function(item, index){
+        if(score > item.minPoint || score == item.minPoint){
+            me.clothesTitle = item.title;
+            me.clothesComment = item.comment;
+        }
+    })
+
+    console.table([
+        {name: '称号', value: me.clothesTitle},
+        {name: '评语', value: me.clothesComment},
+        {name: '得分', value: me.score},
+        {name: '鲜花', value: me.flower}
+    ])
+
+    this.score = score;
+    return true
 }
 
 View.prototype.enter_rating = function(){
@@ -321,7 +426,7 @@ View.prototype.enter_rating = function(){
         line.set(clothing_room, {pixi:{x: -40, y: -300, scaleX: 1.5, scaleY: 1.5, alpha: 0}})
         .to(bg_white, 0.3, {pixi:{x: 0, y: 0}, delay: 0.5})
         .to(bg_flower, 0.3, {pixi:{x: 0, y: 0}})
-        .to(clothing_room, 0.3, {pixi:{x: 100, y: 30, alpha: 1, scaleX: 1, scaleY: 1}, ease: Back.easeOut.config(2)});
+        .to(clothing_room, 0.3, {pixi:{x: 100, y: 130, alpha: 1, scaleX: 1, scaleY: 1}, ease: Back.easeOut.config(2)});
 
         this.showflower(1, function(){
 
@@ -335,7 +440,43 @@ View.prototype.enter_rating = function(){
                 clothing_room.setParent(result);
                 clothing_room.scale.set(0.8, 0.8);
                 clothing_room.x = 100;
+                clothing_room.y = 50;
+
                 me.getSprite("border_face", "border_face", result, 0, 0, 1, 1, 0, 0, 1);
+                me.getSprite("code", "code", result, 420, 750, 1, 1, 0, 0, 1);
+
+                me.getText(me.clothesTitle, result, 310, 8, {    
+                    fontWeight: 'bold',
+                    fontSize: 42,
+                    fontFamily: '微软雅黑',
+                    fill: '#a56248',
+                    align: 'center',
+                })
+                
+                me.getText(me.score + '分', result, 250, 740, {    
+                    fontWeight: 'bold',
+                    fontSize: 52,
+                    fontFamily: '微软雅黑',
+                    fill: '#a56248',
+                    align: 'center',
+                })
+
+                me.getText(me.clothesComment, result, 240, 810, {    
+                    fontWeight: 'bold',
+                    fontSize: 22,
+                    lineHeight: 30,
+                    fontFamily: '微软雅黑',
+                    fill: '#a56248',
+                })
+
+                me.getText("长按立即换装", result, 467, 848, {    
+                    fontWeight: 'bold',
+                    fontSize: 18,
+                    lineHeight: 24,
+                    fontFamily: '微软雅黑',
+                    fill: '#333333',
+                })
+
                 me.showflower(2)
             }})
             .to(result, 0.5, {pixi:{ y: 30, alpha: 1}, onComplete: function(){
@@ -344,55 +485,46 @@ View.prototype.enter_rating = function(){
                 view.base64 = view.app.renderer.plugins.extract.base64(view.page_rating);
                 img.src = view.base64;
             }})
-            .to(result, 0.5, {pixi:{ y: 60, scaleX:1, scaleY:1, alpha: 1}, delay: 0.5})
-
-            var btn_restart = me.getSprite("btn_restart", "btn_restart", container, 524, me.height, 1, 1, 0, 0, 0);
-            var btn_save = me.getSprite("btn_save", "btn_save", container, 120,  me.height, 1, 1, 0, 0, 0);
-            var btn_download = me.getSprite("btn_download", "btn_download", container, 323,  me.height, 1, 1, 0, 0, 0);
-            var share_top = me.getSprite("share_top", "share_top", container, 550, -100, 1, 1, 0.5, 0.5, 0);
-            var tips_save = me.getSprite("tips_save", "tips_save", container, 375, 450, 1, 1, 0.5, 0.5, 0);
-        
-            line.to(btn_save, 0.3, {pixi:{ y: 1080, alpha: 1 }})
-                .to(btn_download, 0.3, {pixi:{ y: 1080 , alpha: 1}})
-                .to(btn_restart, 0.3, {pixi:{ y: 1080 , alpha: 1}})
-                .to(share_top, 0.3, {pixi:{ y: 35 , alpha: 1}})
-            TweenMax.to(tips_save, 0.3, {pixi:{ scaleX: 0.9 , scaleY: 0.9}, repeat: -1, yoyo: true})
-            TweenMax.to(share_top, 0.4, {pixi:{ scaleX: 0.96 , scaleY: 0.96}, repeat: -1, yoyo: true})
-
-            btn_save.interactive = true;
-            btn_save.buttonMode = true;
-            btn_save.on('pointerdown', function(){
-                line.to(tips_save, 0.3, {pixi:{ alpha: 1 }})
-                    .to(tips_save, 0.3, {pixi:{ alpha: 0 }, delay: 1})
-            });
-
-            btn_download.interactive = true;
-            btn_download.buttonMode = true;
-            btn_download.on('pointerdown', function(){
-                window.location = "http://www.100bt.com/waltz/main.html?baidu";
-            });   
-
-            btn_restart.interactive = true;
-            btn_restart.buttonMode = true;
-            btn_restart.on('pointerdown', function(){
-                // window.location.reload();
-                view.app.destroy(true);
-                main = new Main();
-                view = new View();
-                view.showView(1);
-                var img = document.getElementById("img");
-                img.style.zIndex = 0;
-            });
+            .to(result, 0.5, {pixi:{ y: 60, scaleX:1, scaleY:1, alpha: 1}, delay: 0.5, onComplete: function(){
+                var btn_restart = me.getSprite("btn_restart", "btn_restart", container, 524, me.height, 1, 1, 0, 0, 0);
+                var btn_save = me.getSprite("btn_save", "btn_save", container, 120,  me.height, 1, 1, 0, 0, 0);
+                var btn_download = me.getSprite("btn_download", "btn_download", container, 323,  me.height, 1, 1, 0, 0, 0);
+                var share_top = me.getSprite("share_top", "share_top", container, 550, -100, 1, 1, 0.5, 0.5, 0);
+                var tips_save = me.getSprite("tips_save", "tips_save", container, 375, 450, 1, 1, 0.5, 0.5, 0);
+            
+                line.to(btn_save, 0.3, {pixi:{ y: 1080, alpha: 1 }})
+                    .to(btn_download, 0.3, {pixi:{ y: 1080 , alpha: 1}})
+                    .to(btn_restart, 0.3, {pixi:{ y: 1080 , alpha: 1}})
+                    .to(share_top, 0.3, {pixi:{ y: 35 , alpha: 1}})
+                TweenMax.to(tips_save, 0.3, {pixi:{ scaleX: 0.9 , scaleY: 0.9}, repeat: -1, yoyo: true})
+                TweenMax.to(share_top, 0.4, {pixi:{ scaleX: 0.96 , scaleY: 0.96}, repeat: -1, yoyo: true})
+    
+                btn_save.interactive = true;
+                btn_save.buttonMode = true;
+                btn_save.on('pointerdown', function(){
+                    line.to(tips_save, 0.3, {pixi:{ alpha: 1 }})
+                        .to(tips_save, 0.3, {pixi:{ alpha: 0 }, delay: 1})
+                });
+    
+                btn_download.interactive = true;
+                btn_download.buttonMode = true;
+                btn_download.on('pointerdown', function(){
+                    window.location = "http://www.100bt.com/waltz/main.html?baidu";
+                });   
+    
+                btn_restart.interactive = true;
+                btn_restart.buttonMode = true;
+                btn_restart.on('pointerdown', function(){
+                    // window.location.reload();
+                    view.app.destroy(true);
+                    main = new Main();
+                    view = new View();
+                    view.showView(1);
+                    var img = document.getElementById("img");
+                    img.style.zIndex = 0;
+                });
+            }})
         })
-}
-
-View.prototype.getScore = function() {
-
-
-
-
-
-
 }
 
 View.prototype.showflower = function(type, callBack){
@@ -416,11 +548,11 @@ View.prototype.showflower = function(type, callBack){
     pos.map(function(item, index){
         var delta = 0
         line.set(container, {delay: 0.3})
-        for(var i=0; i<main.flower[index]; i++){
+        for(var i=0; i<me.flower[index]; i++){
             if(type == 1){
-                var star = me.getSprite("flower_"+type+"_"+count, "flower", container, item[0]+delta, item[1], 3, 3, 0.5, 0.5, 0);
+                var star = me.getSprite("flower_"+type+"_"+count, "flower", container, item[0]+delta-50, item[1]+100 , 3, 3, 0.5, 0.5, 0);
                 line.to(star, 0.05, {pixi:{scaleX: 3, scaleY: 3, alpha: 0}})
-                .to(star, 0.05, {pixi:{scaleX: scale, scaleY: scale, alpha: 1}})
+                .to(star, 0.05, {pixi:{x: item[0]+delta, y: item[1], scaleX: scale, scaleY: scale, alpha: 1}})
             }else{
                 me.getSprite("flower_"+type+"_"+count, "flower", container, item[0]+delta, item[1], 0.8, 0.8, 0.5, 0.5, 1);
             }

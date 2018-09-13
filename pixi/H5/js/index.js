@@ -8,7 +8,7 @@ window.onload = function () {
   videoEnd = false;
   resources.assetLoad(function () {
     view = new View();
-    view.showView(3);
+    view.showView(1);
     // if(!videoEnd){
     //   view.showView(0);
     // }
@@ -56,10 +56,10 @@ function Main() {
   this.currStep = 0
   this.roleList = ['sakan', 'aolinv', 'qiaoka', 'hesang'];
   this.roleInfo = [
-    {star: 5, color: 'brown', style: "森系"},
-    {star: 5, color: 'blue', style: "性感"},
-    {star: 4, color: 'green', style: "典雅"},
-    {star: 4, color: 'black', style: "可爱"}
+    {star: 5, color: 'brown', style: "mori"},
+    {star: 5, color: 'blue', style: "sexy"},
+    {star: 4, color: 'green', style: "classic"},
+    {star: 4, color: 'black', style: "lovely"}
   ]
  
   this.roleIndex = Math.floor(Math.random() * 4);
@@ -67,8 +67,9 @@ function Main() {
   this.star = this.roleInfo[this.roleIndex].star;
   this.color = this.roleInfo[this.roleIndex].color;
   this.style = this.roleInfo[this.roleIndex].style;
-  this.score = 75;
-  this.flower = [3, 3, 4, 5]
+  // this.color = this.roleInfo[1].color;
+  // this.style = this.roleInfo[1].style;
+
 }
 
 Main.prototype.init = function () {

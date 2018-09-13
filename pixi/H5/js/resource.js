@@ -46,9 +46,9 @@ resources.list = [
     ['btn_next', './img/btn_next.png'],
     ['clothing_bg', './img/clothing/bg.jpg'],
     ['main_role', './img/clothing/main_role.png'],
-    ['tips', './img/clothing/tips.png'],
-    ['cebian', './img/clothing/cebian.png'],
+    ['clothes_tips', './img/clothing/clothes_tips.png'],
     ['return', './img/clothing/return.png'],
+    ['cebian', './img/clothing/cebian.png'],
     ['btn_go', './img/clothing/btn_go.png'],
     ['hair_0', './img/clothing/hair_0.png'],
     ['dress_0', './img/clothing/dress_0.png'],
@@ -62,71 +62,71 @@ resources.btn_clothesType = [
     ['btn_shoes', './img/clothing/btn_shoes.png'],
 ]
 resources.btn_hair = [
-    ['btn_hair_1', './img/clothing/btn_hair_1.png'],
-    ['btn_hair_2', './img/clothing/btn_hair_2.png', 'hair_2_b'],
-    ['btn_hair_3', './img/clothing/btn_hair_3.png'],
-    ['btn_hair_4', './img/clothing/btn_hair_4.png', 'hair_4_b'],
-    ['btn_hair_5', './img/clothing/btn_hair_5.png'],
-    ['btn_hair_6', './img/clothing/btn_hair_6.png']
+    ['btn_hair_1', './img/clothing/btn_hair_1.png', {color: 'blue', style: 'sexy'}],
+    ['btn_hair_2', './img/clothing/btn_hair_2.png', {color: null, style: null, back: 'hair_2_b'}],
+    ['btn_hair_3', './img/clothing/btn_hair_3.png', {color: null, style: null}],
+    ['btn_hair_4', './img/clothing/btn_hair_4.png', {color: 'black', style: 'lovely', back: 'hair_4_b'}],
+    ['btn_hair_5', './img/clothing/btn_hair_5.png', {color: 'green', style: 'classic'}],
+    ['btn_hair_6', './img/clothing/btn_hair_6.png', {color: 'brown', style: 'mori'}]
 ]
 resources.hair = [
-    ['hair_1', './img/clothing/hair_1.png', {color: 'golden', style: '性感'}],
-    ['hair_2', './img/clothing/hair_2.png', {color: 'pink', style: '干扰'}],
-    ['hair_3', './img/clothing/hair_3.png', {color: 'purple', style: '干扰'}],
-    ['hair_4', './img/clothing/hair_4.png', {color: 'grey', style: '可爱'}],
-    ['hair_5', './img/clothing/hair_5.png', {color: '干扰', style: '典雅'}],
-    ['hair_6', './img/clothing/hair_6.png', {color: '干扰', style: '森系'}],
+    ['hair_1', './img/clothing/hair_1.png'],
+    ['hair_2', './img/clothing/hair_2.png'],
+    ['hair_3', './img/clothing/hair_3.png'],
+    ['hair_4', './img/clothing/hair_4.png'],
+    ['hair_5', './img/clothing/hair_5.png'],
+    ['hair_6', './img/clothing/hair_6.png'],
     ['hair_2_b', './img/clothing/hair_2_b.png'],
     ['hair_4_b', './img/clothing/hair_4_b.png'],
 ]
 resources.btn_shoes = [
-    ['btn_shoes_1', './img/clothing/btn_shoes_1.png'],
-    ['btn_shoes_2', './img/clothing/btn_shoes_2.png'],
-    ['btn_shoes_3', './img/clothing/btn_shoes_3.png'],
-    ['btn_shoes_4', './img/clothing/btn_shoes_4.png'],
-    ['btn_shoes_5', './img/clothing/btn_shoes_5.png'],
-    ['btn_shoes_6', './img/clothing/btn_shoes_6.png']
+    ['btn_shoes_1', './img/clothing/btn_shoes_1.png', {color: 'brown', style: 'mori'}],
+    ['btn_shoes_2', './img/clothing/btn_shoes_2.png', {color: 'green', style: 'classic'}],
+    ['btn_shoes_3', './img/clothing/btn_shoes_3.png', {color: 'blue', style: 'sexy'}],
+    ['btn_shoes_4', './img/clothing/btn_shoes_4.png', {color: null, style: null}],
+    ['btn_shoes_5', './img/clothing/btn_shoes_5.png', {color: null, style: null}],
+    ['btn_shoes_6', './img/clothing/btn_shoes_6.png', {color: 'black', style: 'lovely'}]
 ]
 resources.shoes = [
-    ['shoes_1', './img/clothing/shoes_1.png', {color: '干扰'}],
-    ['shoes_2', './img/clothing/shoes_2.png', {color: '干扰'}],
-    ['shoes_3', './img/clothing/shoes_3.png', {color: '干扰'}],
-    ['shoes_4', './img/clothing/shoes_4.png', {color: '干扰'}],
-    ['shoes_5', './img/clothing/shoes_5.png', {color: '干扰'}],
-    ['shoes_6', './img/clothing/shoes_6.png', {color: '干扰'}]
+    ['shoes_1', './img/clothing/shoes_1.png'],
+    ['shoes_2', './img/clothing/shoes_2.png'],
+    ['shoes_3', './img/clothing/shoes_3.png'],
+    ['shoes_4', './img/clothing/shoes_4.png'],
+    ['shoes_5', './img/clothing/shoes_5.png'],
+    ['shoes_6', './img/clothing/shoes_6.png']
 ]
 resources.btn_acc = [
-    ['btn_acc_1', './img/clothing/btn_acc_1.png', "acc_1_b"],
-    ['btn_acc_2', './img/clothing/btn_acc_2.png'],
-    ['btn_acc_3', './img/clothing/btn_acc_3.png'],
-    ['btn_acc_4', './img/clothing/btn_acc_4.png'],
-    ['btn_acc_5', './img/clothing/btn_acc_5.png'],
-    ['btn_acc_6', './img/clothing/btn_acc_6.png']
+    ['btn_acc_1', './img/clothing/btn_acc_1.png', {color: 'brown', style: 'mori', back: "acc_1_b"} ],
+    ['btn_acc_2', './img/clothing/btn_acc_2.png', {color: 'black', style: 'lovely'}],
+    ['btn_acc_3', './img/clothing/btn_acc_3.png', {color: 'blue', style: 'sexy'}],
+    ['btn_acc_4', './img/clothing/btn_acc_4.png', {color: null, style: null}],
+    ['btn_acc_5', './img/clothing/btn_acc_5.png', {color: 'green', style: 'classic'}],
+    ['btn_acc_6', './img/clothing/btn_acc_6.png', {color: null, style: null}]
 ]
 resources.acc = [
-    ['acc_1', './img/clothing/acc_1.png', {color: '干扰'}],
-    ['acc_2', './img/clothing/acc_2.png', {color: '干扰'}],
-    ['acc_3', './img/clothing/acc_3.png', {color: '干扰'}],
-    ['acc_4', './img/clothing/acc_4.png', {color: '干扰'}],
-    ['acc_5', './img/clothing/acc_5.png', {color: '干扰'}],
-    ['acc_6', './img/clothing/acc_6.png', {color: '干扰'}],
+    ['acc_1', './img/clothing/acc_1.png'],
+    ['acc_2', './img/clothing/acc_2.png'],
+    ['acc_3', './img/clothing/acc_3.png'],
+    ['acc_4', './img/clothing/acc_4.png'],
+    ['acc_5', './img/clothing/acc_5.png'],
+    ['acc_6', './img/clothing/acc_6.png'],
     ['acc_1_b', './img/clothing/acc_1_b.png'],
 ]
 resources.btn_dress = [
-    ['btn_dress_1', './img/clothing/btn_dress_1.png'],
-    ['btn_dress_2', './img/clothing/btn_dress_2.png'],
-    ['btn_dress_3', './img/clothing/btn_dress_3.png'],
-    ['btn_dress_4', './img/clothing/btn_dress_4.png'],
-    ['btn_dress_5', './img/clothing/btn_dress_5.png', "dress_5_b"],
-    ['btn_dress_6', './img/clothing/btn_dress_6.png']
+    ['btn_dress_1', './img/clothing/btn_dress_1.png', {color: null, style: null}],
+    ['btn_dress_2', './img/clothing/btn_dress_2.png', {color: 'brown', style: 'mori'}],
+    ['btn_dress_3', './img/clothing/btn_dress_3.png', {color: 'blue', style: 'sexy'}],
+    ['btn_dress_4', './img/clothing/btn_dress_4.png', {color: null, style: null}],
+    ['btn_dress_5', './img/clothing/btn_dress_5.png', {color: 'green', style: 'classic', back: 'dress_5_b'}],
+    ['btn_dress_6', './img/clothing/btn_dress_6.png', {color: 'black', style: 'lovely'}]
 ]
 resources.dress = [
-    ['dress_1', './img/clothing/dress_1.png', {color: '干扰', style: '干扰'}],
-    ['dress_2', './img/clothing/dress_2.png', {color: '干扰', style: '森系'}],
-    ['dress_3', './img/clothing/dress_3.png', {color: '干扰', style: '性感'}],
-    ['dress_4', './img/clothing/dress_4.png', {color: '干扰', style: '干扰'}],
-    ['dress_5', './img/clothing/dress_5.png', {color: '干扰', style: '典雅'}],
-    ['dress_6', './img/clothing/dress_6.png', {color: '干扰', style: '可爱'}],
+    ['dress_1', './img/clothing/dress_1.png'],
+    ['dress_2', './img/clothing/dress_2.png'],
+    ['dress_3', './img/clothing/dress_3.png'],
+    ['dress_4', './img/clothing/dress_4.png'],
+    ['dress_5', './img/clothing/dress_5.png'],
+    ['dress_6', './img/clothing/dress_6.png'],
     ['dress_5_b', './img/clothing/dress_5_b.png'],
 ]
 
@@ -171,4 +171,5 @@ resources.page_rating = [
     ['btn_download', './img/rating/download.png'],
     ['share_top', './img/rating/share_top.png'],
     ['tips_save', './img/rating/tips_save.png'],
+    ['code', './img/rating/code.png'],
 ]
