@@ -257,7 +257,6 @@ View.prototype.enter_clothing = function (){
         btn_go.interactive = true;
         btn_go.buttonMode = true;
         btn_go.on('pointerdown', function(){
-            me.getScore()
             if(me.getScore()){
                 me.showView(me.step+1)
             }else{
@@ -398,7 +397,7 @@ View.prototype.getScore = function() {
         {name: '称号', value: me.clothesTitle},
         {name: '评语', value: me.clothesComment},
         {name: '得分', value: me.score},
-        {name: '鲜花', value: me.flower}
+        {name: '鲜花', value: me.flower.toString()}
     ])
 
     this.score = score;
