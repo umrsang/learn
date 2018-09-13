@@ -9,19 +9,19 @@ window.onload = function () {
   resources.assetLoad(function () {
     view = new View();
     view.showView(1);
-    // if(!videoEnd){
-    //   view.showView(0);
-    // }
-    // var video = document.getElementById("video");
-    // video.onended = function() {
-    //   if(!videoEnd){
-    //     videoEnd = true;
-    //     view.showView(1);
-    //   }
-    //   var line = new TimelineMax();
-    //   line.to(video, 0.5, {opacity: 0})
-    //       .set(video, {zIndex: 0,});
-    // };
+    if(!videoEnd){
+      view.showView(0);
+    }
+    var video = document.getElementById("video");
+    video.onended = function() {
+      if(!videoEnd){
+        videoEnd = true;
+        view.showView(1);
+      }
+      var line = new TimelineMax();
+      line.to(video, 0.5, {opacity: 0})
+          .set(video, {zIndex: 0,});
+    };
   });
 
  
