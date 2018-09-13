@@ -8,7 +8,6 @@ window.onload = function () {
   videoEnd = false;
   resources.assetLoad(function () {
     view = new View();
-    view.showView(1);
     if(!videoEnd){
       view.showView(0);
     }
