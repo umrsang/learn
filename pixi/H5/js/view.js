@@ -43,7 +43,15 @@ function View() {
         {minPoint: 85, title: "倾城佳人", comment: "快停止散发魅力吧！你这迷人\n的小仙女！"},
         {minPoint: 100, title: "盛世美颜", comment: "惊为天人！凡瑟尔年度最佳\n搭配非你莫属！"},
     ]
-    this.getSprite("music", "music", this.app.stage, this.width-40, 40)
+    var music = this.music= this.getSprite("music", "music", this.app.stage, this.width-40, 40, 1, 1, 0.5, 0.5);
+    music.interactive = true;
+    music.buttonMode = true;
+    music.on('pointerdown', function(){
+        var bgm = document.getElementById("bgm");
+        bgm.paused?bgm.play():bgm.pause();
+    });
+    music.rotation = -1;
+    TweenMax.to(music, 1, {pixi: {rotation: 1,  brightness: 0.5}, repeat: -1, yoyo: true, ease: Power1.easeInOut});
 }
 
 View.prototype.addPage = function(name){
@@ -79,6 +87,7 @@ View.prototype.showView = function (step) {
     if(me[page]){
         this.leave_Page( page, function(){
             me[enter]();
+            
         });
     }else{
         me[enter]();
@@ -154,9 +163,11 @@ View.prototype.enter_story = function () {
     jump.buttonMode = true;
     jump.on('pointerdown', function(){
         me.showView(me.step+1)
+        document.getElementById("bgm").src = "http://img4.a0bi.com/upload/articleResource/20180329/1522325136815.mp3"
     });
 
-    this.InitChapter(story_inner)
+    this.InitChapter(story_inner);
+    this.music.setParent(container);
 }
                             
 
@@ -274,6 +285,8 @@ View.prototype.enter_mission = function () {
         }
         line.to(pool.btn_next, 1, {pixi:{ y: 1000}});
         line.to(pool.btn_next, 1, {pixi:{ y: 1020}, ease: Power1.easeInOut, repeat:-1, yoyo: true});
+        
+    this.music.setParent(container);
 
 }
 
@@ -315,6 +328,8 @@ View.prototype.enter_clothing = function (){
                     .to(clothes_tips, 0.3, {pixi:{ alpha: 0 }, delay: 1})
             }
         });
+        
+    this.music.setParent(container);
    }
 
 View.prototype.initClothingBtn = function(){
@@ -589,6 +604,7 @@ View.prototype.enter_rating = function(){
                 });
             }})
         })
+        this.music.setParent(container);
 }
 
 View.prototype.showflower = function(type, callBack){

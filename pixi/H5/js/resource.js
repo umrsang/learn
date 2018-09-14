@@ -213,11 +213,11 @@ resources.story_text_3 = [
 
 resources.story_text_4 = [
     ['text_4_1', './img/bg_story/text_4_1.png', {x: 32, y: 777}],
-    ['text_4_2', './img/bg_story/text_4_2.png', {x: 70, y: 891}]
+    ['text_4_2', './img/bg_story/text_4_2.png', {x: 100, y: 891}]
 ]
 
 resources.story_text_5 = [
-    ['text_5_1', './img/bg_story/text_5_1.png', {x: 20, y: 791}],
-    ['text_5_2', './img/bg_story/text_5_2.png', {x: 60, y: 891}],
-    ['text_5_3', './img/bg_story/text_5_3.png', {x: 40, y: 991}]
+    ['text_5_1', './img/bg_story/text_5_1.png', {x: 40, y: 740}],
+    ['text_5_2', './img/bg_story/text_5_2.png', {x: 60, y: 840}],
+    ['text_5_3', './img/bg_story/text_5_3.png', {x: 20, y: 940}]
 ]
