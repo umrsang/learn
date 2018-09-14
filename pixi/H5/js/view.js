@@ -163,7 +163,7 @@ View.prototype.enter_story = function () {
     jump.buttonMode = true;
     jump.on('pointerdown', function(){
         me.showView(me.step+1)
-        document.getElementById("bgm").src = "http://img4.a0bi.com/upload/articleResource/20180329/1522325136815.mp3"
+        document.getElementById("bgm").src = bgm_game;
     });
 
     this.InitChapter(story_inner);
@@ -601,6 +601,7 @@ View.prototype.enter_rating = function(){
                     view.showView(1);
                     var img = document.getElementById("img");
                     img.style.zIndex = 0;
+                    document.getElementById("bgm").src = bgm_story;
                 });
             }})
         })

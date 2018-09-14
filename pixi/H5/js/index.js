@@ -2,6 +2,7 @@ var mian, view;
 var setW = 750;
 var setH = 1218;
 
+
 window.onload = function () {
   InitCanvas();
   main = new Main();
