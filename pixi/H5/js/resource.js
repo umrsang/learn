@@ -16,7 +16,13 @@ resources.assetLoad = function (cb) {
                         .concat(this.btn_shoes)
                         .concat(this.btn_acc)
                         .concat(this.btn_dress)
-                        .concat(this.page_rating);
+                        .concat(this.page_rating)
+                        .concat(this.page_story)
+                        .concat(this.story_text_1)
+                        .concat(this.story_text_2)
+                        .concat(this.story_text_3)
+                        .concat(this.story_text_4)
+                        .concat(this.story_text_5)
 
     var loader = this.loader;
     var len = arr.length;
@@ -181,20 +187,37 @@ resources.page_story = [
     ['story_bg_3', './img/bg_story/story_bg_3.jpg'],
     ['story_bg_4', './img/bg_story/story_bg_4.jpg'],
     ['story_bg_5', './img/bg_story/story_bg_5.jpg'],
-    ['text_1_1', './img/bg_story/text_1_1.png'],
-    ['text_1_2', './img/bg_story/text_1_2.png'],
-    ['text_1_3', './img/bg_story/text_1_3.png'],
-    ['text_2_1', './img/bg_story/text_2_1.png'],
-    ['text_2_2', './img/bg_story/text_2_2.png'],
-    ['text_2_3', './img/bg_story/text_2_3.png'],
-    ['text_3_1', './img/bg_story/text_3_1.png'],
-    ['text_3_2', './img/bg_story/text_3_2.png'],
-    ['text_4_1', './img/bg_story/text_4_1.png'],
-    ['text_4_2', './img/bg_story/text_4_2.png'],
-    ['text_5_1', './img/bg_story/text_5_1.png'],
-    ['text_5_2', './img/bg_story/text_5_2.png'],
-    ['text_5_3', './img/bg_story/text_5_3.png'],
+    ['story_face', './img/bg_story/story_face.png'],
     ['join', './img/bg_story/join.png'],
     ['jump', './img/bg_story/jump.png'],
     ['music', './img/bg_story/music.png']
+]
+
+
+resources.story_text_1 = [
+    ['text_1_1', './img/bg_story/text_1_1.png', {x: 48, y: 717}],
+    ['text_1_2', './img/bg_story/text_1_2.png', {x: 161, y: 828}],
+    ['text_1_3', './img/bg_story/text_1_3.png', {x: 81, y: 941}],
+]
+
+resources.story_text_2 = [
+    ['text_2_1', './img/bg_story/text_2_1.png', {x: 48, y: 717}],
+    ['text_2_2', './img/bg_story/text_2_2.png', {x: 161, y: 828}],
+    ['text_2_3', './img/bg_story/text_2_3.png', {x: 81, y: 941}]
+]
+
+resources.story_text_3 = [
+    ['text_3_1', './img/bg_story/text_3_1.png', {x: 26, y: 791}],
+    ['text_3_2', './img/bg_story/text_3_2.png', {x: 60, y: 903}]
+]
+
+resources.story_text_4 = [
+    ['text_4_1', './img/bg_story/text_4_1.png', {x: 32, y: 777}],
+    ['text_4_2', './img/bg_story/text_4_2.png', {x: 70, y: 891}]
+]
+
+resources.story_text_5 = [
+    ['text_5_1', './img/bg_story/text_5_1.png', {x: 20, y: 791}],
+    ['text_5_2', './img/bg_story/text_5_2.png', {x: 60, y: 891}],
+    ['text_5_3', './img/bg_story/text_5_3.png', {x: 40, y: 991}]
 ]

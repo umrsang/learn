@@ -1,5 +1,5 @@
 function View() {
-    this.list = ['skip_video',  'request' ,'mission', 'clothing', 'rating'];
+    this.list = ['skip_video',  'story' ,'mission', 'clothing', 'rating'];
     this.step = 0;
     var container = document.getElementById("container");
     var cav = container.querySelector("canvas")
@@ -43,8 +43,7 @@ function View() {
         {minPoint: 85, title: "倾城佳人", comment: "快停止散发魅力吧！你这迷人\n的小仙女！"},
         {minPoint: 100, title: "盛世美颜", comment: "惊为天人！凡瑟尔年度最佳\n搭配非你莫属！"},
     ]
-
-
+    this.getSprite("music", "music", this.app.stage, this.width-40, 40)
 }
 
 View.prototype.addPage = function(name){
@@ -108,29 +107,27 @@ View.prototype.leave_Page = function(pageName, cb){
 View.prototype.getSprite = function(label, resourcesName, addTO ,x, y, scaleX, scaleY, anchorX, anchorY, alpha){
     var texture = this.imgList[resourcesName].texture;
     var sprite = new PIXI.Sprite(texture);
+
     sprite.x = x||0;
     sprite.y = y||0;
     sprite.anchor.set(anchorX||0 , anchorY||0);
     sprite.scale.set(scaleX||1 , scaleY||1);
     sprite.alpha = alpha ==undefined?1:alpha;
+
     this.SpritePool[label || resourcesName] = sprite;
     addTO.addChild(sprite);
     return sprite;
 }
 
+
+View.prototype.getTexture = function(resourcesName){
+    return this.imgList[resourcesName].texture;
+}
+
+
 View.prototype.getText = function(str, conttainer, x, y, style ){
 
     var Text = new PIXI.Text(str, style);
-    // {
-    //     fontWeight: 'bold',
-    //     fontStyle: 'italic',
-    //     fontSize: 60,
-    //     fontFamily: 'Arvo',
-    //     fill: '#3e1707',
-    //     align: 'center',
-    //     stroke: '#a4410e',
-    //     strokeThickness: 7
-    // }
     Text.anchor.x = 0.5;
     Text.x = x;
     Text.y = y;
@@ -139,45 +136,98 @@ View.prototype.getText = function(str, conttainer, x, y, style ){
 }
 
 
-
-View.prototype.enter_skip_video = function () {
+View.prototype.enter_story = function () {
     var me = this;
-    this.addPage("page_skip_video");
-    this.before_enter_Page("page_skip_video");
-    this.enter_Page("page_skip_video");
-    var container = this.page_skip_video;
+    this.addPage("page_story");
+    this.before_enter_Page("page_story");
+    this.enter_Page("page_story");
+    var container = this.page_story;
     var pool = this.SpritePool;
 
-    var btn_skip = this.getSprite("btn_skip", "btn_start", container, 412, me.height);
-    btn_skip.interactive = true;
-    btn_skip.buttonMode = true;
-    btn_skip.on('pointerdown', function(){
-        me.showView(me.step+1);
-        videoEnd = true;
-    });
-    var line = new TimelineMax();
-    line.to(btn_skip, 0.8, {pixi:{ y: 1000}, ease: Power1.easeInOut})
-        .to(btn_skip, 1, {pixi:{ y: 1020}, ease: Power1.easeInOut, repeat:-1, yoyo: true});
-}
+    var story_inner = this.addContainer('story_inner', container, 0, 0) //(name, parent, x, y)
+    var story_cvoer = this.addContainer('story_cvoer', container, 0, 0) //(name, parent, x, y)
 
-View.prototype.enter_request = function () {
-    var me = this;
-    this.addPage("page_request");
-    this.before_enter_Page("page_request");
-    this.enter_Page("page_request");
-    var container = this.page_request;
-    var pool = this.SpritePool;
+    this.getSprite('story_face', 'story_face', story_cvoer, me.width/2, me.height/2, 1, 1, 0.5, 0.5, 1);
 
-    this.getSprite("bg_story", "bg_story", container, 0, 0);
-
-    var btn_start = this.getSprite("btn_start", "btn_start", container, 412, 1000);
-    btn_start.interactive = true;
-    btn_start.buttonMode = true;
-    btn_start.on('pointerdown', function(){
+    var jump = this.getSprite('jump', 'jump', story_cvoer, 450, 1100, 1, 1, 0, 0, 1);
+    jump.interactive = true;
+    jump.buttonMode = true;
+    jump.on('pointerdown', function(){
         me.showView(me.step+1)
     });
-    TweenMax.to(btn_start, 1, {pixi:{ y: 1020}, ease: Power1.easeInOut, repeat:-1, yoyo: true});
+
+    this.InitChapter(story_inner)
 }
+                            
+
+View.prototype.InitChapter = function(container){
+
+    var me = this;
+    //故事章节
+    var chapter = 1;
+    //两个背景交替切换
+    var bg = [  
+        this.getSprite('story_pic_1', 'story_bg_1', container, me.width/2, me.height/2, 1, 1, 0.5, 0.5, 1),
+        this.getSprite('story_pic_2', 'story_bg_1', container, me.width/2, me.height/2, 1, 1, 0.5, 0.5, 1),
+    ]
+    //当前背景索引
+    var bg_index = 0
+
+    //3个故事文本 精灵
+    var textSprite = ['', '', ''];
+    textSprite = textSprite.map(function(item, index){
+        return me.getSprite('text_'+ index, 'text_1_1', container, 0, 500, 1, 1, 0, 0, 0);
+    })
+   
+    me.showChapter(bg, textSprite, 1, 5, container);
+}
+
+
+View.prototype.showChapter = function(bg, text, chapter, total, container){
+    var me = this;
+
+    var currBg = (chapter+1)%2;
+    var nextBg = chapter%2;
+    bg[nextBg].texture = this.getTexture("story_bg_" + chapter);
+
+    var line = new TimelineMax();
+
+    TweenMax.set(bg[nextBg], {pixi: {scaleX: 1.4, scaleY: 1.5, y: me.height/2+100}} )
+    TweenMax.to(bg[nextBg], 8, {pixi: {scaleX: 1, scaleY: 1, y: me.height/2}});
+    TweenMax.to(bg[nextBg], 2, {pixi: {alpha: 1, brightness: 1}});
+    TweenMax.to(bg[currBg], 2, {pixi: {alpha: 0, scaleX: 1.2, scaleY: 1.2, brightness:0}});
+
+    line.to(text[0], 0.5, {pixi: {alpha: 0, x: text[0].x+100, y: text[0].y-100}} )
+        .to(text[1], 0.5, {pixi: {alpha: 0, x: text[1].x+100, y: text[1].y-100}} )
+        .to(text[2], 0.5, {pixi: {alpha: 0, x: text[2].x+100, y: text[2].y-100}, onComplete: function(){
+        }});
+    
+    var textList = resources["story_text_"+chapter];
+
+    textList.map(function(item, index){
+        line.set(text[index], {pixi: {alpha: 0, x: 0, y: me.height},
+            onComplete: function(){
+                text[index].texture = me.getTexture(item[0])
+            }
+        })
+        
+        line.to(text[index], 1, {pixi: {alpha: 1, x: item[2].x, y: item[2].y}, onComplete: function(){
+                if(index+1 == textList.length){ 
+                    setTimeout(function(){
+                        if(chapter<total){
+                            me.showChapter(bg, text, chapter+1, total, container)
+                        }else{
+                            me.SpritePool.jump.texture = me.getTexture('join')
+                        }
+                    }, 2000)
+                }
+            }
+        })
+    })
+}
+
+
+
 
 View.prototype.enter_mission = function () {
 
