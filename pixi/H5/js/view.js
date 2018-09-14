@@ -203,10 +203,10 @@ View.prototype.showChapter = function(bg, text, chapter, total, container){
 
     var line = new TimelineMax();
 
-    TweenMax.set(bg[nextBg], {pixi: {scaleX: 1.4, scaleY: 1.5, y: me.height/2+100}} )
-    TweenMax.to(bg[nextBg], 8, {pixi: {scaleX: 1, scaleY: 1, y: me.height/2}});
-    TweenMax.to(bg[nextBg], 2, {pixi: {alpha: 1, brightness: 1}});
-    TweenMax.to(bg[currBg], 2, {pixi: {alpha: 0, scaleX: 1.2, scaleY: 1.2, brightness:0}});
+    TweenMax.set(bg[nextBg], {pixi: {scaleX: 1.4, scaleY: 1.4, x: me.width/2+resources.page_story[chapter-1][2].x, y: me.height/2+resources.page_story[chapter-1][2].y}} )
+    TweenMax.to(bg[nextBg], 6, {pixi: {scaleX: 1, scaleY: 1, x: me.width/2, y: me.height/2}});
+    TweenMax.to(bg[nextBg], 4, {pixi: {alpha: 1, brightness: 1}});
+    TweenMax.to(bg[currBg], 4, {pixi: {alpha: 0, scaleX: 1.2, scaleY: 1.2, brightness:0}});
 
     line.to(text[0], 0.5, {pixi: {alpha: 0, x: text[0].x+100, y: text[0].y-100}} )
         .to(text[1], 0.5, {pixi: {alpha: 0, x: text[1].x+100, y: text[1].y-100}} )

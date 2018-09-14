@@ -182,11 +182,11 @@ resources.page_rating = [
 ]
 
 resources.page_story = [
-    ['story_bg_1', './img/bg_story/story_bg_1.jpg'],
-    ['story_bg_2', './img/bg_story/story_bg_2.jpg'],
-    ['story_bg_3', './img/bg_story/story_bg_3.jpg'],
-    ['story_bg_4', './img/bg_story/story_bg_4.jpg'],
-    ['story_bg_5', './img/bg_story/story_bg_5.jpg'],
+    ['story_bg_1', './img/bg_story/story_bg_1.jpg', {x: 100, y: 200}],
+    ['story_bg_2', './img/bg_story/story_bg_2.jpg', {x: 100, y: -200}],
+    ['story_bg_3', './img/bg_story/story_bg_3.jpg', {x: -80, y: 100}],
+    ['story_bg_4', './img/bg_story/story_bg_4.jpg', {x: 100, y: -200}],
+    ['story_bg_5', './img/bg_story/story_bg_5.jpg', {x: -100, y: 200}],
     ['story_face', './img/bg_story/story_face.png'],
     ['join', './img/bg_story/join.png'],
     ['jump', './img/bg_story/jump.png'],
