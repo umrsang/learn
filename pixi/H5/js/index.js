@@ -1,30 +1,14 @@
-var mian, view, videoEnd;
+var mian, view;
 var setW = 750;
 var setH = 1218;
 
 window.onload = function () {
   InitCanvas();
   main = new Main();
-  videoEnd = false;
   resources.assetLoad(function () {
     view = new View();
-    if(!videoEnd){
-      view.showView(0);
-    }
-    var video = document.getElementById("video");
-    video.onended = function() {
-      if(!videoEnd){
-        videoEnd = true;
-        view.showView(1);
-      }
-      var line = new TimelineMax();
-      line.to(video, 0.5, {opacity: 0})
-          .set(video, {zIndex: 0,});
-    };
+    view.showView(1);
   });
-
- 
-
 }
 
 function InitCanvas() {
@@ -80,3 +64,39 @@ Main.prototype.init = function () {
   this.currStep = 0
   this.view[this.currStep]();
 }
+
+Main.prototype.countScore = function (score, callBack) {
+  var path = 'http://service.100bt.com:8080/activity/lxywq_h5game/submit_score.jsonp?score=' + score;
+  $.ajax({
+      url: path,
+      type: "get",
+      dataType: 'jsonp',
+      success: function (result) {
+        callBack&&callBack();
+        console.log(result.resultCode.detail)
+      },
+      error: function (result) {
+        callBack&&callBack();
+      }
+  });
+
+}
+
+Main.prototype.countAction = function (type, callBack) {
+    var sheet = {replay: 1, download: 2, share: 3}
+
+    var path = 'http://service.100bt.com:8080/activity/lxywq_h5game/change_status.jsonp?type=' + sheet[type];
+    $.ajax({
+        url: path,
+        type: "get",
+        dataType: 'jsonp',
+        success: function (result) {
+          callBack&&callBack();
+          console.log(result.resultCode.detail)
+        },
+        error: function (result) {
+          callBack&&callBack();
+        }
+    });
+  }
+  //type -- 类型 整型 1.点击重玩按钮  2.点击下载按钮   3.为点击分享按钮

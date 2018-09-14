@@ -34,14 +34,14 @@ function View() {
     this.clothesTitle = "时尚绝缘体";
     this.clothesComment = "哪来的乡巴佬，拉低了整个凡瑟尔\n的审美";
     this.commentList = [
-        {minPoint: 0, title: "时尚绝缘体", comment: "哪来的乡巴佬，拉低了整个凡瑟尔\n的审美"},
+        {minPoint: 0, title: "时尚绝缘体", comment: "哪来的乡巴佬，拉低了整个\n凡瑟尔的审美"},
         {minPoint: 25, title: "蜜汁审美", comment: "恕我直言…您的搭配…有点辣眼睛\n"},
-        {minPoint: 35, title: "穿搭小白", comment: "你直接套上窗帘来舞会吧，也许\n还好看一点呢"},
+        {minPoint: 35, title: "穿搭小白", comment: "你直接套上窗帘来舞会吧，\n也许还好看一点呢"},
         {minPoint: 50, title: "新手上路", comment: "看看大家的眼神，明白差距了么？"},
-        {minPoint: 65, title: "颜值担当", comment: "搭配差一些也没关系，可你是贵\n族小姐啊！"},
-        {minPoint: 75, title: "时尚icon", comment: "还算孺子可教，答应我下次要做\n得更好！"},
-        {minPoint: 85, title: "倾城佳人", comment: "快停止散发魅力吧！你这迷人的\n小仙女！"},
-        {minPoint: 100, title: "盛世美颜", comment: "惊为天人！凡瑟尔年度最佳搭配\n非你莫属！"},
+        {minPoint: 65, title: "颜值担当", comment: "搭配差一些也没关系，可你\n是贵族小姐啊！"},
+        {minPoint: 75, title: "时尚icon", comment: "还算孺子可教，答应我下次\n要做得更好！"},
+        {minPoint: 85, title: "倾城佳人", comment: "快停止散发魅力吧！你这迷人\n的小仙女！"},
+        {minPoint: 100, title: "盛世美颜", comment: "惊为天人！凡瑟尔年度最佳\n搭配非你莫属！"},
     ]
 
 
@@ -203,10 +203,10 @@ View.prototype.enter_mission = function () {
             me.showView(me.step+1)
         });
         var line = new TimelineMax();
-        line.to(pool.card, 0.2, {pixi:{scaleX:1, scaleY:1, alpha:1}, delay: 0.5})
-            .to(pool.color, 0.1, {pixi:{scaleX:1, scaleY:1, alpha:1}})
-            .to(pool.theme, 0.1, {pixi:{scaleX:1, scaleY:1, alpha:1}})
-            .to(pool.role, 0.2, {pixi:{x: this.width - pool.role.width}})
+        line.to(pool.card, 0.5, {pixi:{scaleX:1, scaleY:1, alpha:1}, delay: 0.5})
+            .to(pool.color, 0.3, {pixi:{scaleX:1, scaleY:1, alpha:1}, ease: Power2.easeIn})
+            .to(pool.theme, 0.3, {pixi:{scaleX:1, scaleY:1, alpha:1}, ease: Power2.easeIn})
+            .to(pool.role, 0.5, {pixi:{x: this.width - pool.role.width}})
         
         var starPos = [
             [128, 959, 30],[210, 959, 5],[280, 959, -30],[165, 1000, -20],[262, 1000, 35],
@@ -222,7 +222,7 @@ View.prototype.enter_mission = function () {
             }
             line.to(star, 0.1, {pixi:{scaleX:1, scaleY:1, alpha:1, rotation: starPos[i][2]}})
         }
-        line.to(pool.btn_next, 0.1, {pixi:{ y: 1000}});
+        line.to(pool.btn_next, 1, {pixi:{ y: 1000}});
         line.to(pool.btn_next, 1, {pixi:{ y: 1020}, ease: Power1.easeInOut, repeat:-1, yoyo: true});
 
 }
@@ -251,7 +251,7 @@ View.prototype.enter_clothing = function (){
 
         var btn_go = this.getSprite("btn_go", "btn_go", container, 15, this.height, 1, 1, 0, 0, 1);
 
-        this.line.to(pool.btn_go, 0.1, {pixi:{ y: 1000}});
+        this.line.to(pool.btn_go, 1, {pixi:{ y: 1000}});
         this.line.to(pool.btn_go, 1, {pixi:{ y: 1020}, ease: Power1.easeInOut, repeat:-1, yoyo: true});
 
         btn_go.interactive = true;
@@ -275,36 +275,55 @@ View.prototype.initClothingBtn = function(){
 
     ["btn_clothesType", 540, 20, 150, 'needReturn']
 
-    var panel = me.addContainer("btn_clothesType", container, panel_x, 0); //添加一个按钮面板
-    me.getSprite("btn_clothesType" + "cebian", "cebian", panel, 0, 0, 1, 1, 0, 0, 1);
+    var panel = me.addContainer("btn_clothesType", container, panel_x-100, 0); //添加一个按钮面板
+    me.getSprite("btn_clothesType" + "cebian", "cebian", panel, 100, 0, 1, 1, 0, 0, 1);
+
+    view.lastPanel = resources["btn_clothesType"][0][0]
+
+    var thing = new PIXI.Graphics();
+
+    thing.lineStyle(0);
+    thing.beginFill(0x8bc5ff, 0.4);
+    thing.moveTo(0, 0);
+    thing.lineTo(110, 0);
+    thing.lineTo(110, 600);
+    thing.lineTo(0,600);
+
+    panel.addChild(thing)
 
     resources["btn_clothesType"].map(function(kid, num){
-        var btn = me.getSprite(kid[0], kid[0], panel, 20, 86+num*150, 1, 1, 0, 0, 1);
+        var btn = me.getSprite(kid[0], kid[0], panel, 20, 86+num*120, 1, 1, 0, 0, 1);
         btn.interactive = true;
         btn.buttonMode = true;
         btn.panel = kid[0];
+        btn.mask = thing;
         btn.on('pointerdown', function(e){
             var panel = e.currentTarget.panel;
             var line = new TimelineMax();
-            line.to(e.currentTarget.parent, 0.3, {pixi:{ x: me.width}})
-                .to(pool[panel], 0.3, {pixi:{ x: panel_x }});
+            line.to(e.currentTarget, 0.06, {pixi:{scaleX:1.1, scaleY:1.1}})
+                .to(e.currentTarget, 0.06, {pixi:{scaleX:1, scaleY:1}})
+            if(panel != view.lastPanel){
+                    // .to(e.currentTarget.parent, 0.3, {pixi:{ x: me.width}})
+                    line.to(pool[view.lastPanel], 0.3, {pixi:{ x: me.width }})
+                    .to(pool[panel], 0.3, {pixi:{ x: panel_x }});
+                    view.lastPanel = panel;
+            }
         });
     })
 
     var btnList = [["btn_hair"], ["btn_shoes"], ["btn_acc"], ["btn_dress"]];
         
     btnList.map(function(item, index){
-        var panel = me.addContainer(item[0], container, me.width, 0); //添加一个按钮面板
-        me.getSprite(item[0] + "cebian", "cebian", panel, 0, 0, 1, 1, 0, 0, 1);
+        var panel = me.addContainer(item[0], container, index==0?panel_x:me.width, 0); //添加一个按钮面板
        
-        var btn_return = me.getSprite(item[0] + "return", "return", panel, 28, 0, 1, 1, 0, 0, 1);        
-        btn_return.interactive = true;
-        btn_return.buttonMode = true;
-        btn_return.on('pointerdown', function(e){
-            var line = new TimelineMax();
-            line.to(e.currentTarget.parent, 0.3, {pixi:{ x: me.width}})
-                .to(pool["btn_clothesType"], 0.3, {pixi:{ x: panel_x}});
-        });
+        // var btn_return = me.getSprite(item[0] + "return", "return", panel, 28, 0, 1, 1, 0, 0, 1);        
+        // btn_return.interactive = true;
+        // btn_return.buttonMode = true;
+        // btn_return.on('pointerdown', function(e){
+        //     var line = new TimelineMax();
+        //     line.to(e.currentTarget.parent, 0.3, {pixi:{ x: me.width}})
+        //         .to(pool["btn_clothesType"], 0.3, {pixi:{ x: panel_x}});
+        // });
 
         resources[item[0]].map(function(kid, num){
             var btn = me.getSprite(kid[0], kid[0], panel, 114, 170+num*(180), 1, 1, 0.5, 0.5, 1);
@@ -373,11 +392,7 @@ View.prototype.getScore = function() {
             if(item.style == main.style){
                 score = score + scorelist[prop]
             }
-            // if(item.color == main.color && "dress_hair".indexOf(prop) > -1 ){
-            //     var index = flowerIndex[item.style];
-            //     var flower = this.flower[index];
-            //     this.flower[index] = flower>5?5:flower+1
-            // }
+
             if("dress_hair".indexOf(prop) > -1 ){
                 var index = flowerIndex[item.style];
                 var flower = this.flower[index];
@@ -468,9 +483,9 @@ View.prototype.enter_rating = function(){
                     fill: '#a56248',
                 })
 
-                me.getText("长按立即换装", result, 467, 848, {    
+                me.getText("长按立即换装", result, 468, 848, {    
                     fontWeight: 'bold',
-                    fontSize: 18,
+                    fontSize: 16,
                     lineHeight: 24,
                     fontFamily: '微软雅黑',
                     fill: '#333333',
@@ -553,7 +568,7 @@ View.prototype.showflower = function(type, callBack){
                 line.to(star, 0.05, {pixi:{scaleX: 3, scaleY: 3, alpha: 0}})
                 .to(star, 0.05, {pixi:{x: item[0]+delta, y: item[1], scaleX: scale, scaleY: scale, alpha: 1}})
             }else{
-                me.getSprite("flower_"+type+"_"+count, "flower", container, item[0]+delta, item[1], 0.8, 0.8, 0.5, 0.5, 1);
+                me.getSprite("flower_"+type+"_"+count, "flower_2", container, item[0]+delta, item[1], 1, 1, 0.5, 0.5, 1);
             }
             delta += deltaPos;
             count += 1;

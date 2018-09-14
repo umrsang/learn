@@ -163,6 +163,7 @@ resources.page_rating = [
     ['bg_flower', './img/rating/bg_flower.png'],
     ['bg_white', './img/rating/bg_white.png'],
     ['flower', './img/rating/flower.png'],
+    ['flower_2', './img/rating/flower_2.png'],
     ['bg_result', './img/rating/bg_result.jpg'],
     ['border_face', './img/rating/border_face.png'],
     ['border_back', './img/rating/border_back.png'],
@@ -172,4 +173,28 @@ resources.page_rating = [
     ['share_top', './img/rating/share_top.png'],
     ['tips_save', './img/rating/tips_save.png'],
     ['code', './img/rating/code.png'],
+]
+
+resources.page_story = [
+    ['story_bg_1', './img/bg_story/story_bg_1.jpg'],
+    ['story_bg_2', './img/bg_story/story_bg_2.jpg'],
+    ['story_bg_3', './img/bg_story/story_bg_3.jpg'],
+    ['story_bg_4', './img/bg_story/story_bg_4.jpg'],
+    ['story_bg_5', './img/bg_story/story_bg_5.jpg'],
+    ['text_1_1', './img/bg_story/text_1_1.png'],
+    ['text_1_2', './img/bg_story/text_1_2.png'],
+    ['text_1_3', './img/bg_story/text_1_3.png'],
+    ['text_2_1', './img/bg_story/text_2_1.png'],
+    ['text_2_2', './img/bg_story/text_2_2.png'],
+    ['text_2_3', './img/bg_story/text_2_3.png'],
+    ['text_3_1', './img/bg_story/text_3_1.png'],
+    ['text_3_2', './img/bg_story/text_3_2.png'],
+    ['text_4_1', './img/bg_story/text_4_1.png'],
+    ['text_4_2', './img/bg_story/text_4_2.png'],
+    ['text_5_1', './img/bg_story/text_5_1.png'],
+    ['text_5_2', './img/bg_story/text_5_2.png'],
+    ['text_5_3', './img/bg_story/text_5_3.png'],
+    ['join', './img/bg_story/join.png'],
+    ['jump', './img/bg_story/jump.png'],
+    ['music', './img/bg_story/music.png']
 ]
