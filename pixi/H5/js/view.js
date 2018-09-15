@@ -216,13 +216,13 @@ View.prototype.showChapter = function(bg, text, chapter, total, container){
     var textList = resources["story_text_"+chapter];
 
     textList.map(function(item, index){
-        line.set(text[index], {pixi: {alpha: 0, x: 0, y: me.height},
+        line.set(text[index], {pixi: {alpha: 0, x: me.width, y: me.height},
             onComplete: function(){
                 text[index].texture = me.getTexture(item[0])
             }
         })
         
-        line.to(text[index], 1, {pixi: {alpha: 1, x: item[2].x, y: item[2].y}, onComplete: function(){
+        line.to(text[index], 1.4, {pixi: {alpha: 1, x: item[2].x, y: item[2].y}, onComplete: function(){
                 if(index+1 == textList.length){ 
                     setTimeout(function(){
                         if(chapter<total){
