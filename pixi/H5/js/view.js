@@ -1,4 +1,5 @@
 function View() {
+    var me = this;
     this.list = ['skip_video',  'story' ,'mission', 'clothing', 'rating'];
     this.step = 0;
     var container = document.getElementById("container");
@@ -16,6 +17,7 @@ function View() {
     container.appendChild(this.app.view);
     this.SpritePool = {};
     this.containerPool = {};
+    this.textPool = {};
     this.imgList = resources.loader.resources;
     this.pageMain = this.addPage("pageMain");
     this.line = new TimelineMax();
@@ -42,8 +44,22 @@ function View() {
         {minPoint: 75, title: "时尚icon", comment: "还算孺子可教，答应我下次\n要做得更好！"},
         {minPoint: 85, title: "倾城佳人", comment: "快停止散发魅力吧！你这迷人\n的小仙女！"},
         {minPoint: 100, title: "盛世美颜", comment: "惊为天人！凡瑟尔年度最佳\n搭配非你莫属！"},
-    ]
-    var music = this.music= this.getSprite("music", "music", this.app.stage, this.width-40, 40, 1, 1, 0.5, 0.5);
+    ];
+    this.sparks = [];
+    this.sparks.length = 20;
+    for(var i=0; i<20; i++){
+        this.sparks[i] = this.getSprite("spark_"+i, "spark", me.app.stage, me.width/2, me.height/2, 0, 0, 0.5, 0.5, 1);
+        
+    }
+
+    this.sparkFlyPaused = true;
+    this.app.ticker.add(function(delta) {
+        me.sparkUpdate();
+    });
+    
+
+
+    var music = this.music= this.getSprite("music", "music", this.app.stage, this.width-40, 84, 1, 1, 0.5, 0.5);
     music.interactive = true;
     music.buttonMode = true;
     music.on('pointerdown', function(){
@@ -51,7 +67,7 @@ function View() {
         bgm.paused?bgm.play():bgm.pause();
     });
     music.rotation = -1;
-    TweenMax.to(music, 1, {pixi: {rotation: 1,  brightness: 0.5}, repeat: -1, yoyo: true, ease: Power1.easeInOut});
+    TweenMax.to(music, 1, {pixi: {rotation: 1}, repeat: -1, yoyo: true, ease: Power1.easeInOut});
 }
 
 View.prototype.addPage = function(name){
@@ -141,6 +157,7 @@ View.prototype.getText = function(str, conttainer, x, y, style ){
     Text.x = x;
     Text.y = y;
 
+    this.textPool[str] = Text;
     conttainer.addChild(Text);
 }
 
@@ -158,13 +175,9 @@ View.prototype.enter_story = function () {
 
     this.getSprite('story_face', 'story_face', story_cvoer, me.width/2, me.height/2, 1, 1, 0.5, 0.5, 1);
 
-    var jump = this.getSprite('jump', 'jump', story_cvoer, 450, 1100, 1, 1, 0, 0, 1);
+    var jump = this.getSprite('jump', me.chapterEnd?'join':'jump', story_cvoer, 570, 1130, 1, 1, 0.5, 0.5, 1);
     jump.interactive = true;
     jump.buttonMode = true;
-    jump.on('pointerdown', function(){
-        me.showView(me.step+1)
-        document.getElementById("bgm").src = bgm_game;
-    });
 
     this.InitChapter(story_inner);
     this.music.setParent(container);
@@ -190,47 +203,76 @@ View.prototype.InitChapter = function(container){
         return me.getSprite('text_'+ index, 'text_1_1', container, 0, 500, 1, 1, 0, 0, 0);
     })
    
-    me.showChapter(bg, textSprite, 1, 5, container);
+    me.showChapter(bg, textSprite, me.chapterEnd?5:1, 5, container);
+
+    this.SpritePool.jump.on('pointerdown', function(){
+            me.line.clear();
+        if(me.chapterEnd){
+            me.showView(me.step+1)
+        }else{
+            me.chapterEnd = true;
+            me.showChapter(bg, textSprite, 5, 5, container);
+            document.getElementById("bgm").src = bgm_game;
+        }
+    });
+
 }
 
 
 View.prototype.showChapter = function(bg, text, chapter, total, container){
+   
     var me = this;
-
+    // if(me.chapterEnd){
+    //     return;
+    // }
     var currBg = (chapter+1)%2;
     var nextBg = chapter%2;
+
     bg[nextBg].texture = this.getTexture("story_bg_" + chapter);
 
-    var line = new TimelineMax();
-
+    // var line = new TimelineMax();
+    // this.line.set(text[0], {pixi: {alpha: 0, x: text[0].x+100, y: text[0].y-100}} )
+    //     .set(text[1], {pixi: {alpha: 0, x: text[1].x+100, y: text[1].y-100}} )
+    //     .set(text[2], {pixi: {alpha: 0, x: text[2].x+100, y: text[2].y-100}, onComplete: function(){
+    //     }});
+    // this.line.set(text[0],  {pixi: {alpha: 0}} )
+    //     .set(text[1], {pixi: {alpha: 0 }} )
+    //     .set(text[2], {pixi: {alpha: 0}, onComplete: function(){
+    //     }});
+    this.line.to(text, 0.2, {pixi: {alpha: 0}} );
     TweenMax.set(bg[nextBg], {pixi: {scaleX: 1.4, scaleY: 1.4, x: me.width/2+resources.page_story[chapter-1][2].x, y: me.height/2+resources.page_story[chapter-1][2].y}} )
     TweenMax.to(bg[nextBg], 6, {pixi: {scaleX: 1, scaleY: 1, x: me.width/2, y: me.height/2}});
     TweenMax.to(bg[nextBg], 4, {pixi: {alpha: 1, brightness: 1}});
     TweenMax.to(bg[currBg], 4, {pixi: {alpha: 0, scaleX: 1.2, scaleY: 1.2, brightness:0}});
 
-    line.to(text[0], 0.5, {pixi: {alpha: 0, x: text[0].x+100, y: text[0].y-100}} )
-        .to(text[1], 0.5, {pixi: {alpha: 0, x: text[1].x+100, y: text[1].y-100}} )
-        .to(text[2], 0.5, {pixi: {alpha: 0, x: text[2].x+100, y: text[2].y-100}, onComplete: function(){
-        }});
-    
+
+
     var textList = resources["story_text_"+chapter];
 
     textList.map(function(item, index){
-        line.set(text[index], {pixi: {alpha: 0, x: me.width, y: me.height},
+        me.line.set(text[index], {pixi: {alpha: 0, x: item[2].x, y: item[2].y},
             onComplete: function(){
                 text[index].texture = me.getTexture(item[0])
             }
         })
         
-        line.to(text[index], 1.4, {pixi: {alpha: 1, x: item[2].x, y: item[2].y}, onComplete: function(){
+        me.line.to(text[index], me.chapterEnd?0:1, {pixi: {alpha: 1}, onComplete: function(){
                 if(index+1 == textList.length){ 
                     setTimeout(function(){
                         if(chapter<total){
                             me.showChapter(bg, text, chapter+1, total, container)
                         }else{
-                            me.SpritePool.jump.texture = me.getTexture('join')
+                            me.chapterEnd = true;
+
+                            me.line.to(me.SpritePool.jump, 0.3, {pixi:{scaleX: 1.5, scaleY: 1.5, alpha: 0}, ease: Power2.easeIn, onComplete: function(){
+                                me.SpritePool.jump.texture = me.getTexture('join');
+                            }})
+                                .to(me.SpritePool.jump, 0.3, {pixi:{scaleX: 1, scaleY: 1, alpha: 1}, ease: Power2.easeOut,})
+                                // .to(me.SpritePool.jump, 0.1, {pixi:{rotation: -4}})
+                                // .to(me.SpritePool.jump, 0.1, {pixi:{rotation: 4}, repeat: 10, yoyo: true})
+                                // .to(me.SpritePool.jump, 0.2, {pixi:{rotation: 0}})
                         }
-                    }, 2000)
+                    }, 1000)
                 }
             }
         })
@@ -264,7 +306,8 @@ View.prototype.enter_mission = function () {
             me.showView(me.step+1)
         });
         var line = new TimelineMax();
-        line.to(pool.card, 0.5, {pixi:{scaleX:1, scaleY:1, alpha:1}, delay: 0.5})
+        line.set(pool.card, {pixi:{rotation: -90}})
+            .to(pool.card, 0.5, {pixi:{rotation: 0, scaleX:1, scaleY:1, alpha:1}, delay: 0.5})
             .to(pool.color, 0.3, {pixi:{scaleX:1, scaleY:1, alpha:1}, ease: Power2.easeIn})
             .to(pool.theme, 0.3, {pixi:{scaleX:1, scaleY:1, alpha:1}, ease: Power2.easeIn})
             .to(pool.role, 0.5, {pixi:{x: this.width - pool.role.width}})
@@ -284,7 +327,7 @@ View.prototype.enter_mission = function () {
             line.to(star, 0.1, {pixi:{scaleX:1, scaleY:1, alpha:1, rotation: starPos[i][2]}})
         }
         line.to(pool.btn_next, 1, {pixi:{ y: 1000}});
-        line.to(pool.btn_next, 1, {pixi:{ y: 1020}, ease: Power1.easeInOut, repeat:-1, yoyo: true});
+        // line.to(pool.btn_next, 1, {pixi:{ y: 1020}, ease: Power1.easeInOut, repeat:-1, yoyo: true});
         
     this.music.setParent(container);
 
@@ -310,12 +353,12 @@ View.prototype.enter_clothing = function (){
         this.initClothingBtn();
 
         var clothes_tips = me.getSprite("clothes_tips", "clothes_tips", container, 275, 450, 1, 1, 0.5, 0.5, 0);
-        TweenMax.to(clothes_tips, 0.3, {pixi:{ scaleX: 0.9 , scaleY: 0.9}, repeat: -1, yoyo: true})
+        // TweenMax.to(clothes_tips, 0.3, {pixi:{ scaleX: 0.9 , scaleY: 0.9}, repeat: -1, yoyo: true})
 
         var btn_go = this.getSprite("btn_go", "btn_go", container, 15, this.height, 1, 1, 0, 0, 1);
 
-        this.line.to(pool.btn_go, 1, {pixi:{ y: 1000}});
-        this.line.to(pool.btn_go, 1, {pixi:{ y: 1020}, ease: Power1.easeInOut, repeat:-1, yoyo: true});
+        this.line.to(pool.btn_go, 1, {pixi:{ y: 1020}});
+        // this.line.to(pool.btn_go, 1, {pixi:{ y: 1020}, ease: Power1.easeInOut, repeat:-1, yoyo: true});
 
         btn_go.interactive = true;
         btn_go.buttonMode = true;
@@ -329,7 +372,7 @@ View.prototype.enter_clothing = function (){
             }
         });
         
-    this.music.setParent(container);
+    // this.music.setParent(container);
    }
 
 View.prototype.initClothingBtn = function(){
@@ -420,10 +463,59 @@ View.prototype.initClothingBtn = function(){
                 }                
                 console.log(me.clothes[clothes])
                 me.dressTheRole(pool.clothing_room);
+                me.sparkFly(300, 500, container);
             });
         }) 
     })
 }
+
+View.prototype.sparkFly = function(startX, startY, container){
+    var me = this;
+
+    this.sparks.map(function(item, index){
+        item.setParent(container);
+        item.x = Math.random()*100-50 + startX;
+        item.y = Math.random()*500-250 + startY;
+        item.speedX = (Math.random()*1) * (item.x>startX?1:-1);
+        item.speedY = (Math.random()*1)* (item.y>startY?1:-1);;
+        item.gX = (Math.random()*3) * (item.speedX>0?1:-1);
+        item.gY = (Math.random()*3) * (item.speedY>0?1:-1);
+        item.grown = Math.random()*0.1 + 0.01;
+        item.max = Math.random()*0.4 + 0.8;
+        item.detalOP = Math.random()*0.01 + 0.01;
+        TweenMax.set(item, {pixi: {brightness:1, alpha: 1, scaleX: 0, scaleY: 0}});
+        TweenMax.to(item, 0.5, {pixi: {brightness: 5, alpha: 0, scaleX: item.max, scaleY: item.max}, ease:Power2.easeOut});
+    })
+
+    this.sparkFlyPaused = false;
+}
+
+View.prototype.sparkUpdate = function(){
+    // if(this.sparkFlyPaused){
+    //     return;
+    // }
+    var me = this;
+    // console.log("sparkUpdate")
+    this.sparkFlyPaused = true;
+    this.sparks.map(function(item, index){
+        
+        if(item.x>-50 && item.x<me.width+50){
+            item.x = item.x + item.speedX;
+            item.speedX +=  item.gX
+        }
+        if(item.y>-50 && item.y<me.height+50){
+            item.y = item.y + item.speedY;
+            item.speedY +=  item.gY
+        }
+
+        // if(item.scale._x<item.max){
+        //     item.scale.set(item.scale._x + item.grown, item.scale._y + item.grown) ;
+        // }
+    })  
+}
+
+
+
 
 View.prototype.dressTheRole = function(container, enter){
     var pool = this.SpritePool;
@@ -514,25 +606,26 @@ View.prototype.enter_rating = function(){
             var border_back = me.getSprite("border_back", "border_back", result, 0, 0, 1, 1, 0, 0, 1);
             
             line.to(bg_result, 0.5, {pixi:{ y: 0, alpha: 1}, delay: 1, ease: Power1.easeOut})
-            .set(result, {pixi:{ x: me.width / 2, y: me.height, scaleX: 1.15, scaleY:1.15, alpha: 0}, onComplete: function(){
+            .set(result, {pixi:{ x: me.width / 2, y: me.height, scaleX: 1.05, scaleY:1.05, alpha: 0}, onComplete: function(){
                 result.pivot.set(307, 0);
                 clothing_room.setParent(result);
-                clothing_room.scale.set(0.8, 0.8);
+                clothing_room.scale.set(0.75, 0.75);
                 clothing_room.x = 100;
-                clothing_room.y = 50;
+                clothing_room.y = 40;
 
                 me.getSprite("border_face", "border_face", result, 0, 0, 1, 1, 0, 0, 1);
                 me.getSprite("code", "code", result, 420, 750, 1, 1, 0, 0, 1);
 
-                me.getText(me.clothesTitle, result, 310, 8, {    
+                me.getText(me.clothesTitle, result, 310, 14, {    
                     fontWeight: 'bold',
                     fontSize: 42,
+                    lineHeight: 80,
                     fontFamily: '微软雅黑',
                     fill: '#a56248',
                     align: 'center',
                 })
                 
-                me.getText(me.score + '分', result, 250, 740, {    
+                me.getText(me.score + '分', result, 250, 738, {    
                     fontWeight: 'bold',
                     fontSize: 52,
                     fontFamily: '微软雅黑',
@@ -540,7 +633,7 @@ View.prototype.enter_rating = function(){
                     align: 'center',
                 })
 
-                me.getText(me.clothesComment, result, 240, 810, {    
+                me.getText(me.clothesComment, result, 250, 808, {    
                     fontWeight: 'bold',
                     fontSize: 22,
                     lineHeight: 30,
@@ -558,7 +651,7 @@ View.prototype.enter_rating = function(){
 
                 me.showflower(2)
             }})
-            .to(result, 0.5, {pixi:{ y: 30, alpha: 1}, onComplete: function(){
+            .to(result, 0.5, {pixi:{ y: 60, alpha: 1}, onComplete: function(){
                 var img = document.getElementById("img");
                 img.style.zIndex = 100;
                 view.base64 = view.app.renderer.plugins.extract.base64(view.page_rating);
@@ -571,12 +664,11 @@ View.prototype.enter_rating = function(){
                 var share_top = me.getSprite("share_top", "share_top", container, 550, -100, 1, 1, 0.5, 0.5, 0);
                 var tips_save = me.getSprite("tips_save", "tips_save", container, 375, 450, 1, 1, 0.5, 0.5, 0);
             
-                line.to(btn_save, 0.3, {pixi:{ y: 1080, alpha: 1 }})
-                    .to(btn_download, 0.3, {pixi:{ y: 1080 , alpha: 1}})
-                    .to(btn_restart, 0.3, {pixi:{ y: 1080 , alpha: 1}})
+                line.to([btn_save, btn_download, btn_restart], 0.3, {pixi:{ y: 1080, alpha: 1 }})
                     .to(share_top, 0.3, {pixi:{ y: 35 , alpha: 1}})
-                TweenMax.to(tips_save, 0.3, {pixi:{ scaleX: 0.9 , scaleY: 0.9}, repeat: -1, yoyo: true})
-                TweenMax.to(share_top, 0.4, {pixi:{ scaleX: 0.96 , scaleY: 0.96}, repeat: -1, yoyo: true})
+                    .to(share_top, 0.3, {pixi:{ y: -100 , alpha: 1}})
+                // TweenMax.to(tips_save, 0.3, {pixi:{ scaleX: 0.9 , scaleY: 0.9}, repeat: -1, yoyo: true})
+                // TweenMax.to(share_top, 0.4, {pixi:{ scaleX: 0.96 , scaleY: 0.96}, repeat: -1, yoyo: true})
     
                 btn_save.interactive = true;
                 btn_save.buttonMode = true;
@@ -598,6 +690,7 @@ View.prototype.enter_rating = function(){
                     view.app.destroy(true);
                     main = new Main();
                     view = new View();
+                    view.chapterEnd = true;
                     view.showView(1);
                     var img = document.getElementById("img");
                     img.style.zIndex = 0;
@@ -605,7 +698,7 @@ View.prototype.enter_rating = function(){
                 });
             }})
         })
-        this.music.setParent(container);
+        // this.music.setParent(container);
 }
 
 View.prototype.showflower = function(type, callBack){
