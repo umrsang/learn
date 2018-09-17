@@ -476,15 +476,14 @@ View.prototype.sparkFly = function(startX, startY, container){
         item.setParent(container);
         item.x = Math.random()*100-50 + startX;
         item.y = Math.random()*500-250 + startY;
-        item.speedX = (Math.random()*1) * (item.x>startX?1:-1);
-        item.speedY = (Math.random()*1)* (item.y>startY?1:-1);;
-        item.gX = (Math.random()*3) * (item.speedX>0?1:-1);
-        item.gY = (Math.random()*3) * (item.speedY>0?1:-1);
+        item.speedX = (Math.random()*25) * (item.x>startX?1:-1);
+        item.speedY = (Math.random()*25) * (item.y>startY?1:-1);;
+        item.gX = (Math.random()*0.4+0.4) * (item.speedX>0?1:-1);
+        item.gY = (Math.random()*0.4+0.4) * (item.speedY>0?1:-1);
         item.grown = Math.random()*0.1 + 0.01;
         item.max = Math.random()*0.4 + 0.8;
-        item.detalOP = Math.random()*0.01 + 0.01;
-        TweenMax.set(item, {pixi: {brightness:1, alpha: 1, scaleX: 0, scaleY: 0}});
-        TweenMax.to(item, 0.5, {pixi: {brightness: 5, alpha: 0, scaleX: item.max, scaleY: item.max}, ease:Power2.easeOut});
+        TweenMax.set(item, {pixi: {brightness:2, alpha: 1, rotation: 0, scaleX: 0, scaleY: 0}});
+        TweenMax.to(item, 0.5, {pixi: {alpha: 0,brightness: 10, rotation: Math.random()*360, scaleX: item.max, scaleY: item.max}, ease:Power2.easeOut});
     })
 
     this.sparkFlyPaused = false;
@@ -501,11 +500,15 @@ View.prototype.sparkUpdate = function(){
         
         if(item.x>-50 && item.x<me.width+50){
             item.x = item.x + item.speedX;
-            item.speedX +=  item.gX
+            if(Math.abs(item.speedX)>Math.abs(item.gX)){
+                item.speedX-=item.gX
+            }
         }
         if(item.y>-50 && item.y<me.height+50){
             item.y = item.y + item.speedY;
-            item.speedY +=  item.gY
+            if(Math.abs(item.speedY)>Math.abs(item.gY)){
+                item.speedY-=item.gY
+            } 
         }
 
         // if(item.scale._x<item.max){
