@@ -1,4 +1,5 @@
 function View() {
+    var me = this;
     this.list = ['skip_video',  'story' ,'mission', 'clothing', 'rating'];
     this.step = 0;
     var container = document.getElementById("container");
@@ -43,7 +44,21 @@ function View() {
         {minPoint: 75, title: "时尚icon", comment: "还算孺子可教，答应我下次\n要做得更好！"},
         {minPoint: 85, title: "倾城佳人", comment: "快停止散发魅力吧！你这迷人\n的小仙女！"},
         {minPoint: 100, title: "盛世美颜", comment: "惊为天人！凡瑟尔年度最佳\n搭配非你莫属！"},
-    ]
+    ];
+    this.sparks = [];
+    this.sparks.length = 20;
+    for(var i=0; i<20; i++){
+        this.sparks[i] = this.getSprite("spark_"+i, "spark", me.app.stage, me.width/2, me.height/2, 0, 0, 0.5, 0.5, 1);
+        
+    }
+
+    this.sparkFlyPaused = true;
+    this.app.ticker.add(function(delta) {
+        me.sparkUpdate();
+    });
+    
+
+
     var music = this.music= this.getSprite("music", "music", this.app.stage, this.width-40, 84, 1, 1, 0.5, 0.5);
     music.interactive = true;
     music.buttonMode = true;
@@ -160,7 +175,7 @@ View.prototype.enter_story = function () {
 
     this.getSprite('story_face', 'story_face', story_cvoer, me.width/2, me.height/2, 1, 1, 0.5, 0.5, 1);
 
-    var jump = this.getSprite('jump', 'jump', story_cvoer, 570, 1130, 1, 1, 0.5, 0.5, 1);
+    var jump = this.getSprite('jump', me.chapterEnd?'join':'jump', story_cvoer, 570, 1130, 1, 1, 0.5, 0.5, 1);
     jump.interactive = true;
     jump.buttonMode = true;
 
@@ -216,11 +231,15 @@ View.prototype.showChapter = function(bg, text, chapter, total, container){
     bg[nextBg].texture = this.getTexture("story_bg_" + chapter);
 
     // var line = new TimelineMax();
-    this.line.set(text[0], {pixi: {alpha: 0, x: text[0].x+100, y: text[0].y-100}} )
-        .set(text[1], {pixi: {alpha: 0, x: text[1].x+100, y: text[1].y-100}} )
-        .set(text[2], {pixi: {alpha: 0, x: text[2].x+100, y: text[2].y-100}, onComplete: function(){
-        }});
-    
+    // this.line.set(text[0], {pixi: {alpha: 0, x: text[0].x+100, y: text[0].y-100}} )
+    //     .set(text[1], {pixi: {alpha: 0, x: text[1].x+100, y: text[1].y-100}} )
+    //     .set(text[2], {pixi: {alpha: 0, x: text[2].x+100, y: text[2].y-100}, onComplete: function(){
+    //     }});
+    // this.line.set(text[0],  {pixi: {alpha: 0}} )
+    //     .set(text[1], {pixi: {alpha: 0 }} )
+    //     .set(text[2], {pixi: {alpha: 0}, onComplete: function(){
+    //     }});
+    this.line.to(text, 0.2, {pixi: {alpha: 0}} );
     TweenMax.set(bg[nextBg], {pixi: {scaleX: 1.4, scaleY: 1.4, x: me.width/2+resources.page_story[chapter-1][2].x, y: me.height/2+resources.page_story[chapter-1][2].y}} )
     TweenMax.to(bg[nextBg], 6, {pixi: {scaleX: 1, scaleY: 1, x: me.width/2, y: me.height/2}});
     TweenMax.to(bg[nextBg], 4, {pixi: {alpha: 1, brightness: 1}});
@@ -231,13 +250,13 @@ View.prototype.showChapter = function(bg, text, chapter, total, container){
     var textList = resources["story_text_"+chapter];
 
     textList.map(function(item, index){
-        me.line.set(text[index], {pixi: {alpha: 0, x: me.width, y: me.height},
+        me.line.set(text[index], {pixi: {alpha: 0, x: item[2].x, y: item[2].y},
             onComplete: function(){
                 text[index].texture = me.getTexture(item[0])
             }
         })
         
-        me.line.to(text[index], me.chapterEnd?0:1, {pixi: {alpha: 1, x: item[2].x, y: item[2].y}, onComplete: function(){
+        me.line.to(text[index], me.chapterEnd?0:1, {pixi: {alpha: 1}, onComplete: function(){
                 if(index+1 == textList.length){ 
                     setTimeout(function(){
                         if(chapter<total){
@@ -245,13 +264,13 @@ View.prototype.showChapter = function(bg, text, chapter, total, container){
                         }else{
                             me.chapterEnd = true;
 
-                            me.line.to(me.SpritePool.jump, 0.1, {pixi:{y: me.height}, onComplete: function(){
+                            me.line.to(me.SpritePool.jump, 0.3, {pixi:{scaleX: 1.5, scaleY: 1.5, alpha: 0}, ease: Power2.easeIn, onComplete: function(){
                                 me.SpritePool.jump.texture = me.getTexture('join');
                             }})
-                                .to(me.SpritePool.jump, 0.1, {pixi:{y: 1130}})
-                                .to(me.SpritePool.jump, 0.1, {pixi:{rotation: -4}})
-                                .to(me.SpritePool.jump, 0.1, {pixi:{rotation: 4}, repeat: 10, yoyo: true})
-                                .to(me.SpritePool.jump, 0.2, {pixi:{rotation: 0}})
+                                .to(me.SpritePool.jump, 0.3, {pixi:{scaleX: 1, scaleY: 1, alpha: 1}, ease: Power2.easeOut,})
+                                // .to(me.SpritePool.jump, 0.1, {pixi:{rotation: -4}})
+                                // .to(me.SpritePool.jump, 0.1, {pixi:{rotation: 4}, repeat: 10, yoyo: true})
+                                // .to(me.SpritePool.jump, 0.2, {pixi:{rotation: 0}})
                         }
                     }, 1000)
                 }
@@ -444,10 +463,59 @@ View.prototype.initClothingBtn = function(){
                 }                
                 console.log(me.clothes[clothes])
                 me.dressTheRole(pool.clothing_room);
+                me.sparkFly(300, 500, container);
             });
         }) 
     })
 }
+
+View.prototype.sparkFly = function(startX, startY, container){
+    var me = this;
+
+    this.sparks.map(function(item, index){
+        item.setParent(container);
+        item.x = Math.random()*100-50 + startX;
+        item.y = Math.random()*500-250 + startY;
+        item.speedX = (Math.random()*1) * (item.x>startX?1:-1);
+        item.speedY = (Math.random()*1)* (item.y>startY?1:-1);;
+        item.gX = (Math.random()*3) * (item.speedX>0?1:-1);
+        item.gY = (Math.random()*3) * (item.speedY>0?1:-1);
+        item.grown = Math.random()*0.1 + 0.01;
+        item.max = Math.random()*0.4 + 0.8;
+        item.detalOP = Math.random()*0.01 + 0.01;
+        TweenMax.set(item, {pixi: {brightness:1, alpha: 1, scaleX: 0, scaleY: 0}});
+        TweenMax.to(item, 0.5, {pixi: {brightness: 5, alpha: 0, scaleX: item.max, scaleY: item.max}, ease:Power2.easeOut});
+    })
+
+    this.sparkFlyPaused = false;
+}
+
+View.prototype.sparkUpdate = function(){
+    // if(this.sparkFlyPaused){
+    //     return;
+    // }
+    var me = this;
+    // console.log("sparkUpdate")
+    this.sparkFlyPaused = true;
+    this.sparks.map(function(item, index){
+        
+        if(item.x>-50 && item.x<me.width+50){
+            item.x = item.x + item.speedX;
+            item.speedX +=  item.gX
+        }
+        if(item.y>-50 && item.y<me.height+50){
+            item.y = item.y + item.speedY;
+            item.speedY +=  item.gY
+        }
+
+        // if(item.scale._x<item.max){
+        //     item.scale.set(item.scale._x + item.grown, item.scale._y + item.grown) ;
+        // }
+    })  
+}
+
+
+
 
 View.prototype.dressTheRole = function(container, enter){
     var pool = this.SpritePool;

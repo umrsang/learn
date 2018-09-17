@@ -60,6 +60,7 @@ resources.list = [
     ['dress_0', './img/clothing/dress_0.png'],
     ['bg_story', './img/bg_story/bg_story.jpg'],
     ['btn_start', './img/bg_story/btn_start.png'],
+    ['spark', './img/spark.png'],
 ]
 resources.btn_clothesType = [
     ['btn_hair', './img/clothing/btn_hair.png'],
