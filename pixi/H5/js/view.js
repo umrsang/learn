@@ -264,7 +264,8 @@ View.prototype.enter_mission = function () {
             me.showView(me.step+1)
         });
         var line = new TimelineMax();
-        line.to(pool.card, 0.5, {pixi:{scaleX:1, scaleY:1, alpha:1}, delay: 0.5})
+        line.set(pool.card, {pixi:{rotation: -90}})
+            .to(pool.card, 0.5, {pixi:{rotation: 0, scaleX:1, scaleY:1, alpha:1}, delay: 0.5})
             .to(pool.color, 0.3, {pixi:{scaleX:1, scaleY:1, alpha:1}, ease: Power2.easeIn})
             .to(pool.theme, 0.3, {pixi:{scaleX:1, scaleY:1, alpha:1}, ease: Power2.easeIn})
             .to(pool.role, 0.5, {pixi:{x: this.width - pool.role.width}})
@@ -310,7 +311,7 @@ View.prototype.enter_clothing = function (){
         this.initClothingBtn();
 
         var clothes_tips = me.getSprite("clothes_tips", "clothes_tips", container, 275, 450, 1, 1, 0.5, 0.5, 0);
-        TweenMax.to(clothes_tips, 0.3, {pixi:{ scaleX: 0.9 , scaleY: 0.9}, repeat: -1, yoyo: true})
+        // TweenMax.to(clothes_tips, 0.3, {pixi:{ scaleX: 0.9 , scaleY: 0.9}, repeat: -1, yoyo: true})
 
         var btn_go = this.getSprite("btn_go", "btn_go", container, 15, this.height, 1, 1, 0, 0, 1);
 
@@ -514,7 +515,7 @@ View.prototype.enter_rating = function(){
             var border_back = me.getSprite("border_back", "border_back", result, 0, 0, 1, 1, 0, 0, 1);
             
             line.to(bg_result, 0.5, {pixi:{ y: 0, alpha: 1}, delay: 1, ease: Power1.easeOut})
-            .set(result, {pixi:{ x: me.width / 2, y: me.height, scaleX: 1.15, scaleY:1.15, alpha: 0}, onComplete: function(){
+            .set(result, {pixi:{ x: me.width / 2, y: me.height, scaleX: 1.05, scaleY:1.05, alpha: 0}, onComplete: function(){
                 result.pivot.set(307, 0);
                 clothing_room.setParent(result);
                 clothing_room.scale.set(0.8, 0.8);
@@ -558,7 +559,7 @@ View.prototype.enter_rating = function(){
 
                 me.showflower(2)
             }})
-            .to(result, 0.5, {pixi:{ y: 30, alpha: 1}, onComplete: function(){
+            .to(result, 0.5, {pixi:{ y: 60, alpha: 1}, onComplete: function(){
                 var img = document.getElementById("img");
                 img.style.zIndex = 100;
                 view.base64 = view.app.renderer.plugins.extract.base64(view.page_rating);
@@ -575,8 +576,8 @@ View.prototype.enter_rating = function(){
                     .to(btn_download, 0.3, {pixi:{ y: 1080 , alpha: 1}})
                     .to(btn_restart, 0.3, {pixi:{ y: 1080 , alpha: 1}})
                     .to(share_top, 0.3, {pixi:{ y: 35 , alpha: 1}})
-                TweenMax.to(tips_save, 0.3, {pixi:{ scaleX: 0.9 , scaleY: 0.9}, repeat: -1, yoyo: true})
-                TweenMax.to(share_top, 0.4, {pixi:{ scaleX: 0.96 , scaleY: 0.96}, repeat: -1, yoyo: true})
+                // TweenMax.to(tips_save, 0.3, {pixi:{ scaleX: 0.9 , scaleY: 0.9}, repeat: -1, yoyo: true})
+                // TweenMax.to(share_top, 0.4, {pixi:{ scaleX: 0.96 , scaleY: 0.96}, repeat: -1, yoyo: true})
     
                 btn_save.interactive = true;
                 btn_save.buttonMode = true;
