@@ -58,16 +58,6 @@ function Main() {
 
 }
 
-Main.prototype.init = function () {
-  this.currStep = 0
-  this.view[this.currStep]();
-}
-
-Main.prototype.init = function () {
-  this.currStep = 0
-  this.view[this.currStep]();
-}
-
 Main.prototype.countScore = function (score, callBack) {
   var path = 'http://service.100bt.com/activity/lxywq_h5game/submit_score.jsonp?score=' + score;
   $.ajax({
