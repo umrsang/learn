@@ -220,7 +220,7 @@ View.prototype.InitChapter = function(container){
 
 View.prototype.showChapter = function(bg, text, chapter, total, container){
     
-    _hmt&&_hmt.push(['_trackPageview', '/story_' + chapter]);
+    _hmt&&_hmt.push(['_trackPageview', '/waltz/activity/trialH5/story_' + chapter]);
    
     var me = this;
     // if(me.chapterEnd){
@@ -333,7 +333,7 @@ View.prototype.enter_mission = function () {
         
     this.music.setParent(container);
     
-    _hmt&&_hmt.push(['_trackPageview', '/invate']);
+    _hmt&&_hmt.push(['_trackPageview', '/waltz/activity/trialH5/invate']);
 
 }
 
@@ -377,7 +377,7 @@ View.prototype.enter_clothing = function (){
         });
         
     // this.music.setParent(container);
-    _hmt&&_hmt.push(['_trackPageview', '/clothing']);
+    _hmt&&_hmt.push(['_trackPageview', '/waltz/activity/trialH5/clothing']);
    }
 
 View.prototype.initClothingBtn = function(){
@@ -573,7 +573,7 @@ View.prototype.getScore = function() {
         }
     })
 
-    console.table([
+    console.log([
         {name: '称号', value: me.clothesTitle},
         {name: '评语', value: me.clothesComment},
         {name: '得分', value: me.score},
@@ -590,7 +590,7 @@ View.prototype.enter_rating = function(){
         this.before_enter_Page("page_rating");
 
         
-        _hmt&&_hmt.push(['_trackPageview', '/rating']);
+        _hmt&&_hmt.push(['_trackPageview', '/waltz/activity/trialH5/rating']);
         if(dataForShare.weixinShareReady){
             dataForShare.desc = '我在《螺旋圆舞曲》的舞会中获得'+ this.score +'分，你也来试试吧！',
             weixinshareBinder()
@@ -673,7 +673,7 @@ View.prototype.enter_rating = function(){
                 img.style.zIndex = 100;
                 view.base64 = view.app.renderer.plugins.extract.base64(view.page_rating);
                 img.src = view.base64;
-                _hmt&&_hmt.push(['_trackPageview', '/result']);
+                _hmt&&_hmt.push(['_trackPageview', '/waltz/activity/trialH5/result']);
             }})
             .to(result, 0.5, {pixi:{ y: 60, scaleX:1, scaleY:1, alpha: 1}, delay: 0.5, onComplete: function(){
                 var btn_restart = me.getSprite("btn_restart", "btn_restart", container, 524, me.height, 1, 1, 0, 0, 0);

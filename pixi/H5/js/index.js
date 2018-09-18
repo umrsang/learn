@@ -77,6 +77,7 @@ Main.prototype.countScore = function (score, callBack) {
 
 Main.prototype.countAction = function (type, callBack) {
     var sheet = {replay: 1, download: 2, share: 3}
+    //type -- 类型 整型 1.点击重玩按钮  2.点击下载按钮   3.为点击分享按钮
 
     var path = 'http://service.100bt.com/activity/lxywq_h5game/change_status.jsonp?type=' + sheet[type];
     $.ajax({
@@ -92,7 +93,6 @@ Main.prototype.countAction = function (type, callBack) {
         }
     });
   }
-  //type -- 类型 整型 1.点击重玩按钮  2.点击下载按钮   3.为点击分享按钮
 
   function weixinshareBinder() {
     wx.checkJsApi({
