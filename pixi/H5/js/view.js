@@ -46,8 +46,8 @@ function View() {
         {minPoint: 100, title: "盛世美颜", comment: "惊为天人！凡瑟尔年度最佳\n搭配非你莫属！"},
     ];
     this.sparks = [];
-    this.sparks.length = 30;
-    for(var i=0; i<30; i++){
+    this.sparks.length = 20;
+    for(var i=0; i<20; i++){
         this.sparks[i] = this.getSprite("spark_"+i, "spark", me.app.stage, me.width/2, me.height/2, 0, 0, 0.5, 0.5, 1);
         
     }
@@ -212,7 +212,6 @@ View.prototype.InitChapter = function(container){
         }else{
             me.chapterEnd = true;
             me.showChapter(bg, textSprite, 5, 5, container);
-            document.getElementById("bgm").src = bgm_game;
         }
     });
 
@@ -220,6 +219,8 @@ View.prototype.InitChapter = function(container){
 
 
 View.prototype.showChapter = function(bg, text, chapter, total, container){
+    
+    _hmt.push(['_trackPageview', '/story_' + chapter]);
    
     var me = this;
     // if(me.chapterEnd){
@@ -283,6 +284,7 @@ View.prototype.showChapter = function(bg, text, chapter, total, container){
 
 
 View.prototype.enter_mission = function () {
+        document.getElementById("bgm").src = bgm_game;
 
         var me = this;
         this.addPage("page_mission");
@@ -330,6 +332,8 @@ View.prototype.enter_mission = function () {
         // line.to(pool.btn_next, 1, {pixi:{ y: 1020}, ease: Power1.easeInOut, repeat:-1, yoyo: true});
         
     this.music.setParent(container);
+    
+    _hmt.push(['_trackPageview', '/invate']);
 
 }
 
@@ -373,6 +377,7 @@ View.prototype.enter_clothing = function (){
         });
         
     // this.music.setParent(container);
+    _hmt.push(['_trackPageview', '/clothing']);
    }
 
 View.prototype.initClothingBtn = function(){
@@ -584,6 +589,9 @@ View.prototype.enter_rating = function(){
         this.addPage("page_rating");
         this.before_enter_Page("page_rating");
 
+        
+    _hmt.push(['_trackPageview', '/rating']);
+
         var container = this.page_rating;
         var pool = this.SpritePool;
         var clothing_room = this.containerPool.clothing_room;
@@ -609,7 +617,7 @@ View.prototype.enter_rating = function(){
             var border_back = me.getSprite("border_back", "border_back", result, 0, 0, 1, 1, 0, 0, 1);
             
             line.to(bg_result, 0.5, {pixi:{ y: 0, alpha: 1}, delay: 1, ease: Power1.easeOut})
-            .set(result, {pixi:{ x: me.width / 2, y: me.height, scaleX: 1.05, scaleY:1.05, alpha: 0}, onComplete: function(){
+            .set(result, {pixi:{ x: me.width / 2, y: me.height, scaleX: 1.1, scaleY:1.1, alpha: 0}, onComplete: function(){
                 result.pivot.set(307, 0);
                 clothing_room.setParent(result);
                 clothing_room.scale.set(0.75, 0.75);
@@ -659,6 +667,7 @@ View.prototype.enter_rating = function(){
                 img.style.zIndex = 100;
                 view.base64 = view.app.renderer.plugins.extract.base64(view.page_rating);
                 img.src = view.base64;
+                _hmt.push(['_trackPageview', '/result']);
             }})
             .to(result, 0.5, {pixi:{ y: 60, scaleX:1, scaleY:1, alpha: 1}, delay: 0.5, onComplete: function(){
                 var btn_restart = me.getSprite("btn_restart", "btn_restart", container, 524, me.height, 1, 1, 0, 0, 0);
@@ -683,6 +692,10 @@ View.prototype.enter_rating = function(){
                 btn_download.interactive = true;
                 btn_download.buttonMode = true;
                 btn_download.on('pointerdown', function(){
+
+                    //精灵展示事件统计
+                    _hmt.push(['_trackEvent', pageName, pageName + '_按钮', pageName + '_按钮' + '_下载']);
+
                     window.location = "http://www.100bt.com/waltz/main.html?baidu";
                 });   
     
@@ -690,11 +703,15 @@ View.prototype.enter_rating = function(){
                 btn_restart.buttonMode = true;
                 btn_restart.on('pointerdown', function(){
                     // window.location.reload();
+                    
+                    //精灵展示事件统计
+                    _hmt.push(['_trackEvent', pageName, pageName + '_按钮', pageName + '_按钮' + '_重玩']);
+
                     view.app.destroy(true);
                     main = new Main();
                     view = new View();
                     view.chapterEnd = true;
-                    view.showView(1);
+                    view.showView(0);
                     var img = document.getElementById("img");
                     img.style.zIndex = 0;
                     document.getElementById("bgm").src = bgm_story;

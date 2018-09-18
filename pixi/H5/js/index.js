@@ -1,7 +1,7 @@
 var mian, view;
 var setW = 750;
 var setH = 1218;
-
+var pageName = "螺旋圆舞曲换装H5" 
 
 window.onload = function () {
   InitCanvas();
