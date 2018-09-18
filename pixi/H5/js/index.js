@@ -130,7 +130,7 @@ function initWeixinShare() {
         url = encodeURIComponent(location.href.split('#')[0]),
         appType = 3;
 
-    $.getJSON("http://service.100bt.com/wx/jsapiSignature.jsonp?callback=?&appType=" + appType + "&noncestr=" +
+    $.getJSON("//service.100bt.com/wx/jsapiSignature.jsonp?callback=?&appType=" + appType + "&noncestr=" +
         randomstr + "×tamp=" + timestamp + "&url=" + url,
         function (data) {
             wx.config({
