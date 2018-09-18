@@ -220,7 +220,7 @@ View.prototype.InitChapter = function(container){
 
 View.prototype.showChapter = function(bg, text, chapter, total, container){
     
-    _hmt.push(['_trackPageview', '/story_' + chapter]);
+    _hmt&&_hmt.push(['_trackPageview', '/story_' + chapter]);
    
     var me = this;
     // if(me.chapterEnd){
@@ -333,7 +333,7 @@ View.prototype.enter_mission = function () {
         
     this.music.setParent(container);
     
-    _hmt.push(['_trackPageview', '/invate']);
+    _hmt&&_hmt.push(['_trackPageview', '/invate']);
 
 }
 
@@ -377,7 +377,7 @@ View.prototype.enter_clothing = function (){
         });
         
     // this.music.setParent(container);
-    _hmt.push(['_trackPageview', '/clothing']);
+    _hmt&&_hmt.push(['_trackPageview', '/clothing']);
    }
 
 View.prototype.initClothingBtn = function(){
@@ -590,7 +590,7 @@ View.prototype.enter_rating = function(){
         this.before_enter_Page("page_rating");
 
         
-        _hmt.push(['_trackPageview', '/rating']);
+        _hmt&&_hmt.push(['_trackPageview', '/rating']);
         if(dataForShare.weixinShareReady){
             dataForShare.desc = '我在《螺旋圆舞曲》的舞会中获得'+ this.score +'分，你也来试试吧！',
             weixinshareBinder()
@@ -673,7 +673,7 @@ View.prototype.enter_rating = function(){
                 img.style.zIndex = 100;
                 view.base64 = view.app.renderer.plugins.extract.base64(view.page_rating);
                 img.src = view.base64;
-                _hmt.push(['_trackPageview', '/result']);
+                _hmt&&_hmt.push(['_trackPageview', '/result']);
             }})
             .to(result, 0.5, {pixi:{ y: 60, scaleX:1, scaleY:1, alpha: 1}, delay: 0.5, onComplete: function(){
                 var btn_restart = me.getSprite("btn_restart", "btn_restart", container, 524, me.height, 1, 1, 0, 0, 0);
@@ -700,7 +700,7 @@ View.prototype.enter_rating = function(){
                 btn_download.on('pointerdown', function(){
 
                     //精灵展示事件统计
-                    _hmt.push(['_trackEvent', pageName, pageName + '_按钮', pageName + '_按钮' + '_下载']);
+                    _hmt&&_hmt.push(['_trackEvent', pageName, pageName + '_按钮', pageName + '_按钮' + '_下载']);
                     main.countAction('download');
 
                     window.location = "http://www.100bt.com/waltz/main.html?baidu";
@@ -712,7 +712,7 @@ View.prototype.enter_rating = function(){
                     // window.location.reload();
                     
                     //精灵展示事件统计
-                    _hmt.push(['_trackEvent', pageName, pageName + '_按钮', pageName + '_按钮' + '_重玩']);
+                    _hmt&&_hmt.push(['_trackEvent', pageName, pageName + '_按钮', pageName + '_按钮' + '_重玩']);
                     main.countAction('replay');
 
                     view.app.destroy(true);
