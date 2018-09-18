@@ -590,7 +590,13 @@ View.prototype.enter_rating = function(){
         this.before_enter_Page("page_rating");
 
         
-    _hmt.push(['_trackPageview', '/rating']);
+        _hmt.push(['_trackPageview', '/rating']);
+        if(dataForShare.weixinShareReady){
+            dataForShare.desc = '我在《螺旋圆舞曲》的舞会中获得'+ this.score +'分，你也来试试吧！',
+            weixinshareBinder()
+        }
+
+        main.countScore(this.score);
 
         var container = this.page_rating;
         var pool = this.SpritePool;
@@ -695,6 +701,7 @@ View.prototype.enter_rating = function(){
 
                     //精灵展示事件统计
                     _hmt.push(['_trackEvent', pageName, pageName + '_按钮', pageName + '_按钮' + '_下载']);
+                    main.countAction('download');
 
                     window.location = "http://www.100bt.com/waltz/main.html?baidu";
                 });   
@@ -706,6 +713,7 @@ View.prototype.enter_rating = function(){
                     
                     //精灵展示事件统计
                     _hmt.push(['_trackEvent', pageName, pageName + '_按钮', pageName + '_按钮' + '_重玩']);
+                    main.countAction('replay');
 
                     view.app.destroy(true);
                     main = new Main();

@@ -58,8 +58,6 @@ resources.list = [
     ['btn_go', './img/clothing/btn_go.png'],
     ['hair_0', './img/clothing/hair_0.png'],
     ['dress_0', './img/clothing/dress_0.png'],
-    ['bg_story', './img/bg_story/bg_story.jpg'],
-    ['btn_start', './img/bg_story/btn_start.png'],
     ['spark', './img/spark.png'],
 ]
 resources.btn_clothesType = [
