@@ -1,6 +1,6 @@
 function View() {
     var me = this;
-    this.list = ['skip_video',  'story' ,'mission', 'clothing', 'rating'];
+    this.list = ['story', 'mission', 'clothing', 'rating'];
     this.step = 0;
     var container = document.getElementById("container");
     var cav = container.querySelector("canvas")
@@ -46,8 +46,8 @@ function View() {
         {minPoint: 100, title: "盛世美颜", comment: "惊为天人！凡瑟尔年度最佳\n搭配非你莫属！"},
     ];
     this.sparks = [];
-    this.sparks.length = 20;
-    for(var i=0; i<20; i++){
+    this.sparks.length = 30;
+    for(var i=0; i<30; i++){
         this.sparks[i] = this.getSprite("spark_"+i, "spark", me.app.stage, me.width/2, me.height/2, 0, 0, 0.5, 0.5, 1);
         
     }
@@ -241,7 +241,7 @@ View.prototype.showChapter = function(bg, text, chapter, total, container){
     //     }});
     this.line.to(text, 0.2, {pixi: {alpha: 0}} );
     TweenMax.set(bg[nextBg], {pixi: {scaleX: 1.4, scaleY: 1.4, x: me.width/2+resources.page_story[chapter-1][2].x, y: me.height/2+resources.page_story[chapter-1][2].y}} )
-    TweenMax.to(bg[nextBg], 6, {pixi: {scaleX: 1, scaleY: 1, x: me.width/2, y: me.height/2}});
+    TweenMax.to(bg[nextBg], 4, {pixi: {scaleX: 1, scaleY: 1, x: me.width/2, y: me.height/2}});
     TweenMax.to(bg[nextBg], 4, {pixi: {alpha: 1, brightness: 1}});
     TweenMax.to(bg[currBg], 4, {pixi: {alpha: 0, scaleX: 1.2, scaleY: 1.2, brightness:0}});
 
@@ -257,22 +257,22 @@ View.prototype.showChapter = function(bg, text, chapter, total, container){
         })
         
         me.line.to(text[index], me.chapterEnd?0:1, {pixi: {alpha: 1}, onComplete: function(){
-                if(index+1 == textList.length){ 
-                    setTimeout(function(){
-                        if(chapter<total){
+                if(index+1 == textList.length){
+                    if(chapter<total){ 
+                        setTimeout(function(){
                             me.showChapter(bg, text, chapter+1, total, container)
-                        }else{
-                            me.chapterEnd = true;
+                        }, 1000)
+                    }else{
+                        me.chapterEnd = true;
 
-                            me.line.to(me.SpritePool.jump, 0.3, {pixi:{scaleX: 1.5, scaleY: 1.5, alpha: 0}, ease: Power2.easeIn, onComplete: function(){
-                                me.SpritePool.jump.texture = me.getTexture('join');
-                            }})
-                                .to(me.SpritePool.jump, 0.3, {pixi:{scaleX: 1, scaleY: 1, alpha: 1}, ease: Power2.easeOut,})
-                                // .to(me.SpritePool.jump, 0.1, {pixi:{rotation: -4}})
-                                // .to(me.SpritePool.jump, 0.1, {pixi:{rotation: 4}, repeat: 10, yoyo: true})
-                                // .to(me.SpritePool.jump, 0.2, {pixi:{rotation: 0}})
-                        }
-                    }, 1000)
+                        me.line.to(me.SpritePool.jump, 0.3, {pixi:{scaleX: 1.5, scaleY: 1.5, alpha: 0}, ease: Power2.easeIn, onComplete: function(){
+                            me.SpritePool.jump.texture = me.getTexture('join');
+                        }})
+                            .to(me.SpritePool.jump, 0.3, {pixi:{scaleX: 1, scaleY: 1, alpha: 1}, ease: Power2.easeOut,})
+                            // .to(me.SpritePool.jump, 0.1, {pixi:{rotation: -4}})
+                            // .to(me.SpritePool.jump, 0.1, {pixi:{rotation: 4}, repeat: 10, yoyo: true})
+                            // .to(me.SpritePool.jump, 0.2, {pixi:{rotation: 0}})
+                    }
                 }
             }
         })
@@ -474,14 +474,14 @@ View.prototype.sparkFly = function(startX, startY, container){
 
     this.sparks.map(function(item, index){
         item.setParent(container);
-        item.x = Math.random()*100-50 + startX;
-        item.y = Math.random()*500-250 + startY;
+        item.x = Math.random()*10 -5 + startX;
+        item.y = Math.random()*600-300 + startY;
         item.speedX = (Math.random()*25) * (item.x>startX?1:-1);
         item.speedY = (Math.random()*25) * (item.y>startY?1:-1);;
         item.gX = (Math.random()*0.4+0.4) * (item.speedX>0?1:-1);
         item.gY = (Math.random()*0.4+0.4) * (item.speedY>0?1:-1);
         item.grown = Math.random()*0.1 + 0.01;
-        item.max = Math.random()*0.4 + 0.8;
+        item.max = Math.random()*0.6 + 0.6;
         TweenMax.set(item, {pixi: {brightness:2, alpha: 1, rotation: 0, scaleX: 0, scaleY: 0}});
         TweenMax.to(item, 0.5, {pixi: {alpha: 0,brightness: 10, rotation: Math.random()*360, scaleX: item.max, scaleY: item.max}, ease:Power2.easeOut});
     })
@@ -668,8 +668,8 @@ View.prototype.enter_rating = function(){
                 var tips_save = me.getSprite("tips_save", "tips_save", container, 375, 450, 1, 1, 0.5, 0.5, 0);
             
                 line.to([btn_save, btn_download, btn_restart], 0.3, {pixi:{ y: 1080, alpha: 1 }})
-                    .to(share_top, 0.3, {pixi:{ y: 35 , alpha: 1}})
-                    .to(share_top, 0.3, {pixi:{ y: -100 , alpha: 1}})
+                    .to(share_top, 0.5, {pixi:{ y: 35 , alpha: 1}})
+                    .to(share_top, 0.5, {pixi:{ y: -100 , alpha: 1}, delay: 3})
                 // TweenMax.to(tips_save, 0.3, {pixi:{ scaleX: 0.9 , scaleY: 0.9}, repeat: -1, yoyo: true})
                 // TweenMax.to(share_top, 0.4, {pixi:{ scaleX: 0.96 , scaleY: 0.96}, repeat: -1, yoyo: true})
     
