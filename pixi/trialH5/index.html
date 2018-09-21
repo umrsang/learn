@@ -1,0 +1,53 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <link rel="shortcut icon" href="./img/icon.jpg">
+    <meta content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=0" name="viewport">
+    <meta content="yes" name="apple-mobile-web-app-capable">     
+    <meta content="black" name="apple-mobile-web-app-status-bar-style">     
+    <meta content="telephone=no" name="format-detection">
+    <meta http-equiv="X-UA-Compatible" content="ie=edge">
+    <title>少女，换装出发吧！</title> 
+    <link rel="stylesheet" href="./css/style.css">
+</head>
+
+<body>
+    <script>
+        var _hmt;
+        var bgm_story = "./img/bg_story/story.mp3"
+        var bgm_game = "./img/bg_story/game.mp3"
+
+    </script>
+    <div id="container">
+        <!-- <audio id="bgm" src="./img/bgm.mp3" autoplay loop></audio> -->
+        <!-- http://img4.a0bi.com/upload/articleResource/20180327/1522145754746.mp3 -->
+        <audio id="bgm" src="./img/bg_story/story.mp3" autoplay loop></audio>
+        <img id="img" src="" alt="">
+        <script>
+            document.addEventListener("WeixinJSBridgeReady", function () { //微信
+                var bgm = document.getElementById("bgm");
+                bgm.play();
+            }, false); 
+        </script> 
+    </div>
+</body>    
+<script> 
+    (function () {
+        var src = './js/eruda.min.js';
+        if (!/eruda=true/.test(window.location) && localStorage.getItem('active-eruda') != 'true') return;
+        document.write('<scr' + 'ipt src="' + src + '"></scr' + 'ipt>');
+        document.write('<scr' + 'ipt>eruda.init();</scr' + 'ipt>');
+    })(); 
+</script>
+<script type="text/javascript" src="./js/PixiPlugin.min.js"></script>
+<script type="text/javascript" src="./js/TweenMax.min.js"></script>
+<script type="text/javascript" src="./js/jquery.js"></script>
+<script type="text/javascript" src="./js/pixi.min.js"></script>
+<script type="text/javascript" src="./js/resource.js"></script>
+<script type="text/javascript" src="./js/view.js"></script>
+<script type="text/javascript" src="./js/index.js"></script>
+<script type="text/javascript" src="//res.wx.qq.com/open/js/jweixin-1.2.0.js" charset="utf-8"></script>
+<script type="text/javascript" src="//www.100bt.com/resource/js/lib/bdStatistic.js"></script>
+</html>
