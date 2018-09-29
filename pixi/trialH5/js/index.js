@@ -4,7 +4,7 @@ var pageName = "螺旋圆舞曲换装H5";
 var resourceUrlHead = ".";
 
 window.onload = function () {
-    _hmt.push(['_setAutoPageview', false]);
+    _hmt&&_hmt.push(['_setAutoPageview', false]);
 
     main = new Main();
 
