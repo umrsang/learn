@@ -5,49 +5,176 @@
     <meta charset="UTF-8">
     <link rel="shortcut icon" href="./img/icon.jpg">
     <meta content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=0" name="viewport">
-    <meta content="yes" name="apple-mobile-web-app-capable">     
-    <meta content="black" name="apple-mobile-web-app-status-bar-style">     
+    <meta content="yes" name="apple-mobile-web-app-capable">
+    <meta content="black" name="apple-mobile-web-app-status-bar-style">
     <meta content="telephone=no" name="format-detection">
     <meta http-equiv="X-UA-Compatible" content="ie=edge">
-    <title>少女，换装出发吧！</title> 
-    <link rel="stylesheet" href="./css/style.css">
+    <meta http-equiv="Access-Control-Allow-Origin" content="*" />
+    <title>这支螺旋圆舞曲，你会跳吗？</title>
+    <Script>
+        var head = "//www.100bt.com/tianti/waltz/activity/trialH5"
+    </Script>
 </head>
+<style>
+    *{
+        margin: 0;
+        padding: 0;
+    }
+
+    html, body{
+        position: relative;
+        width: 100%;
+        height: 100%;
+        /* background: #f60; */
+        background: #000;
+        font-family: "Microsoft YaHei", Arial, Helvetica, sans-serif;
+    }
+
+    #container{
+        position: absolute;
+        top: 50%;
+        left: 50%;
+        z-index: 10;
+        overflow: hidden;
+    }
+
+    #img{
+        position: absolute;
+        width: 100%;
+        height: 88%;
+        top: 0;
+        opacity: 0;
+        z-index: 0;
+    }
+
+    .loading_page{
+        position: absolute;
+        width: 100%;
+        height: 100%;
+        background: #111;
+        transition: 0.5s;
+        transform-origin: center center;
+        z-index: 200;
+        font-size: 0.24rem;
+        line-height: 0.48rem;
+        color: #fff;
+        text-shadow: 2px 2px 24px #af9ae4, -2px -2px 24px #af9ae4;
+    }
+
+    .loading{
+        position: absolute;
+        top: 40%;
+        left: 50%;
+        margin: -0.6rem 0 0 -1.03rem;
+        width: 2.07rem;
+        text-align: center;
+        transform-origin: center center;
+    }
+
+    .loading img{
+        width: 100%;
+    }
+
+    canvas{
+        position: absolute;
+        top: 0;
+        width: 100%;
+        height: 100%;
+        z-index: 10;
+    }
+
+    audio{
+        position: absolute;
+        top: 0;
+        width: 0;
+        height:0;
+    }
+
+</style>
 
 <body>
-    <script>
-        var _hmt;
-        var bgm_story = "./img/bg_story/story.mp3"
-        var bgm_game = "./img/bg_story/game.mp3"
-
-    </script>
     <div id="container">
-        <!-- <audio id="bgm" src="./img/bgm.mp3" autoplay loop></audio> -->
-        <!-- http://img4.a0bi.com/upload/articleResource/20180327/1522145754746.mp3 -->
+        <div class="loading_page">
+            <div class="loading">
+                <img src="./img/loading_flower.png" alt="">
+                <span>舞会准备中...0%</span>
+            </div>
+        </div>
         <audio id="bgm" src="./img/bg_story/story.mp3" autoplay loop></audio>
         <img id="img" src="" alt="">
         <script>
             document.addEventListener("WeixinJSBridgeReady", function () { //微信
                 var bgm = document.getElementById("bgm");
                 bgm.play();
-            }, false); 
-        </script> 
+            }, false);
+        </script>
     </div>
-</body>    
-<script> 
+</body>
+<script>
+    var bgm_story = "./img/bg_story/story.mp3"
+    var bgm_game = "./img/bg_story/gamemusic3.mp3"
+    var _hmt;
+    var setW = 750;
+    var setH = 1218;
+
+    function InitCanvas() {
+        var width = window.innerWidth;
+        var height = window.innerHeight;
+        var container = document.getElementById("container");
+        var cav = document.getElementById("cav");
+
+        var ratio = width / height
+        var setRatio = 750 / 1218;
+
+        //判断是否是移动设备
+        if (!(/Android | webOs | iPhone | iPod | mobile/i.test(navigator.userAgent))) {
+            location.replace(location.href.replace(/.com\/m/, ".com"));
+        }
+        document.documentElement.style.fontSize = document.documentElement.clientWidth / (750) * 100 + 'px';
+        window.onresize = function(){
+            document.documentElement.style.fontSize = document.documentElement.clientWidth / (750) * 100 + 'px';
+        }
+
+
+        if (setW / ratio < setH) {
+            container.style.height = height + 'px';
+            container.style.width = height * setRatio + 'px';
+            container.style.marginTop = -(height / 2) + 'px';
+            container.style.marginLeft = -(height * setRatio / 2) + 'px';
+        } else {
+            container.style.width = width + 'px';
+            container.style.height = width / setRatio + 'px';
+            container.style.marginTop = -(width / setRatio / 2) + 'px';
+            container.style.marginLeft = -(width / 2) + 'px';
+        }
+    }
+    InitCanvas();
+    window.onresize = InitCanvas;
+
     (function () {
         var src = './js/eruda.min.js';
         if (!/eruda=true/.test(window.location) && localStorage.getItem('active-eruda') != 'true') return;
         document.write('<scr' + 'ipt src="' + src + '"></scr' + 'ipt>');
         document.write('<scr' + 'ipt>eruda.init();</scr' + 'ipt>');
-    })(); 
+    })();
 </script>
 <script type="text/javascript" src="./js/PixiPlugin.min.js"></script>
 <script type="text/javascript" src="./js/TweenMax.min.js"></script>
 <script type="text/javascript" src="./js/jquery.js"></script>
 <script type="text/javascript" src="./js/pixi.min.js"></script>
+<script type="text/javascript" src="./js/resource.js?v=2018092103"></script>
+<script type="text/javascript" src="./js/view.js?v=2018092102"></script>
+<script type="text/javascript" src="./js/index.js?v=2018092103"></script>
+
+<!-- <script type="text/javascript" src="./js/PixiPlugin.min.js"></script>
+<script type="text/javascript" src="./js/TweenMax.min.js"></script>
+<script type="text/javascript" src="./js/jquery.js"></script>
+<script type="text/javascript" src="./js/pixi.min.js"></script>
 <script type="text/javascript" src="./js/resource.js"></script>
 <script type="text/javascript" src="./js/view.js"></script>
-<script type="text/javascript" src="./js/index.js"></script>
+<script type="text/javascript" src="./js/index.js"></script> -->
+
 <script type="text/javascript" src="//res.wx.qq.com/open/js/jweixin-1.2.0.js" charset="utf-8"></script>
 <script type="text/javascript" src="//www.100bt.com/resource/js/lib/bdStatistic.js"></script>
+
 </html>

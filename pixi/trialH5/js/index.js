@@ -1,42 +1,31 @@
 var mian, view;
-var setW = 750;
-var setH = 1218;
-var pageName = "螺旋圆舞曲换装H5"
+var pageName = "螺旋圆舞曲换装H5";
+// var resourceUrlHead = "http://www.100bt.com/tianti/waltz/activity/trialH5";
+var resourceUrlHead = ".";
 
 window.onload = function () {
-    InitCanvas();
+    _hmt&&_hmt.push(['_setAutoPageview', false]);
+
     main = new Main();
+
     resources.assetLoad(function () {
-        view = new View();
-        view.showView(0);
+
+
+        $(".loading_page").css({
+            opacity: 0,
+            transform: "scale(1.5)"
+        });
+
+        setTimeout(function(){
+            view = new View();
+            view.showView(0);
+            $(".loading_page").hide();
+        }, 500)
     });
 
     initWeixinShare();
 }
 
-function InitCanvas() {
-    var width = window.innerWidth;
-    var height = window.innerHeight;
-    var container = document.getElementById("container");
-    var cav = document.getElementById("cav");
-
-    var ratio = width / height
-    var setRatio = 750 / 1218;
-
-    if (setW / ratio < setH) {
-        container.style.height = height + 'px';
-        container.style.width = height * setRatio + 'px';
-        container.style.marginTop = -(height / 2) + 'px';
-        container.style.marginLeft = -(height * setRatio / 2) + 'px';
-    } else {
-        container.style.width = width + 'px';
-        container.style.height = width / setRatio + 'px';
-        container.style.marginTop = -(width / setRatio / 2) + 'px';
-        container.style.marginLeft = -(width / 2) + 'px';
-    }
-}
-
-window.onresize = InitCanvas;
 
 function Main() {
     this.currStep = 0
@@ -141,9 +130,9 @@ function initWeixinShare() {
 
 //分享的信息
 var dataForShare = {
-    title: "少女，换装出发吧！",
-    imgUrl: location.href + 'img/icon.jpg',
-    desc: '我在《螺旋圆舞曲》的舞会中获得100分，你也来试试吧！',
+    title: "这支螺旋圆舞曲，你会跳吗？",
+    imgUrl: 'http://www.100bt.com/tianti/waltz/activity/trialH5/img/icon.jpg',
+    desc: '天呐噜！我用尽心思地打扮，在《螺旋圆舞曲》舞会中收获60分，你能超过我吗？！',
     link: location.href,
     type: 'link',
     debug: false,

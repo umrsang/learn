@@ -18,7 +18,7 @@ function View() {
     this.SpritePool = {};
     this.containerPool = {};
     this.textPool = {};
-    this.imgList = resources.loader.resources;
+    this.imgList = resources.loader.resources; 
     this.pageMain = this.addPage("pageMain");
     this.line = new TimelineMax();
     this.clothes = {
@@ -37,13 +37,13 @@ function View() {
     this.clothesComment = "哪来的乡巴佬，拉低了整个凡瑟尔\n的审美";
     this.commentList = [
         {minPoint: 0, title: "时尚绝缘体", comment: "恕我直言…您的搭配…有点辣眼睛\n"},
-        {minPoint: 15, title: "蜜汁审美", comment: "哪来的乡巴佬，拉低了整个\n凡瑟尔的审美"},
-        {minPoint: 35, title: "穿搭小白", comment: "你直接套上窗帘来舞会吧，\n也许还好看一点呢"},
+        {minPoint: 15, title: "蜜汁审美", comment: "哪来的乡巴佬，拉低了整个凡瑟尔\n的审美"},
+        {minPoint: 35, title: "穿搭小白", comment: "你直接套上窗帘来舞会吧，也许还\n好看一点呢"},
         {minPoint: 40, title: "新手上路", comment: "看看大家的眼神，明白差距了么？"},
-        {minPoint: 60, title: "颜值担当", comment: "搭配差一些也没关系，可你\n是贵族小姐啊！"},
-        {minPoint: 75, title: "时尚icon", comment: "还算孺子可教，答应我下次\n要做得更好！"},
-        {minPoint: 85, title: "倾城佳人", comment: "快停止散发魅力吧！你这迷人\n的小仙女！"},
-        {minPoint: 100, title: "盛世美颜", comment: "惊为天人！凡瑟尔年度最佳\n搭配非你莫属！"},
+        {minPoint: 60, title: "颜值担当", comment: "搭配差一些也没关系，可你是贵族\n小姐啊！"},
+        {minPoint: 75, title: "时尚icon", comment: "还算孺子可教，答应我下次要做得\n更好！"},
+        {minPoint: 85, title: "倾城佳人", comment: "快停止散发魅力吧！你这迷人的小\n仙女！"},
+        {minPoint: 100, title: "盛世美颜", comment: "惊为天人！凡瑟尔年度最佳搭配\n非你莫属！"},
     ];
     this.sparks = [];
     this.sparks.length = 20;
@@ -70,6 +70,7 @@ function View() {
     TweenMax.to(music, 1, {pixi: {rotation: 1}, repeat: -1, yoyo: true, ease: Power1.easeInOut});
 }
 
+//添加一个游戏章节容器
 View.prototype.addPage = function(name){
     if(!(this[name])){
         var container = new PIXI.Container();
@@ -81,6 +82,8 @@ View.prototype.addPage = function(name){
     }
 }
 
+//添加一个普通容器
+//name, 名字；parent， 父容器；x, x坐标, y, y坐标
 View.prototype.addContainer = function(name, parent, x, y){
     if(!(this.containerPool[name])){
         var container = new PIXI.Container();
@@ -93,6 +96,8 @@ View.prototype.addContainer = function(name, parent, x, y){
     return this.containerPool[name]
 }
 
+//显示章节
+//step， 章节序号
 View.prototype.showView = function (step) {
     var me = this;
     var page = "page_"+this.list[this.step];
@@ -221,7 +226,6 @@ View.prototype.InitChapter = function(container){
 View.prototype.showChapter = function(bg, text, chapter, total, container){
     
     _hmt&&_hmt.push(['_trackPageview', '/waltz/activity/trialH5/story_' + chapter]);
-    _hmt&&_hmt.push(['_trackPageview', '/trialH5_story_' + chapter]);
    
     var me = this;
     // if(me.chapterEnd){
@@ -271,9 +275,7 @@ View.prototype.showChapter = function(bg, text, chapter, total, container){
                             me.SpritePool.jump.texture = me.getTexture('join');
                         }})
                             .to(me.SpritePool.jump, 0.3, {pixi:{scaleX: 1, scaleY: 1, alpha: 1}, ease: Power2.easeOut,})
-                            // .to(me.SpritePool.jump, 0.1, {pixi:{rotation: -4}})
-                            // .to(me.SpritePool.jump, 0.1, {pixi:{rotation: 4}, repeat: 10, yoyo: true})
-                            // .to(me.SpritePool.jump, 0.2, {pixi:{rotation: 0}})
+                            .to(me.SpritePool.jump, 0.4, {pixi:{scaleX: 0.9, scaleY: 0.9}, ease:  Sine.easeInOut, repeat:-1, yoyo: true })
                     }
                 }
             }
@@ -293,8 +295,11 @@ View.prototype.enter_mission = function () {
         this.enter_Page("page_mission");
         var container = this.page_mission;
         var pool = this.SpritePool;
+
+        pool.music.y -= 30;
+        pool.music.x -= 20;
+
         this.getSprite("invate_bg", "invate_bg", container, 0, 0);
-        
 
         this.getSprite("card", "invate_card_" + main.role, container, 230, 320, 3, 3, 0.5, 0.5, 0);        
         this.getSprite("role", "invate_role_" + main.role, container, this.width, 28);
@@ -334,7 +339,7 @@ View.prototype.enter_mission = function () {
         
     this.music.setParent(container);
     
-    _hmt&&_hmt.push(['_trackPageview', '/trialH5_invate']);
+    _hmt&&_hmt.push(['_trackPageview', '/waltz/activity/trialH5/invate']);
 
 }
 
@@ -352,7 +357,7 @@ View.prototype.enter_clothing = function (){
 
         var clothing_room = this.addContainer("clothing_room", container, -508, 100);
         this.dressTheRole(clothing_room);
-        this.line.to(clothing_room, 0.5, {pixi:{x: 0}, delay: 0.5, ease: Back.easeOut.config(2)});
+        this.line.to(clothing_room, 0.5, {pixi:{x: 0}, delay: 0.5 });
 
 
         this.initClothingBtn();
@@ -378,7 +383,7 @@ View.prototype.enter_clothing = function (){
         });
         
     // this.music.setParent(container);
-    _hmt&&_hmt.push(['_trackPageview', '/trialH5_clothing']);
+    _hmt&&_hmt.push(['_trackPageview', '/waltz/activity/trialH5/clothing']);
    }
 
 View.prototype.initClothingBtn = function(){
@@ -406,7 +411,7 @@ View.prototype.initClothingBtn = function(){
     panel.addChild(thing)
 
     resources["btn_clothesType"].map(function(kid, num){
-        var btn = me.getSprite(kid[0], kid[0], panel, 20, 86+num*120, 1, 1, 0, 0, 1);
+        var btn = me.getSprite(kid[0], kid[0], panel, num==0?0:20, 86+num*120, 1, 1, 0, 0, 1);
         btn.interactive = true;
         btn.buttonMode = true;
         btn.panel = kid[0];
@@ -414,13 +419,17 @@ View.prototype.initClothingBtn = function(){
         btn.on('pointerdown', function(e){
             var panel = e.currentTarget.panel;
             var line = new TimelineMax();
-            line.to(e.currentTarget, 0.06, {pixi:{scaleX:1.1, scaleY:1.1}})
-                .to(e.currentTarget, 0.06, {pixi:{scaleX:1, scaleY:1}})
-            if(panel != view.lastPanel){
+            var btnPool = me.SpritePool
+            // line.to(e.currentTarget, 0.06, {pixi:{scaleX:1.1, scaleY:1.1}})
+            //     .to(e.currentTarget, 0.06, {pixi:{scaleX:1, scaleY:1}})
+            if(panel != me.lastPanel){
                     // .to(e.currentTarget.parent, 0.3, {pixi:{ x: me.width}})
-                    line.to(pool[view.lastPanel], 0.3, {pixi:{ x: me.width }})
+                    TweenMax.to(btnPool[me.lastPanel], 0.3, {pixi:{ x: btnPool[me.lastPanel].x  + 30}})
+                    TweenMax.to(e.currentTarget, 0.3, {pixi:{ x: e.currentTarget.x - 30 }});
+
+                    line.to(pool[me.lastPanel], 0.3, {pixi:{ x: me.width }})
                     .to(pool[panel], 0.3, {pixi:{ x: panel_x }});
-                    view.lastPanel = panel;
+                    me.lastPanel = panel;
             }
         });
     })
@@ -591,9 +600,9 @@ View.prototype.enter_rating = function(){
         this.before_enter_Page("page_rating");
 
         
-        _hmt&&_hmt.push(['_trackPageview', '/trialH5_rating']);
+        _hmt&&_hmt.push(['_trackPageview', '/waltz/activity/trialH5/rating']);
         if(dataForShare.weixinShareReady){
-            dataForShare.desc = '我在《螺旋圆舞曲》的舞会中获得'+ this.score +'分，你也来试试吧！',
+            dataForShare.desc = '天呐噜！我用尽心思地打扮，在《螺旋圆舞曲》舞会中收获'+ this.score +'分，你能超过我吗？！',
             weixinshareBinder()
         }
 
@@ -612,10 +621,12 @@ View.prototype.enter_rating = function(){
         clothing_room.setParent(container)
         
         var line = new TimelineMax();
-        line.set(clothing_room, {pixi:{x: -40, y: -300, scaleX: 1.5, scaleY: 1.5, alpha: 0}})
+        // line.set(clothing_room, {pixi:{x: -40, y: -300, scaleX: 1.5, scaleY: 1.5, alpha: 0}})
+        line.set(clothing_room, {pixi:{x: -600, y: 130, scaleX: 1, scaleY: 1, alpha: 1}})
         .to(bg_white, 0.3, {pixi:{x: 0, y: 0}, delay: 0.5})
         .to(bg_flower, 0.3, {pixi:{x: 0, y: 0}})
-        .to(clothing_room, 0.3, {pixi:{x: 100, y: 130, alpha: 1, scaleX: 1, scaleY: 1}, ease: Back.easeOut.config(2)});
+        // .to(clothing_room, 0.6, {pixi:{x: 100, y: 130, alpha: 1, scaleX: 1, scaleY: 1}, ease: Back.easeOut.config(2)});
+        .to(clothing_room, 1, {pixi:{x: 100, y: 130, alpha: 1, scaleX: 1, scaleY: 1}});
 
         this.showflower(1, function(){
 
@@ -632,7 +643,7 @@ View.prototype.enter_rating = function(){
                 clothing_room.y = 40;
 
                 me.getSprite("border_face", "border_face", result, 0, 0, 1, 1, 0, 0, 1);
-                me.getSprite("code", "code", result, 420, 750, 1, 1, 0, 0, 1);
+                me.getSprite("code", "code", result, 420, 745, 1.1, 1.1, 0, 0, 1);
 
                 me.getText(me.clothesTitle, result, 310, 14, {    
                     fontWeight: 'bold',
@@ -659,9 +670,9 @@ View.prototype.enter_rating = function(){
                     fill: '#a56248',
                 })
 
-                me.getText("长按立即换装", result, 468, 848, {    
+                me.getText("长按立即换装", result, 470, 850, {    
                     fontWeight: 'bold',
-                    fontSize: 16,
+                    fontSize: 14,
                     lineHeight: 24,
                     fontFamily: '微软雅黑',
                     fill: '#333333',
@@ -674,18 +685,18 @@ View.prototype.enter_rating = function(){
                 img.style.zIndex = 100;
                 view.base64 = view.app.renderer.plugins.extract.base64(view.page_rating);
                 img.src = view.base64;
-                _hmt&&_hmt.push(['_trackPageview', '/trialH5_result']);
+                _hmt&&_hmt.push(['_trackPageview', '/waltz/activity/trialH5/result']);
             }})
             .to(result, 0.5, {pixi:{ y: 60, scaleX:1, scaleY:1, alpha: 1}, delay: 0.5, onComplete: function(){
                 var btn_restart = me.getSprite("btn_restart", "btn_restart", container, 524, me.height, 1, 1, 0, 0, 0);
-                var btn_save = me.getSprite("btn_save", "btn_save", container, 120,  me.height, 1, 1, 0, 0, 0);
+                var btn_save = me.getSprite("btn_save", "btn_save", container, 110,  me.height, 1, 1, 0, 0, 0);
                 var btn_download = me.getSprite("btn_download", "btn_download", container, 323,  me.height, 1, 1, 0, 0, 0);
                 var share_top = me.getSprite("share_top", "share_top", container, 550, -100, 1, 1, 0.5, 0.5, 0);
                 var tips_save = me.getSprite("tips_save", "tips_save", container, 375, 450, 1, 1, 0.5, 0.5, 0);
             
                 line.to([btn_save, btn_download, btn_restart], 0.3, {pixi:{ y: 1080, alpha: 1 }})
                     .to(share_top, 0.5, {pixi:{ y: 35 , alpha: 1}})
-                    .to(share_top, 0.5, {pixi:{ y: -100 , alpha: 1}, delay: 3})
+                    // .to(share_top, 0.5, {pixi:{ y: -100 , alpha: 1}, delay: 3})
                 // TweenMax.to(tips_save, 0.3, {pixi:{ scaleX: 0.9 , scaleY: 0.9}, repeat: -1, yoyo: true})
                 // TweenMax.to(share_top, 0.4, {pixi:{ scaleX: 0.96 , scaleY: 0.96}, repeat: -1, yoyo: true})
     
@@ -704,7 +715,14 @@ View.prototype.enter_rating = function(){
                     _hmt&&_hmt.push(['_trackEvent', pageName, pageName + '_按钮', pageName + '_按钮' + '_下载']);
                     main.countAction('download');
 
-                    window.location = "http://www.100bt.com/waltz/main.html?baidu";
+                    var ua = navigator.userAgent.toLowerCase();
+                    if (/iphone|ipad|ipod/.test(ua)) {
+                        console.log("iphone");
+                        window.location = "https://itunes.apple.com/cn/app/id1341573422?mt=8";
+                    } else {
+                        console.log("android");
+                        window.location = "http://www.100bt.com/waltz/main.html";
+                    }
                 });   
     
                 btn_restart.interactive = true;
@@ -720,10 +738,10 @@ View.prototype.enter_rating = function(){
                     main = new Main();
                     view = new View();
                     view.chapterEnd = true;
-                    view.showView(0);
+                    view.showView(1);
                     var img = document.getElementById("img");
                     img.style.zIndex = 0;
-                    document.getElementById("bgm").src = bgm_story;
+                    // document.getElementById("bgm").src = bgm_story;
                 });
             }})
         })
