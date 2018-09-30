@@ -31,7 +31,7 @@ resources.assetLoad = function (cb) {
         loader.add(arr[i][0], resourceUrlHead + arr[i][1]);
     }
 
-    loader.onProgress.add((loader, res) => {
+    loader.onProgress.add((loader, res) => { 
         // console.log(Math.round(loader.progress));
         var progress = Math.floor(loader.progress)
         $(".loading span").html("舞会准备中..." + progress + "%")
@@ -47,13 +47,13 @@ resources.assetLoad = function (cb) {
 }
 
 resources.list = [
-    ['invate_bg', '/img/invate/invate_bg.jpg'],
+    ['invate_bg', resourceType?'/img/invate/invate_bg_X.jpg':'/img/invate/invate_bg.jpg'],
     ['invate_level', '/img/invate/level.jpg'],
     ['invate_star_empty', '/img/invate/start_empty.png'],
     ['invate_start_full', '/img/invate/start_full.png'],
     ['invate_desc', '/img/invate/desc.png'],
     ['btn_next', '/img/btn_next.png'],
-    ['clothing_bg', '/img/clothing/bg.jpg'],
+    ['clothing_bg', resourceType?'/img/clothing/bg_X.jpg':'/img/clothing/bg.jpg'],
     ['main_role', '/img/clothing/main_role.png'],
     ['clothes_tips', '/img/clothing/clothes_tips.png'],
     ['return', '/img/clothing/return.png'],
@@ -168,12 +168,12 @@ resources.role_hesang = [
 ]
 
 resources.page_rating = [
-    ['bg_rating', '/img/rating/bg_rating.jpg'],
+    ['bg_rating', resourceType?'/img/rating/bg_rating_X.jpg':'/img/rating/bg_rating.jpg'],
     ['bg_flower', '/img/rating/bg_flower.png'],
     ['bg_white', '/img/rating/bg_white.png'],
     ['flower', '/img/rating/flower.png'],
     ['flower_2', '/img/rating/flower_2.png'],
-    ['bg_result', '/img/rating/bg_result.jpg'],
+    ['bg_result', resourceType?'/img/rating/bg_result_X.jpg':'/img/rating/bg_result.jpg'],
     ['border_face', '/img/rating/border_face.png'],
     ['border_back', '/img/rating/border_back.png'],
     ['btn_restart', '/img/rating/restart.png'],
@@ -190,7 +190,7 @@ resources.page_story = [
     ['story_bg_3', '/img/bg_story/story_bg_3.jpg', {x: -80, y: 100}],
     ['story_bg_4', '/img/bg_story/story_bg_4.jpg', {x: 100, y: -200}],
     ['story_bg_5', '/img/bg_story/story_bg_5.jpg', {x: -100, y: 200}],
-    ['story_face', '/img/bg_story/story_face.png'],
+    ['story_face', resourceType?'/img/bg_story/story_face_X.png':'/img/bg_story/story_face.png'],
     ['join', '/img/bg_story/join.png'],
     ['jump', '/img/bg_story/jump.png'],
     ['music', '/img/bg_story/music.png']
@@ -198,29 +198,29 @@ resources.page_story = [
 
 
 resources.story_text_1 = [
-    ['text_1_1', '/img/bg_story/text_1_1.png', {x: 48, y: 717}],
-    ['text_1_2', '/img/bg_story/text_1_2.png', {x: 161, y: 828}],
-    ['text_1_3', '/img/bg_story/text_1_3.png', {x: 81, y: 941}],
+    ['text_1_1', '/img/bg_story/text_1_1.png', {x: 48, y: 717 + detalY}],
+    ['text_1_2', '/img/bg_story/text_1_2.png', {x: 161, y: 828 + detalY}],
+    ['text_1_3', '/img/bg_story/text_1_3.png', {x: 81, y: 941 + detalY}],
 ]
 
 resources.story_text_2 = [
-    ['text_2_1', '/img/bg_story/text_2_1.png', {x: 48, y: 717}],
-    ['text_2_2', '/img/bg_story/text_2_2.png', {x: 161, y: 828}],
-    ['text_2_3', '/img/bg_story/text_2_3.png', {x: 81, y: 941}]
+    ['text_2_1', '/img/bg_story/text_2_1.png', {x: 48, y: 717 + detalY}],
+    ['text_2_2', '/img/bg_story/text_2_2.png', {x: 161, y: 828 + detalY}],
+    ['text_2_3', '/img/bg_story/text_2_3.png', {x: 81, y: 941 + detalY}]
 ]
 
 resources.story_text_3 = [
-    ['text_3_1', '/img/bg_story/text_3_1.png', {x: 26, y: 791}],
-    ['text_3_2', '/img/bg_story/text_3_2.png', {x: 60, y: 903}]
+    ['text_3_1', '/img/bg_story/text_3_1.png', {x: 26, y: 791 + detalY}],
+    ['text_3_2', '/img/bg_story/text_3_2.png', {x: 60, y: 903 + detalY}]
 ]
 
 resources.story_text_4 = [
-    ['text_4_1', '/img/bg_story/text_4_1.png', {x: 32, y: 777}],
-    ['text_4_2', '/img/bg_story/text_4_2.png', {x: 100, y: 891}]
+    ['text_4_1', '/img/bg_story/text_4_1.png', {x: 32, y: 777 + detalY}],
+    ['text_4_2', '/img/bg_story/text_4_2.png', {x: 100, y: 891 + detalY}]
 ]
 
 resources.story_text_5 = [
-    ['text_5_1', '/img/bg_story/text_5_1.png', {x: 40, y: 740}],
-    ['text_5_2', '/img/bg_story/text_5_2.png', {x: 60, y: 840}],
-    ['text_5_3', '/img/bg_story/text_5_3.png', {x: 20, y: 940}]
+    ['text_5_1', '/img/bg_story/text_5_1.png', {x: 40, y: 740 + detalY}],
+    ['text_5_2', '/img/bg_story/text_5_2.png', {x: 60, y: 840 + detalY}],
+    ['text_5_3', '/img/bg_story/text_5_3.png', {x: 20, y: 940 + detalY}]
 ]

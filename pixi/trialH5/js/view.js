@@ -8,7 +8,7 @@ function View() {
         cav.remove();
     }
     this.width = 750;
-    this.height = 1218;
+    this.height = resourceType == 0?setH:setH_X;
     this.app = new PIXI.Application({
         width: this.width,
         height: this.height,
@@ -23,13 +23,13 @@ function View() {
     this.line = new TimelineMax();
     this.clothes = {
         acc_back: {skin: "acc_1_b", alpha: 0, check: false, dressed: false},
+        dress_back: {skin: "dress_5_b", alpha: 0, check: false, dressed: false},
         hair_back: {skin: "hair_2_b", alpha: 0, check: false, dressed: false},
         main_role: {skin: "main_role", alpha: 1, check: false, dressed: false},
         hair: {skin: "hair_0", alpha: 1, check: true, dressed: false},
         acc: {skin: "acc_1", alpha: 0, check: true, dressed: false},
         shoes: {skin: "shoes_1", alpha: 0, check: true, dressed: false},
         dress: {skin: "dress_0", alpha: 1, check: true, dressed: false},
-        dress_back: {skin: "dress_5_b", alpha: 0, check: false, dressed: false},
     };  
     this.score = 0;
     this.flower = [3, 3, 3, 3] //性感,森系,可爱,典雅
@@ -53,13 +53,15 @@ function View() {
     }
 
     this.sparkFlyPaused = true;
+
+
     this.app.ticker.add(function(delta) {
         me.sparkUpdate();
     });
     
 
 
-    var music = this.music= this.getSprite("music", "music", this.app.stage, this.width-40, 84, 1, 1, 0.5, 0.5);
+    var music = this.music= this.getSprite("music", "music", this.app.stage, this.width-40, 84 + detalY, 1, 1, 0.5, 0.5);
     music.interactive = true;
     music.buttonMode = true;
     music.on('pointerdown', function(){
@@ -180,7 +182,7 @@ View.prototype.enter_story = function () {
 
     this.getSprite('story_face', 'story_face', story_cvoer, me.width/2, me.height/2, 1, 1, 0.5, 0.5, 1);
 
-    var jump = this.getSprite('jump', me.chapterEnd?'join':'jump', story_cvoer, 570, 1130, 1, 1, 0.5, 0.5, 1);
+    var jump = this.getSprite('jump', me.chapterEnd?'join':'jump', story_cvoer, 570, 1130 + detalY, 1, 1, 0.5, 0.5, 1);
     jump.interactive = true;
     jump.buttonMode = true;
 
@@ -296,16 +298,16 @@ View.prototype.enter_mission = function () {
         var container = this.page_mission;
         var pool = this.SpritePool;
 
-        pool.music.y -= 30;
-        pool.music.x -= 20;
+        pool.music.y -= 50;
+        pool.music.x -= 10;
 
         this.getSprite("invate_bg", "invate_bg", container, 0, 0);
 
-        this.getSprite("card", "invate_card_" + main.role, container, 230, 320, 3, 3, 0.5, 0.5, 0);        
-        this.getSprite("role", "invate_role_" + main.role, container, this.width, 28);
-        this.getSprite("theme", "invate_theme_" + main.role, container, 90, 644, 3, 3, 0.5, 0.5, 0);
-        this.getSprite("color", "invate_color_" + main.role, container, 220, 800, 3, 3, 0.5, 0.5, 0);
-        this.getSprite("desc", "invate_desc", container, 33, 610);
+        this.getSprite("card", "invate_card_" + main.role, container, 230, 320 + detalY, 3, 3, 0.5, 0.5, 0);        
+        this.getSprite("role", "invate_role_" + main.role, container, this.width, 28 + detalY);
+        this.getSprite("theme", "invate_theme_" + main.role, container, 90, 644 + detalY, 3, 3, 0.5, 0.5, 0);
+        this.getSprite("color", "invate_color_" + main.role, container, 220, 800 + detalY, 3, 3, 0.5, 0.5, 0);
+        this.getSprite("desc", "invate_desc", container, 33, 610 + detalY);
         this.getSprite("btn_next", "btn_next", container, 230, this.height);
 
         pool.btn_next.interactive = true;
@@ -321,7 +323,7 @@ View.prototype.enter_mission = function () {
             .to(pool.role, 0.5, {pixi:{x: this.width - pool.role.width}})
         
         var starPos = [
-            [128, 959, 30],[210, 959, 5],[280, 959, -30],[165, 1000, -20],[262, 1000, 35],
+            [128, 959 + detalY, 30],[210, 959 + detalY, 5],[280, 959 + detalY, -30],[165, 1000 + detalY, -20],[262, 1000 + detalY, 35],
         ]
         var star;
         for(var i=0; i<5; i++){
@@ -334,7 +336,7 @@ View.prototype.enter_mission = function () {
             }
             line.to(star, 0.1, {pixi:{scaleX:1, scaleY:1, alpha:1, rotation: starPos[i][2]}})
         }
-        line.to(pool.btn_next, 1, {pixi:{ y: 1000}});
+        line.to(pool.btn_next, 1, {pixi:{ y: 1000 + detalY}});
         // line.to(pool.btn_next, 1, {pixi:{ y: 1020}, ease: Power1.easeInOut, repeat:-1, yoyo: true});
         
     this.music.setParent(container);
@@ -355,19 +357,19 @@ View.prototype.enter_clothing = function (){
         this.getSprite("clothing_bg", "clothing_bg", container);
         this.enter_Page("page_clothing");
 
-        var clothing_room = this.addContainer("clothing_room", container, -508, 100);
+        var clothing_room = this.addContainer("clothing_room", container, -508, 100 + detalY);
         this.dressTheRole(clothing_room);
         this.line.to(clothing_room, 0.5, {pixi:{x: 0}, delay: 0.5 });
 
 
         this.initClothingBtn();
 
-        var clothes_tips = me.getSprite("clothes_tips", "clothes_tips", container, 275, 450, 1, 1, 0.5, 0.5, 0);
+        var clothes_tips = me.getSprite("clothes_tips", "clothes_tips", container, 275, 450 + detalY, 1, 1, 0.5, 0.5, 0);
         // TweenMax.to(clothes_tips, 0.3, {pixi:{ scaleX: 0.9 , scaleY: 0.9}, repeat: -1, yoyo: true})
 
         var btn_go = this.getSprite("btn_go", "btn_go", container, 15, this.height, 1, 1, 0, 0, 1);
 
-        this.line.to(pool.btn_go, 1, {pixi:{ y: 1020}});
+        this.line.to(pool.btn_go, 1, {pixi:{ y: 1020 + (detalY*1.2)}});
         // this.line.to(pool.btn_go, 1, {pixi:{ y: 1020}, ease: Power1.easeInOut, repeat:-1, yoyo: true});
 
         btn_go.interactive = true;
@@ -392,9 +394,9 @@ View.prototype.initClothingBtn = function(){
     var pool = this.containerPool;
     var panel_x = 540 ;
 
-    ["btn_clothesType", 540, 20, 150, 'needReturn']
+    // ["btn_clothesType", 540, 20, 150, 'needReturn']
 
-    var panel = me.addContainer("btn_clothesType", container, panel_x-100, 0); //添加一个按钮面板
+    var panel = me.addContainer("btn_clothesType", container, panel_x-100 , 0); //添加一个按钮面板
     me.getSprite("btn_clothesType" + "cebian", "cebian", panel, 100, 0, 1, 1, 0, 0, 1);
 
     view.lastPanel = resources["btn_clothesType"][0][0]
@@ -405,13 +407,13 @@ View.prototype.initClothingBtn = function(){
     thing.beginFill(0x8bc5ff, 0.4);
     thing.moveTo(0, 0);
     thing.lineTo(110, 0);
-    thing.lineTo(110, 600);
-    thing.lineTo(0,600);
+    thing.lineTo(110, 600 + detalY);
+    thing.lineTo(0,600 + detalY);
 
     panel.addChild(thing)
 
     resources["btn_clothesType"].map(function(kid, num){
-        var btn = me.getSprite(kid[0], kid[0], panel, num==0?0:20, 86+num*120, 1, 1, 0, 0, 1);
+        var btn = me.getSprite(kid[0], kid[0], panel, num==0?0:20, 86+num*120 + detalY, 1, 1, 0, 0, 1);
         btn.interactive = true;
         btn.buttonMode = true;
         btn.panel = kid[0];
@@ -449,7 +451,7 @@ View.prototype.initClothingBtn = function(){
         // });
 
         resources[item[0]].map(function(kid, num){
-            var btn = me.getSprite(kid[0], kid[0], panel, 114, 170+num*(180), 1, 1, 0.5, 0.5, 1);
+            var btn = me.getSprite(kid[0], kid[0], panel, 114, 170+num*(180) + detalY, 1, 1, 0.5, 0.5, 1);
             btn.interactive = true;
             btn.buttonMode = true;
             btn.img = kid[0].replace("btn_", "");
@@ -478,7 +480,7 @@ View.prototype.initClothingBtn = function(){
                 }                
                 console.log(me.clothes[clothes])
                 me.dressTheRole(pool.clothing_room);
-                me.sparkFly(300, 500, container);
+                me.sparkFly(300, 500 + detalY, container);
             });
         }) 
     })
@@ -505,11 +507,8 @@ View.prototype.sparkFly = function(startX, startY, container){
 }
 
 View.prototype.sparkUpdate = function(){
-    // if(this.sparkFlyPaused){
-    //     return;
-    // }
+
     var me = this;
-    // console.log("sparkUpdate")
     this.sparkFlyPaused = true;
     this.sparks.map(function(item, index){
         
@@ -525,10 +524,6 @@ View.prototype.sparkUpdate = function(){
                 item.speedY-=item.gY
             } 
         }
-
-        // if(item.scale._x<item.max){
-        //     item.scale.set(item.scale._x + item.grown, item.scale._y + item.grown) ;
-        // }
     })  
 }
 
@@ -615,18 +610,18 @@ View.prototype.enter_rating = function(){
         this.getSprite("bg_rating", "bg_rating", container);
         this.enter_Page("page_rating");
         
-        var bg_white = this.getSprite("bg_white", "bg_white", container, -this.width, 443);
-        var bg_flower = this.getSprite("bg_flower", "bg_flower", container, this.width, -436);
+        var bg_white = this.getSprite("bg_white", "bg_white", container, -this.width, 443 + detalY);
+        var bg_flower = this.getSprite("bg_flower", "bg_flower", container, this.width, -436 + detalY);
 
         clothing_room.setParent(container)
         
         var line = new TimelineMax();
         // line.set(clothing_room, {pixi:{x: -40, y: -300, scaleX: 1.5, scaleY: 1.5, alpha: 0}})
-        line.set(clothing_room, {pixi:{x: -600, y: 130, scaleX: 1, scaleY: 1, alpha: 1}})
-        .to(bg_white, 0.3, {pixi:{x: 0, y: 0}, delay: 0.5})
-        .to(bg_flower, 0.3, {pixi:{x: 0, y: 0}})
+        line.set(clothing_room, {pixi:{x: -600, y: 130 + (detalY*1.5), scaleX: 1, scaleY: 1, alpha: 1}})
+        .to(bg_white, 0.3, {pixi:{x: 0, y: 0 + detalY}, delay: 0.5})
+        .to(bg_flower, 0.3, {pixi:{x: 0, y: 0 + detalY}})
         // .to(clothing_room, 0.6, {pixi:{x: 100, y: 130, alpha: 1, scaleX: 1, scaleY: 1}, ease: Back.easeOut.config(2)});
-        .to(clothing_room, 1, {pixi:{x: 100, y: 130, alpha: 1, scaleX: 1, scaleY: 1}});
+        .to(clothing_room, 1, {pixi:{x: 100, alpha: 1, scaleX: 1, scaleY: 1}});
 
         this.showflower(1, function(){
 
@@ -640,17 +635,17 @@ View.prototype.enter_rating = function(){
                 clothing_room.setParent(result);
                 clothing_room.scale.set(0.75, 0.75);
                 clothing_room.x = 100;
-                clothing_room.y = 40;
+                clothing_room.y = 40 ;
 
                 me.getSprite("border_face", "border_face", result, 0, 0, 1, 1, 0, 0, 1);
                 me.getSprite("code", "code", result, 420, 745, 1.1, 1.1, 0, 0, 1);
 
-                me.getText(me.clothesTitle, result, 310, 14, {    
+                me.getText(me.clothesTitle, result, 310, 11, {    
                     fontWeight: 'bold',
                     fontSize: 42,
                     lineHeight: 80,
                     fontFamily: '微软雅黑',
-                    fill: '#a56248',
+                    fill: '#bf633f', //由上到下的过渡颜色
                     align: 'center',
                 })
                 
@@ -658,7 +653,7 @@ View.prototype.enter_rating = function(){
                     fontWeight: 'bold',
                     fontSize: 52,
                     fontFamily: '微软雅黑',
-                    fill: '#a56248',
+                    fill: '#bf633f', //由上到下的过渡颜色
                     align: 'center',
                 })
 
@@ -680,22 +675,22 @@ View.prototype.enter_rating = function(){
 
                 me.showflower(2)
             }})
-            .to(result, 0.5, {pixi:{ y: 60, alpha: 1}, onComplete: function(){
+            .to(result, 0.5, {pixi:{ y: 60 + detalY, alpha: 1}, onComplete: function(){
                 var img = document.getElementById("img");
                 img.style.zIndex = 100;
                 view.base64 = view.app.renderer.plugins.extract.base64(view.page_rating);
                 img.src = view.base64;
                 _hmt&&_hmt.push(['_trackPageview', '/waltz/activity/trialH5/result']);
             }})
-            .to(result, 0.5, {pixi:{ y: 60, scaleX:1, scaleY:1, alpha: 1}, delay: 0.5, onComplete: function(){
+            .to(result, 0.5, {pixi:{ y: 60 + detalY, scaleX:1, scaleY:1, alpha: 1}, delay: 0.5, onComplete: function(){
                 var btn_restart = me.getSprite("btn_restart", "btn_restart", container, 524, me.height, 1, 1, 0, 0, 0);
                 var btn_save = me.getSprite("btn_save", "btn_save", container, 110,  me.height, 1, 1, 0, 0, 0);
                 var btn_download = me.getSprite("btn_download", "btn_download", container, 323,  me.height, 1, 1, 0, 0, 0);
                 var share_top = me.getSprite("share_top", "share_top", container, 550, -100, 1, 1, 0.5, 0.5, 0);
-                var tips_save = me.getSprite("tips_save", "tips_save", container, 375, 450, 1, 1, 0.5, 0.5, 0);
+                var tips_save = me.getSprite("tips_save", "tips_save", container, 375, 450 + detalY, 1, 1, 0.5, 0.5, 0);
             
-                line.to([btn_save, btn_download, btn_restart], 0.3, {pixi:{ y: 1080, alpha: 1 }})
-                    .to(share_top, 0.5, {pixi:{ y: 35 , alpha: 1}})
+                line.to([btn_save, btn_download, btn_restart], 0.3, {pixi:{ y: 1080 + (detalY*1.1), alpha: 1 }})
+                    .to(share_top, 0.5, {pixi:{ y: (detalY?80:35) , alpha: 1}})
                     // .to(share_top, 0.5, {pixi:{ y: -100 , alpha: 1}, delay: 3})
                 // TweenMax.to(tips_save, 0.3, {pixi:{ scaleX: 0.9 , scaleY: 0.9}, repeat: -1, yoyo: true})
                 // TweenMax.to(share_top, 0.4, {pixi:{ scaleX: 0.96 , scaleY: 0.96}, repeat: -1, yoyo: true})
@@ -751,7 +746,7 @@ View.prototype.enter_rating = function(){
 View.prototype.showflower = function(type, callBack){
     var me = this;
     var x = type==1?110:168;
-    var y = type==1?38:898;
+    var y = type==1?(38 + detalY):898;
     var deltax = type==1?40:222;
     var deltay = type==1?49:29;
 

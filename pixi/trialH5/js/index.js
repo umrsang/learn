@@ -1,7 +1,7 @@
 var mian, view;
 var pageName = "螺旋圆舞曲换装H5";
-// var resourceUrlHead = "http://www.100bt.com/tianti/waltz/activity/trialH5";
-var resourceUrlHead = ".";
+var resourceUrlHead = "http://www.100bt.com/tianti/waltz/activity/trialH5";
+// var resourceUrlHead = ".";
 
 window.onload = function () {
     _hmt&&_hmt.push(['_setAutoPageview', false]);
@@ -9,8 +9,6 @@ window.onload = function () {
     main = new Main();
 
     resources.assetLoad(function () {
-
-
         $(".loading_page").css({
             opacity: 0,
             transform: "scale(1.5)"
