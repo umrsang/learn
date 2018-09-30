@@ -5,7 +5,8 @@
         <div class="cover pa wh "></div>  
         <div class="main_role pa "></div> 
         <button class="go btn pa" @click="handleGo"></button>
-        <div class="clothing_btn pa">
+        <div class="button_bg pa"></div>
+        <div class="btn_type pa">
             <button class="btn pa btn_lianyiqun" @click="handleClick"></button>
             <button class="btn pa btn_shipin" @click="handleClick"></button>
             <button class="btn pa btn_toufa" @click="handleClick"></button>
@@ -21,11 +22,13 @@ export default {
   name: "clothing",
   props: {},
   data() {
-    return {};
+    return {
+      
+    };
   },
   methods: {
     handleGo() {
-      //   this.$emit("step", 5);
+      this.$emit("step", 5);
     },
     handleClick() {
       //   this.$emit("step", 5);
@@ -44,21 +47,6 @@ export default {
   overflow: hidden;
 }
 
-.page-clothing .clothing_btn {
-  width: 5.2rem;
-  height: 15rem;
-  top: 0;
-  right: 0rem;
-}
-
-.page-clothing .clothing_btn .btn {
-  width: 3.72rem;
-  height: 1.54rem;
-  right: 0.76rem;
-  background-size: cover;
-  overflow: hidden;
-}
-
 .page-clothing .cover {
   top: 0;
   left: 0;
@@ -67,7 +55,7 @@ export default {
 }
 
 .page-clothing .main_role {
-  top: 2.9rem;
+  top: 2.4rem;
   left: 0.5rem;
   width: 6.02rem;
   height: 14.89rem;
@@ -76,33 +64,58 @@ export default {
 }
 
 .go {
-  bottom: 0.8rem;
-  right: 0.3rem;
-  width: 5.16rem;
-  height: 2.97rem;
-  background: url(../assets/img/go.png);
+  bottom: 0.5rem;
+  left: 0.3rem;
+  width: 3.43rem;
+  height: 2.1rem;
+  background: url(/img/go.8ca99376.png);
   background-size: cover;
   z-index: 1000;
 }
 
+.button_bg {
+  top: 0rem;
+  right: 0rem;
+  width: 3.1rem;
+  height: 100%;
+  background: url(../assets/img/cebian.png);
+  background-size: cover;
+  z-index: 0;
+}
+
+.btn_type {
+width: 4.1rem;
+    height: 15rem;
+    top: 0;
+    right: 0rem;
+}
+
+.btn_type .btn {
+  width: 1.15rem;
+  height: 1.2rem;
+  left: 0rem;
+  background-size: cover;
+  overflow: hidden;
+}
+
 .btn_toufa {
-  top: 4rem;
+  top: 2rem;
   background: url(../assets/img/btn_toufa.png);
 }
 .btn_zhuangrong {
-  top: 6rem;
+  top: 3.7rem;
   background: url(../assets/img/btn_zhuangrong.png);
 }
 .btn_lianyiqun {
-  top: 8rem;
+  top: 5.4rem;
   background: url(../assets/img/btn_lianyiqun.png);
 }
 .btn_xiezi {
-  top: 10rem;
+  top: 7.1rem;
   background: url(../assets/img/btn_xiezi.png);
 }
 .btn_shipin {
-  top: 12rem;
+  top: 8.8rem;
   background: url(../assets/img/btn_shipin.png);
 }
 </style>

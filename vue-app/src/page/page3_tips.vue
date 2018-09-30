@@ -1,12 +1,16 @@
 <template>
-<transition name="fade">
-   <div class="page-tips wh pa"> 
-      <div class="logo pa"></div>  
-     <button class="next btn pa" @click="handleClick"></button>
-     <div :class="['role_'+ roleIndex]" class="role pa"></div>
-     <div :class="['tips_'+ roleIndex]" class="tips pa"></div>
-   </div>
-</transition>
+    <transition name="fade">
+        <div class="page-tips wh pa"> 
+                <div class="logo pa"></div>  
+            <button class="next btn pa" @click="handleClick"></button>
+            <transition name="slideInLeft">
+                <div :class="['role_'+ roleIndex]" class="role pa" v-show="display"></div>
+            </transition>
+            <transition name="slideInRight">
+                <div :class="['tips_'+ roleIndex]" class="tips pa" v-show="display"></div>
+            </transition>
+        </div>
+    </transition>
 </template>
 
 <script>
@@ -16,14 +20,18 @@ export default {
     roleIndex: String
   },
   data() {
-    return {};
+    return {
+      display: false
+    };
   },
   methods: {
     handleClick() {
       this.$emit("step", 4);
     }
   },
-  mounted() {}
+  mounted() {
+    this.display = true;
+  }
 };
 </script>
 
@@ -38,23 +46,26 @@ export default {
 }
 
 .page-tips .next {
+  margin-left: 0;
   bottom: 0.8rem;
-  left: 5.6rem;
+  right: 0.5rem;
+  left: initial;
 }
 
-.page-tips .role {
-  bottom: 0.8rem;
+.role {
+  top: 1.5rem;
   left: -2.5rem;
-  z-index: 200;
+  z-index: 100;
 }
 
 .tips {
-  bottom: 5.6rem;
+  top: 4rem;
   right: 0rem;
   width: 6.15rem;
   height: 8.15rem;
   background-size: cover;
-  z-index: 100;
+  z-index: 200;
+	transform: scale(1) rotate(5deg);
 }
 
 .tips_1 {

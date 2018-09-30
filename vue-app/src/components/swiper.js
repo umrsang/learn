@@ -17,12 +17,12 @@ module.exports = {
     lastAngle: 0,
     PI: Math.PI,
     moveSpeed: 0.5,
-    scaleY: 0.5,
-    scaleWH: 0.6,
+    scaleY: 0.7,
+    scaleWH: 0.3,
     throat: false,
     timerout: 100,
     paddingX: 50,
-    rad: 2*Math.PI/360,
+    rad: 2 * Math.PI / 360,
     init: function (prop) {
         var me = this;
         var container = this.container = prop.container;
@@ -37,46 +37,62 @@ module.exports = {
         this.eachAngle = 360 / this.len;
         this.setPosition();
 
-        container.addEventListener('touchstart',function(e){
-            me.lastAngle = me.currAngle;
+        container.addEventListener('touchstart', function (e) {
             me.inTouch = true;
             me.lastTouchX = e.targetTouches[0].clientX;
+            me.startTouchX = e.targetTouches[0].clientX;
         })
-        container.addEventListener('touchmove',function(e){
-            // console.log(e.targetTouches[0].clientX);
-            me.currAngle = me.currAngle + (e.targetTouches[0].clientX - me.lastTouchX)* me.moveSpeed;
+        container.addEventListener('touchmove', function (e) {
+            me.currAngle = me.currAngle + (e.targetTouches[0].clientX - me.lastTouchX) * me.moveSpeed;
             me.lastTouchX = e.targetTouches[0].clientX;
-            if(!me.throat){
+            if (!me.throat) {
                 me.setPosition();
                 me.throat = true;
-                setTimeout(function(){
+                setTimeout(function () {
                     me.throat = false;
                 }, me.timerOut);
             }
         });
-        container.addEventListener('touchend',function(){
+        container.addEventListener('touchend', function (e) {
             var trueAngle = (me.currAngle - me.lastAngle) % me.eachAngle;
-            var offset;
-            var direction;
-            if(  Math.abs(trueAngle) > me.eachAngle/5){
-                direction = me.currAngle > me.lastAngle? 1 : -1;
+            var direction, offset;
+            if (Math.abs(trueAngle) > me.eachAngle / 5) {
+                direction = me.currAngle > me.lastAngle ? 1 : -1;
                 offset = me.eachAngle - Math.abs(trueAngle);
-            }else{
-                direction = me.currAngle > me.lastAngle? -1 : 1;
+            } else {
+                direction = me.currAngle > me.lastAngle ? -1 : 1;
                 offset = Math.abs(trueAngle);
             }
             me.inTouch = false;
-            // console.log(offset, direction);
-            for(var i=0; i < offset; i++){
-                setTimeout(function(){
-                    if(!me.inTouch){
-                        me.currAngle  = me.currAngle + 1*direction;
-                        // console.log(me.currAngle)
+            for (var i = 0; i < offset; i++) {
+                setTimeout(function () {
+                    if (!me.inTouch) {
+                        me.currAngle = me.currAngle + 1 * direction;
                         me.setPosition();
                     }
-                }, i*5);
+                }, i * 2);
             }
+
+            me.lastAngle = me.currAngle + offset * direction;
         });
+        return this;
+    },
+    changeAngleto: function (newAngle) {
+        var direction, offset;
+        var me = this;
+        offset = newAngle - me.currAngle;
+        direction = offset > 0 ? 1 : -1;
+        offset = Math.abs(offset);
+
+        for (var i = 0; i < offset; i++) {
+            setTimeout(function () {
+                if (!me.inTouch) {
+                    me.currAngle = me.currAngle + 1 * direction;
+                    me.setPosition();
+                }
+            }, i * 2);
+        }
+        me.lastAngle = me.currAngle + offset * direction;
     },
     setPosition: function () {
         var me = this;
@@ -84,34 +100,41 @@ module.exports = {
         var myAngle = this.currAngle;
         var scaleY = this.scaleY;
         var scaleWH = this.scaleWH;
-        var _scaleWH = 1-scaleWH;
+        var _scaleWH = 1 - scaleWH;
         var active, maxTop;
         Array.prototype.map.call(me.slider, function (item) {
             var myrad = myAngle * me.rad;
-            var top = radius * cos(myrad);
-            var left = radius * sin(myrad);
-            var scale;
-            item.style.top = (top + me.centerY - item.offsetHeight/2)* scaleY + 'px';
-            item.style.left = (left + me.centerX - item.offsetWidth/2) + 'px';
+            var top = radius * cos(myrad).toFixed(2);
+            var left = radius * sin(myrad).toFixed(2);
+            var y = (top + me.centerY - item.offsetHeight / 2)*scaleY + 'px';
+            var x = (left + me.centerX - item.offsetWidth / 2) + 'px';
+            var scale = ((((top + radius) / (2 * radius)) * _scaleWH) + scaleWH);
             item.style.zIndex = parseInt(top + radius);
-            scale = ((((top + radius)/(2*radius))*_scaleWH)+scaleWH);
-            item.style.transform =  'scale('+scale+')' ;
+            item.style.transform = "translate3D(" + x + "," + y + "," + 0 + ") " + 'scale(' + scale.toFixed(2) + ')';
             myAngle = myAngle + me.eachAngle;
 
-            if(maxTop == undefined){
+            if (maxTop == undefined) {
                 active = item;
                 maxTop = top;
-            }else{
-                if(maxTop < top){
+            } else {
+                if (maxTop < top) {
                     active = item;
                     maxTop = top;
                 }
             }
         });
-        for(var i=0; i< me.len; i++ ){
+        for (var i = 0; i < me.len; i++) {
             me.slider[i].classList.add("cover");
         }
         active.classList.remove("cover");
         me.activeSlider = active;
+    },
+    toggleNext: function () {
+        var angle = this.currAngle + this.eachAngle;
+        this.changeAngleto(angle);
+    },
+    togglePev: function () {
+        var angle = this.currAngle - this.eachAngle;
+        this.changeAngleto(angle);
     }
 }

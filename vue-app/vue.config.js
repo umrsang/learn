@@ -7,7 +7,8 @@ const Renderer = PrerenderSPAPlugin.PuppeteerRenderer
 
 module.exports = {
     devServer: {
-        port: 8030
+        port: 8030,
+        open: true,
     },
     chainWebpack: config => {
         config

@@ -5,10 +5,12 @@ Vue.config.productionTip = false
 
 
 function initFontSize() {
-  document.documentElement.style.fontSize = document.documentElement.clientWidth / (1080) * 100 + 'px';
-  window.onresize = function () {
-      document.documentElement.style.fontSize = document.documentElement.clientWidth / (1080) * 100 + 'px';
-  }
+  var fontSize = document.documentElement.clientWidth / (1080) * 100;
+  var prop = document.documentElement.clientWidth / document.documentElement.clientHeight;
+  document.documentElement.style.fontSize = fontSize * (9/16/prop) + 'px';
+}
+window.onresize = function () {
+  initFontSize();
 }
 initFontSize();
 window.onresize = initFontSize;

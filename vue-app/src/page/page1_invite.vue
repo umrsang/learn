@@ -26,7 +26,7 @@ export default {
 .invite{
   top: 0;
   left: 0;
-  background: url(../assets/img/1.jpg);
+  background: url(../assets/img/step_1_bg.jpg);
   background-size: cover;
 }
 span{
