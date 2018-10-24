@@ -3,7 +3,7 @@
 
 <head>
     <meta charset="UTF-8">
-    <link rel="shortcut icon" href="//www.100bt.com/tianti/waltz/activity/trialH5/js/img/icon.jpg">
+    <link rel="shortcut icon" href="//www.100bt.com/tianti/waltz/activity/trialH5/img/icon.jpg">
     <meta content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=0" name="viewport">
     <meta content="yes" name="apple-mobile-web-app-capable">
     <meta content="black" name="apple-mobile-web-app-status-bar-style">
@@ -109,12 +109,12 @@
     <div id="container">
         <div class="loading_page">
             <div class="loading">
-                <img class="loading_rotate" src="//www.100bt.com/tianti/waltz/activity/trialH5/img/loading_rotate.png" alt="">
-                <img class="loading_flower" src="//www.100bt.com/tianti/waltz/activity/trialH5/img/loading_flower.png" alt="">
+                <img class="loading_rotate" src="./img/loading_rotate.png" alt="">
+                <img class="loading_flower" src="./img/loading_flower.png" alt="">
                 <span>舞会准备中...0%</span>
             </div>
         </div>
-        <audio id="bgm" src="//www.100bt.com/tianti/waltz/activity/trialH5/img/bg_story/story.mp3" autoplay loop></audio>
+        <audio id="bgm" src="./img/bg_story/story.mp3" autoplay loop></audio>
         <img id="img" src="" alt="">
         <script>
             document.addEventListener("WeixinJSBridgeReady", function () { //微信
@@ -125,8 +125,8 @@
     </div>
 </body>
 <script>
-    var bgm_story = "//www.100bt.com/tianti/waltz/activity/trialH5/img/bg_story/story.mp3"
-    var bgm_game = "//www.100bt.com/tianti/waltz/activity/trialH5/img/bg_story/gamemusic3.mp3"
+    var bgm_story = "./img/bg_story/story.mp3"
+    var bgm_game = "./img/bg_story/gamemusic3.mp3"
     var _hmt;
     var setW = 750;
     var setH = 1218;
@@ -170,19 +170,19 @@
     window.onresize = InitCanvas;
 
     (function () {
-        var src = '//www.100bt.com/tianti/waltz/activity/trialH5/js/js/eruda.min.js';
+        var src = './js/eruda.min.js';
         if (!/eruda=true/.test(window.location) && localStorage.getItem('active-eruda') != 'true') return;
         document.write('<scr' + 'ipt src="' + src + '"></scr' + 'ipt>');
         document.write('<scr' + 'ipt>eruda.init();</scr' + 'ipt>');
     })();
 </script>
-<script type="text/javascript" src="//www.100bt.com/tianti/waltz/activity/trialH5/js/PixiPlugin.min.js"></script>
-<script type="text/javascript" src="//www.100bt.com/tianti/waltz/activity/trialH5/js/TweenMax.min.js"></script>
-<script type="text/javascript" src="//www.100bt.com/tianti/waltz/activity/trialH5/js/jquery.js"></script>
-<script type="text/javascript" src="//www.100bt.com/tianti/waltz/activity/trialH5/js/pixi.min.js"></script>
-<script type="text/javascript" src="//www.100bt.com/tianti/waltz/activity/trialH5/js/resource.js?v=2018093001"></script>
-<script type="text/javascript" src="//www.100bt.com/tianti/waltz/activity/trialH5/js/view.js?v=2018093001"></script>
-<script type="text/javascript" src="//www.100bt.com/tianti/waltz/activity/trialH5/js/index.js?v=2018093001"></script>
+<script type="text/javascript" src="./js/PixiPlugin.min.js"></script>
+<script type="text/javascript" src="./js/TweenMax.min.js"></script>
+<script type="text/javascript" src="./js/jquery.js"></script>
+<script type="text/javascript" src="./js/pixi.min.js"></script>
+<script type="text/javascript" src="./js/resource.js?v=2018093005"></script>
+<script type="text/javascript" src="./js/view.js?v=2018093005"></script>
+<script type="text/javascript" src="./js/index.js?v=2018093005"></script>
 
 <!-- <script type="text/javascript" src="//www.100bt.com/tianti/waltz/activity/trialH5/js/js/PixiPlugin.min.js"></script>
 <script type="text/javascript" src="//www.100bt.com/tianti/waltz/activity/trialH5/js/js/TweenMax.min.js"></script>
