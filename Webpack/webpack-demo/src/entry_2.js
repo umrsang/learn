@@ -7,7 +7,7 @@ import Icon from './assets/img/qr.png';
 function component() {
   var element = document.createElement('div');
 
-  element.innerHTML = _.join(['Hello', 'webpack', ", pageOne"], ' ');
+  element.innerHTML = _.join(['Hello', 'webpack', ", pageTwo"], ' ');
   element.classList.add('hello');
   element.classList.add('c_yel');
   element.classList.add('bold');

@@ -1,16 +1,12 @@
 import _ from 'lodash';
-import './assets/style/style.css';
-import './assets/sass/color.scss';
-import './assets/sass/weight.scss';
-import Icon from './assets/img/qr.png';
+import './style.css';
+import Icon from './pic.png';
 
 function component() {
   var element = document.createElement('div');
 
-  element.innerHTML = _.join(['Hello', 'webpack', ", pageOne"], ' ');
+  element.innerHTML = _.join(['Hello', 'webpack'], ' ');
   element.classList.add('hello');
-  element.classList.add('c_yel');
-  element.classList.add('bold');
   // 将图像添加到我们现有的 div。
   var myIcon = new Image();
   myIcon.src = Icon;
