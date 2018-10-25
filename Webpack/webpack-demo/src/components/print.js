@@ -1,3 +1,3 @@
-export default function printMe() {
-  console.log('6666666666666666...')
+export default function printMe(text) {
+  console.log('this is a printer... content is ' + text||"nothing")
 }
