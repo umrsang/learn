@@ -3,6 +3,8 @@ const webpack =  require('webpack');
 var HtmlWebpackPlugin = require('html-webpack-plugin');
 const ExtractTextPlugin = require("extract-text-webpack-plugin");
 const MiniCssExtractPlugin = require("mini-css-extract-plugin");
+// webpack.config.js
+const VueLoaderPlugin = require('vue-loader/lib/plugin')
 
 module.exports = {
   entry: {
@@ -21,15 +23,9 @@ module.exports = {
   },
   module: {
     rules: [{
-      test: /\.vue$/,  
-      exclude: /node_modules/,  
-      loader: 'vue-loader',
-      options: {
-        loaders: {
-          scss: 'vue-style-loader!css-loader!sass-loader', // <style lang="scss">
-          sass: 'vue-style-loader!css-loader!sass-loader?indentedSyntax' // <style lang="sass">
-        }
-      }
+      test: /\.vue$/, 
+      exclude: /node_modules/,
+      loader: 'vue-loader'
     },{
       test: /\.js$/,  
       exclude: /node_modules/,  
@@ -47,11 +43,19 @@ module.exports = {
       ]
     }, {
       test: /\.scss$/,
-      use: ExtractTextPlugin.extract({
-        fallback: 'style-loader',
-        // 如果需要，可以在 sass-loader 之前将 resolve-url-loader 链接进来
-        use: ['css-loader', 'sass-loader']
-      })
+      use: [
+        MiniCssExtractPlugin.loader,
+        'style-loader',
+        { loader: 'css-loader', options: { importLoaders: 1 } },
+        {
+          loader: 'postcss-loader',
+          options: {
+            config: {
+              path: './postcss.config.js'
+            }
+          }
+        }
+      ]
     }]
   },
   plugins: [
@@ -68,8 +72,11 @@ module.exports = {
     //   title: 'this is pageTwo.html',
     //   chunks: ['pageTwo'], //打包时只打包main和a的js文件，见entry，注意使用chunks时模板index.html文件里面不允许有script标签，即使注释掉也会报错
     // }),
-    new webpack.NamedModulesPlugin(),
-    new webpack.HotModuleReplacementPlugin(),
-    new ExtractTextPlugin('style.css')
+    // new webpack.NamedModulesPlugin(),
+    // new webpack.HotModuleReplacementPlugin(),
+    new MiniCssExtractPlugin({
+      filename: 'css/main.css',
+    }),
+    new VueLoaderPlugin()
   ]
 };
