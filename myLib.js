@@ -13,3 +13,15 @@ var getUrlProp = function(url){
     }
     return prop;
 }
+
+
+var getUrlArg = function(){
+    var data = {};
+    var argStr = window.location.search;
+    var re = new RegExp("([^&?]*)=([^&?]*)","g");
+    var temp = null;
+    while(temp=re.exec(argStr)){
+        data[temp[1]] = temp[2];
+    }
+    return data;
+},

@@ -1,0 +1,49 @@
+<!DOCTYPE html>
+<html>
+
+<head>
+    <title>the5fire-backbone-model</title>
+</head>
+
+<body>
+    <a href="#actions">testActions</a>
+    <a href="#/posts/120">Post 120</a>
+    <a href="#/download/user">download gif</a>
+    <a href="#/download/dd/">Load Route/Action View</a>
+</body>
+<script src="http://the5fireblog.b0.upaiyun.com/staticfile/jquery-1.10.2.js">
+</script>
+<script src="http://the5fireblog.b0.upaiyun.com/staticfile/underscore.js">
+</script>
+<script src="http://the5fireblog.b0.upaiyun.com/staticfile/backbone.js"></script>
+<script>
+    /**
+     *此处填充代码下⾯面练习代码
+     **/
+    var AppRouter = Backbone.Router.extend({
+        routes: {
+            "posts/:id": "getPost",
+            ":route/:action": "loadView",
+            //下⾯面对应的链接为<a href="#/download/user/images/hey.gif">download gif</a>
+            "download/*path": "downloadFile",
+            //下⾯面对应的链接为<a href="#/dashboard/graph">Load Route/Action View</a>
+            "*actions": "defaultRoute"
+        },
+        getPost: function (id) {
+            alert(id);
+        },
+        defaultRoute: function (actions) {
+            alert(actions);
+        },
+        downloadFile: function (path) {
+            alert(path); // user/images/hey.gif
+        },
+        loadView: function (route, action) {
+            alert(route + "_" + action); // dashboard_graph
+        }
+    });
+    var app_router = new AppRouter;
+    Backbone.history.start();
+</script>
+
+</html>
