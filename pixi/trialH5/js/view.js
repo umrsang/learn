@@ -440,15 +440,6 @@ View.prototype.initClothingBtn = function(){
         
     btnList.map(function(item, index){
         var panel = me.addContainer(item[0], container, index==0?panel_x:me.width, 0); //添加一个按钮面板
-       
-        // var btn_return = me.getSprite(item[0] + "return", "return", panel, 28, 0, 1, 1, 0, 0, 1);        
-        // btn_return.interactive = true;
-        // btn_return.buttonMode = true;
-        // btn_return.on('pointerdown', function(e){
-        //     var line = new TimelineMax();
-        //     line.to(e.currentTarget.parent, 0.3, {pixi:{ x: me.width}})
-        //         .to(pool["btn_clothesType"], 0.3, {pixi:{ x: panel_x}});
-        // });
 
         resources[item[0]].map(function(kid, num){
             var btn = me.getSprite(kid[0], kid[0], panel, 114, 170+num*(180) + detalY, 1, 1, 0.5, 0.5, 1);

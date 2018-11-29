@@ -1,0 +1,203 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <link rel="shortcut icon" href="//www.100bt.com/tianti/waltz/activity/trialH5/img/icon.jpg">
+    <meta content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=0" name="viewport">
+    <meta content="yes" name="apple-mobile-web-app-capable">
+    <meta content="black" name="apple-mobile-web-app-status-bar-style">
+    <meta content="telephone=no" name="format-detection">
+    <meta http-equiv="X-UA-Compatible" content="ie=edge">
+    <meta http-equiv="Access-Control-Allow-Origin" content="*" />
+    <title>妹纸，你会是直男审美吗？</title>
+</head> 
+<style>
+    *{
+        margin: 0;
+        padding: 0;
+    }
+
+    html, body{
+        position: relative;
+        width: 100%;
+        height: 100%;
+        /* background: #f60; */
+        background: #000;
+        font-family: "Microsoft YaHei", Arial, Helvetica, sans-serif;
+    }
+
+    #container{
+        position: absolute;
+        top: 50%;
+        left: 50%;
+        z-index: 10;
+        overflow: hidden;
+    }
+
+    #img{
+        position: absolute;
+        width: 100%;
+        height: 80%;
+        top: 0;
+        opacity: 0;
+        z-index: 0;
+    }
+
+    .loading_page{
+        position: absolute;
+        width: 100%;
+        height: 100%;
+        background: #111;
+        transition: 0.5s;
+        transform-origin: center center;
+        z-index: 200;
+        font-size: 0.24rem;
+        line-height: 0.48rem;
+        color: #fff;
+        text-shadow: 2px 2px 24px #af9ae4, -2px -2px 24px #af9ae4;
+    }
+
+    .loading{
+        position: absolute;
+        top: 40%;
+        left: 50%;
+        margin: -0.6rem 0 0 -1.03rem;
+        width: 2.07rem;
+        text-align: center;
+        transform-origin: center center;
+    }
+
+    .loading .loading_flower{
+        width: 100%;
+    }
+    
+    .loading .loading_rotate{
+        position: absolute;
+        top: 0;
+        left: 0.58rem;
+        width: 0.9rem;
+        animation: rotate 2s linear  infinite;
+    }
+
+    @keyframes rotate{
+        from{transform: rotate(0deg)}
+        to{transform: rotate(359deg)}
+    }
+
+    canvas{
+        position: absolute;
+        top: 0;
+        width: 100%;
+        height: 100%;
+        z-index: 10;
+    }
+
+    audio{
+        position: absolute;
+        top: 0;
+        width: 0;
+        height:0;
+    }
+
+</style>
+
+<script>
+    
+    (function () {
+        var src = 'https://cdn.bootcss.com/eruda/1.5.4/eruda.min.js';
+        if (!/eruda/.test(window.location) && localStorage.getItem('active-eruda') != 'true') return;
+        document.write('<scr' + 'ipt src="' + src + '"></scr' + 'ipt>');
+        document.write('<scr' + 'ipt>eruda.init();</scr' + 'ipt>');
+    })();
+    var intest = false;
+    if (/intest/.test(window.location) || localStorage.getItem('intest') == 'true'){
+        intest = true;
+    }
+    var pagefolder = "showH5";
+    var headerInLine = "//www.100bt.com/tianti/waltz/activity/" + pagefolder
+    var headerInTest = "."
+    var currHeader = intest?headerInTest:headerInLine;
+
+    var resourceUrlHead = currHeader;
+    var bgm_story = currHeader + "/img/bg_story/story.mp3"
+    var bgm_game = currHeader + "/img/bg_story/gamemusic3.mp3"
+    
+    var _hmt;
+    var ua = navigator.userAgent.toLowerCase();
+    var inIos = /iphone|ipad|ipod/.test(ua);
+
+    var resourceType = 0; //0, 16比9资源；1，全面屏资源
+    var detalY = 0; //全面屏Y坐标补偿值
+    var setW = 750;
+    var setH = 1218; //16:9高度
+    var setH_X = 1448; //全面屏高度
+</script>
+<body>
+    <div id="container">
+        <div class="loading_page">
+            <div class="loading">
+                <img class="loading_rotate" src="//www.100bt.com/tianti/waltz/activity/trialH5/img/loading_rotate.png" alt="">
+                <img class="loading_flower" src="//www.100bt.com/tianti/waltz/activity/trialH5/img/loading_flower.png" alt="">
+                <span>舞会准备中...0%</span>
+            </div>
+        </div>
+        <audio id="bgm" src="//www.100bt.com/tianti/waltz/activity/trialH5/img/bg_story/story.mp3" autoplay loop></audio>
+        <img id="img" src="" alt="">
+        <script>
+            document.addEventListener("WeixinJSBridgeReady", function () { //微信
+                var bgm = document.getElementById("bgm");
+                bgm.play();
+            }, false);
+        </script>
+    </div>
+</body>
+
+<script>
+    function InitCanvas() {
+        var width = window.innerWidth;
+        var height = window.innerHeight;
+        var container = document.getElementById("container");
+        var cav = document.getElementById("cav");
+
+        var ratio = width / height
+        var setRatio = 750 / 1218;
+        var setRatio_2 = 750 / setH_X;
+
+        if (setW / ratio < setH) { //窗口宽高比例， 窗口偏矮。 将高度铺满
+            container.style.height = height + 'px';
+            container.style.width = height * setRatio + 'px';
+            container.style.marginTop = -(height / 2) + 'px';
+            container.style.marginLeft = -(height * setRatio / 2) + 'px';
+            document.documentElement.style.fontSize = height * setRatio / (750) * 100 + 'px';
+
+        } else { //窗口宽高比例， 窗口偏高。 将宽度铺满
+            container.style.width = width + 'px';
+            container.style.height = width / setRatio_2 + 'px';
+            container.style.marginTop = -(width / setRatio_2 / 2) + 'px';
+            container.style.marginLeft = -(width / 2) + 'px';
+            document.documentElement.style.fontSize = width / (750) * 100 + 'px';
+            resourceType = 1; //全面屏资源
+            detalY = (setH_X - setH) / 2; //全面屏资源Y坐标补偿值
+        }
+    }
+    InitCanvas();
+    window.onresize = InitCanvas;
+</script>
+<script>
+    document.write('<scr' + 'ipt src="' + currHeader + '/js/jquery.js"></scr' + 'ipt>');
+    document.write('<scr' + 'ipt src="' + currHeader + '/js/PixiPlugin.min.js"></scr' + 'ipt>');
+    document.write('<scr' + 'ipt src="' + currHeader + '/js/TweenMax.min.js"></scr' + 'ipt>');
+    document.write('<scr' + 'ipt src="' + currHeader + '/js/pixi.min.js"></scr' + 'ipt>');
+    document.write('<scr' + 'ipt src="' + currHeader + '/js/PixiPlugin.min.js"></scr' + 'ipt>');
+    document.write('<scr' + 'ipt src="' + currHeader + '/js/resource.js"></scr' + 'ipt>');
+    document.write('<scr' + 'ipt src="' + currHeader + '/js/PixiPlugin.min.js"></scr' + 'ipt>');
+    document.write('<scr' + 'ipt src="' + currHeader + '/js/view.js"></scr' + 'ipt>');
+    document.write('<scr' + 'ipt src="' + currHeader + '/js/index.js"></scr' + 'ipt>');
+</script>
+
+
+<script type="text/javascript" src="//res.wx.qq.com/open/js/jweixin-1.2.0.js" charset="utf-8"></script>
+<script type="text/javascript" src="//www.100bt.com/resource/js/lib/bdStatistic.js"></script>
+
+</html>
