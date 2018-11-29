@@ -85,8 +85,13 @@ View.prototype.initUpload = function() {
         img.onload = function () { 
             me.bgOrientation = me.getPhotoOrientation(img);
             var cav=document.getElementById("cav");
-            var width = parseInt(img.width)/2;
-            var height = parseInt(img.width)/2;
+            if(img.width>2000){
+                var width = parseInt(img.width)/2;
+                var height = parseInt(img.height)/2;
+            }else{
+                var width = parseInt(img.width);
+                var height = parseInt(img.height);
+            }
     
             cav.width = width
             cav.height = height
