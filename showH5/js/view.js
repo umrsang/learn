@@ -73,7 +73,6 @@ View.prototype.initUpload = function() {
 
     myFrom.append("image", imageDate); //向表单中添加一个键值对
     console.log(myFrom.getAll("image")); //获取表单中image字段对应的值，结果见下图
-    console.log(myFrom.getAll("image").size); //获取表单中image字段对应的值，结果见下图
 
     reader.readAsDataURL(imageDate); //通过DataURL的方式返回图像
     reader.onload = function(e) {
@@ -85,6 +84,7 @@ View.prototype.initUpload = function() {
         img.onload = function () { 
             me.bgOrientation = me.getPhotoOrientation(img);
             var cav=document.getElementById("cav");
+            
             if(img.width>2000){
                 var width = parseInt(img.width)/2;
                 var height = parseInt(img.height)/2;
