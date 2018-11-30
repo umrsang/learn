@@ -26,7 +26,7 @@ resources.assetLoad = function(cb) {
 
 resources.list = {
     page_begin: [
-        {name: "entry_bg", src: '/img/entry/bg.png'},
+        {name: "entry_bg", src: '/img/entry/bg.jpg'},
         {name: "entry_role", src: '/img/entry/role.png'},
         {name: "entry_logo", src: '/img/entry/logo.png'},
         {name: "entry_start", src: '/img/entry/start.png'},

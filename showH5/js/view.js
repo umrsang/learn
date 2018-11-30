@@ -1,6 +1,7 @@
 
 var photoCount = 0;
-var ba64 = ""
+var ba64 = "", bgOrientation = 1; //照片方向;
+var pageName = "花之女神的三次元秀场 "
 
 function View() {
     var me = this;
@@ -52,27 +53,29 @@ function View() {
     music.on('pointerdown', function(){
         var bgm = document.getElementById("bgm");
         bgm.paused?bgm.play():bgm.pause();
+        bgm.onContral = true;
     });
     music.rotation = -1;
     TweenMax.to(music, 1, {pixi: {rotation: 1}, repeat: -1, yoyo: true, ease: Power1.easeInOut});
+
 }
 
 View.prototype.initUpload = function() {
     var me = this;
-  imgFrom = document.getElementById("zimg-file");
-  imgFrom.addEventListener("change", function() {
+    var imgFrom = document.getElementById("zimg-file");
+    imgFrom.addEventListener("change", function() {
     $(".to_photo").removeClass("show");
 
-    me.SpritePool.inshow.alpha = 1;
-    var line = new TimelineMax();
-    line.to(me.SpritePool.inshow, 0.8, {pixi:{brightness: 1.2}, yoyo: true, repeat: -1})
+    me.getSprite("inshow", "inshow", me.page_clothing, 275, 450 + detalY, 1, 1, 0.5, 0.5, 0);
 
-    var imageDate = imgFrom.files[0];
+    var imageDate = this.files[0];
     var myFrom = new FormData();
     var reader = new FileReader(); //调用FileReader对象
 
+    this.value='';
+
     myFrom.append("image", imageDate); //向表单中添加一个键值对
-    console.log(myFrom.getAll("image")); //获取表单中image字段对应的值，结果见下图
+    // console.log(myFrom.getAll("image")); //获取表单中image字段对应的值，结果见下图
 
     reader.readAsDataURL(imageDate); //通过DataURL的方式返回图像
     reader.onload = function(e) {
@@ -82,22 +85,23 @@ View.prototype.initUpload = function() {
         img.src = me.bgsrc
     
         img.onload = function () { 
-            me.bgOrientation = me.getPhotoOrientation(img);
+            bgOrientation = me.getPhotoOrientation(img);
             var cav=document.getElementById("cav");
-            
+
             if(img.width>2000){
                 var width = parseInt(img.width)/2;
                 var height = parseInt(img.height)/2;
             }else{
-                var width = parseInt(img.width);
-                var height = parseInt(img.height);
+                var width = parseInt(img.width)*0.8;
+                var height = parseInt(img.height)*0.8;
             }
     
             cav.width = width
             cav.height = height
             var ctx=cav.getContext("2d");
     
-            if(me.bgOrientation == 6){
+            console.log(bgOrientation)
+            if(bgOrientation == 6){
                 ctx.save();
                 ctx.translate(width / 2, height / 2);
                 ctx.rotate(90 * Math.PI / 180);
@@ -119,6 +123,7 @@ View.prototype.initUpload = function() {
 
   $(".to_photo").click(function(){
       if(view.checkClothes()){
+        var imgFrom = document.getElementById("zimg-file");
         imgFrom.click();
       }else{
         var line = new TimelineMax();
@@ -264,9 +269,15 @@ View.prototype.enter_home = function () {
     pool.entry_start.interactive = true;
     pool.entry_start.buttonMode = true;
     pool.entry_start.on('pointerdown', function(){
-         me.showView(1)
+        var bgm = document.getElementById("bgm");
+        if(!bgm.onContral){
+            bgm.play();
+            console.log("bgm-play")
+        }
+        bgm.onContral = true;
+        $("#img").css({"zIndex": 0, "z-index": 0})
+        me.showView(1)
     });
-    
 
     this.music.setParent(container);
 }
@@ -292,12 +303,14 @@ View.prototype.enter_clothing = function () {
     this.initClothingBtn();
     
     me.getSprite("clothes_tips", "clothes_tips", container, 275, 450 + detalY, 1, 1, 0.5, 0.5, 0)
-    me.getSprite("inshow", "inshow", container, 275, 450 + detalY, 1, 1, 0.5, 0.5, 0);;
 
     $(".to_photo").addClass("show");
     
     this.music.setParent(container);
     this.music.y = 44 + detalY;
+
+    
+    _hmt&&_hmt.push(['_trackPageview', '/waltz/activity/showH5/clothing']);
 }
 
 View.prototype.dressTheRole = function(container, enter){
@@ -466,6 +479,9 @@ View.prototype.dressTheRole = function(container, enter){
             this.getSprite(prop, val.skin, container, 0, 0, 1, 1, 0, 0, val.alpha);
         }
     }
+    if(this.clothes.dress.skin == "dress_1"){  //裙子1显示有问题 把鞋子放到它下层 切换衣服层次又会复位 每次切换检查一次
+        this.containerPool.clothing_room.setChildIndex(this.SpritePool.shoes, 3)
+    }
 }
 
 View.prototype.checkClothes = function() {
@@ -494,6 +510,7 @@ View.prototype.enter_photo = function () {
     var photo_bg = this.getSprite("photo_bg", "photo_bg", container, 0,0,1,1,0,0,1);
     var indialog = false;
     
+    _hmt&&_hmt.push(['_trackPageview', '/waltz/activity/showH5/photo']);
 
     var mask_w = 714, mask_h=1040, mask_x=20, mask_y=130;
     var editarea = this.addContainer("editarea", container, mask_x, mask_y); 
@@ -516,13 +533,13 @@ View.prototype.enter_photo = function () {
     var photo = this.getSprite("photo" + photoCount, "photo" + photoCount, editor, 0,0,1,1,0,0,1);
 
     // var radio = photo.width/photo.height;    
-    if(me.bgOrientation == 6){
+    if(bgOrientation == 6){
         var radio = photo.height/photo.width;
     }else{
         var radio = photo.width/photo.height;
     }
 
-    console.log(me.bgOrientation)
+    console.log(bgOrientation)
     console.log(radio,  photo.width, photo.height)
 
     var photo_move = 0; //0纵向， 1横向
@@ -771,6 +788,8 @@ View.prototype.enter_result = function(){
     this.before_enter_Page("page_result");
     this.enter_Page("page_result");
 
+    _hmt&&_hmt.push(['_trackPageview', '/waltz/activity/showH5/result']);
+
     var container = this.page_result;
     var pool = this.SpritePool;
     var cpool = this.containerPool;
@@ -847,6 +866,8 @@ View.prototype.enter_result = function(){
         btn_save.on('pointerdown', function(){
             TweenMax.to(tips_save, 0.3, {pixi:{ alpha: 1 }})
             TweenMax.to(tips_save, 0.3, {pixi:{ alpha: 0 }, delay: 2})
+
+            _hmt&&_hmt.push(['_trackEvent', pageName, pageName + '_按钮', pageName + '_按钮' + '_保存图片']);
         });
     
         btn_download.interactive = true;
@@ -874,9 +895,14 @@ View.prototype.enter_result = function(){
             //精灵展示事件统计
             _hmt&&_hmt.push(['_trackEvent', pageName, pageName + '_按钮', pageName + '_按钮' + '_重玩']);
     
+            // $('#zimg-file').remove();
+            // $('#container').append($('<input type="file" name="zimg-file" id="zimg-file" value="" />'));
+            // view.initUpload();
+
             view.app.destroy(true);
             view = new View();
             view.showView(1);
+
             var img = document.getElementById("img");
             img.style.zIndex = 0;
             $(".to_photo").addClass("show");
