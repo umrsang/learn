@@ -13,7 +13,7 @@ function View() {
         cav.remove();
     }
     this.width = 750;
-    this.height = resourceType == 0?setH_X:setH_X;
+    this.height = setH_X;
     this.app = new PIXI.Application({
         width: this.width,
         height: this.height,
@@ -60,78 +60,9 @@ function View() {
 
 }
 
+
 View.prototype.initUpload = function() {
-    var me = this;
-    var imgFrom = document.getElementById("zimg-file");
-    imgFrom.addEventListener("change", function() {
-    $(".to_photo").removeClass("show");
 
-    me.getSprite("inshow", "inshow", me.page_clothing, 275, 450 + detalY, 1, 1, 0.5, 0.5, 0);
-
-    var imageDate = this.files[0];
-    var myFrom = new FormData();
-    var reader = new FileReader(); //调用FileReader对象
-
-    this.value='';
-
-    myFrom.append("image", imageDate); //向表单中添加一个键值对
-    // console.log(myFrom.getAll("image")); //获取表单中image字段对应的值，结果见下图
-
-    reader.readAsDataURL(imageDate); //通过DataURL的方式返回图像
-    reader.onload = function(e) {
-        me.bgsrc  = e.target.result;
-        
-        var img= new Image();
-        img.src = me.bgsrc
-    
-        img.onload = function () { 
-            bgOrientation = me.getPhotoOrientation(img);
-            var cav=document.getElementById("cav");
-
-            if(img.width>2000){
-                var width = parseInt(img.width)/2;
-                var height = parseInt(img.height)/2;
-            }else{
-                var width = parseInt(img.width)*0.8;
-                var height = parseInt(img.height)*0.8;
-            }
-    
-            cav.width = width
-            cav.height = height
-            var ctx=cav.getContext("2d");
-    
-            console.log(bgOrientation)
-            if(bgOrientation == 6){
-                ctx.save();
-                ctx.translate(width / 2, height / 2);
-                ctx.rotate(90 * Math.PI / 180);
-                ctx.drawImage(img, 0 - height / 2, 0 - width / 2, height, width);
-            }else {
-                ctx.drawImage(img, 0, 0, width, height);
-            }
-            var img64 = cav.toDataURL("image/png");
-
-            photoCount++
-            resources.loader.add("photo"+ photoCount, img64);
-            resources.loader.onComplete.once((a, b) => {
-                view.showView(2)
-                line.remove();
-            })
-        }
-    }
-  });
-
-  $(".to_photo").click(function(){
-      if(view.checkClothes()){
-        var imgFrom = document.getElementById("zimg-file");
-        imgFrom.click();
-      }else{
-        var line = new TimelineMax();
-        line.to(view.SpritePool.clothes_tips, 0.3, {pixi:{ alpha: 1 }})
-            .to(view.SpritePool.clothes_tips, 0.3, {pixi:{ alpha: 0 }, delay: 1})
-          
-      }
-  })
 }
 
 View.prototype.getPhotoOrientation = function(img){
@@ -254,7 +185,6 @@ View.prototype.enter_home = function () {
     var container = this.page_home;
     var pool = this.SpritePool;
 
-
     this.getSprite('entry_bg', 'entry_bg', container, me.width/2, me.height/2, 1, 1, 0.5, 0.5, 1);
     this.getSprite('entry_role', 'entry_role', container, me.width/2, me.height/2, 1, 1, 0.5, 0.5, 1);
     this.getSprite('entry_logo', 'entry_logo', container, me.width/2, me.height/2, 1, 1, 0.5, 0.5, 1);
@@ -289,11 +219,13 @@ View.prototype.enter_clothing = function () {
 
     var container = this.page_clothing;
     var pool = this.SpritePool;
+    
+    document.getElementById("img").style.zIndex = 0;
 
-    this.getSprite("clothing_bg", "clothing_bg", container,0,0+detalY);
+    this.getSprite("clothing_bg", "clothing_bg", container,0, resourceType?0:detalY);
     this.enter_Page("page_clothing");
 
-    var clothing_room = this.addContainer("clothing_room", container, -600, 50 + detalY);
+    var clothing_room = this.addContainer("clothing_room", container, -600, (resourceType?150:  50 + detalY));
     this.dressTheRole(clothing_room);
 
     TweenMax.set(clothing_room, {pixi:{scale: 0.95}});
@@ -772,6 +704,7 @@ View.prototype.enter_photo = function () {
     finish.buttonMode = true;
     finish.on('pointerdown', function(e){
         indialog = true;
+        currentTarget = ""
         $(".addr_input").addClass("show");
         TweenMax.set([scale2, rotate, mirror, graphics], {pixi:{alpha:0}});
         TweenMax.to([photo_bg, editarea, finish], 0.5, {pixi:{brightness:0.6}});
@@ -789,6 +722,10 @@ View.prototype.enter_result = function(){
     this.enter_Page("page_result");
 
     _hmt&&_hmt.push(['_trackPageview', '/waltz/activity/showH5/result']);
+
+    var img = document.getElementById("img");
+    img.style.zIndex = 100;
+
 
     var container = this.page_result;
     var pool = this.SpritePool;
@@ -846,7 +783,6 @@ View.prototype.enter_result = function(){
     .to(save, 0.5, {pixi:{scale: 1, x:100, y:240}, onComplete: function(){
 
 
-        var img = document.getElementById("img");
         var b64 = view.app.renderer.plugins.extract.base64(save)
         img.src = b64;
         img.style.zIndex = 100;
@@ -895,10 +831,6 @@ View.prototype.enter_result = function(){
             //精灵展示事件统计
             _hmt&&_hmt.push(['_trackEvent', pageName, pageName + '_按钮', pageName + '_按钮' + '_重玩']);
     
-            // $('#zimg-file').remove();
-            // $('#container').append($('<input type="file" name="zimg-file" id="zimg-file" value="" />'));
-            // view.initUpload();
-
             view.app.destroy(true);
             view = new View();
             view.showView(1);
@@ -906,8 +838,6 @@ View.prototype.enter_result = function(){
             var img = document.getElementById("img");
             img.style.zIndex = 0;
             $(".to_photo").addClass("show");
-            $(".to_photo").css("z");
-            // document.getElementById("bgm").src = bgm_story;
         });
     }})
 }

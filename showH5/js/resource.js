@@ -38,10 +38,10 @@ resources.list = {
         {name: "clothes_tips", src:  '/img/clothing/clothes_tips.png'},
         {name: "inshow", src:  '/img/clothing/inshow.png'},
         {name: "cebian", src:  '/img/clothing/cebian.png'},
-        {name: "btn_go", src:  '/img/clothing/btn_go.png'},
+        // {name: "btn_go", src:  '/img/clothing/btn_go.png'},
         {name: "hair_0", src:  '/img/clothing/hair_0.png'},
         {name: "dress_0", src:  '/img/clothing/dress_0.png'},
-        {name: "spark", src:  '/img/clothing/spark2.png'}
+        {name: "spark", src:  '/img/clothing/spark2.png'},
     ],
     btn_clothesType: [
         {name: "btn_hair", src:  '/img/clothing/btn_hair.png'},
@@ -117,7 +117,7 @@ resources.list = {
     ],
     photo: [
         {name: 'photo_bg', src: '/img/photo/bg.jpg'},
-        {name: 'address', src: '/img/photo/address.png'},
+        // {name: 'address', src: '/img/photo/address.png'},
         {name: 'finish', src: '/img/photo/finish.png'},
         {name: 'tips', src: '/img/photo/tips.png'},
         {name: '_photo', src: '/img/photo/photo.jpg'},
