@@ -1,7 +1,0 @@
-{
-    "images": ["images/loading_atlas_P_.png"],
-    "frames": [
-        [0, 0, 68, 62],
-        [0, 64, 68, 62]
-    ]
-}
