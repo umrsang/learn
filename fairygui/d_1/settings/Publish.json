@@ -3,7 +3,7 @@
 	"codeGeneration":{
 		"classNamePrefix":"UI_",
 		"codePath":"F:\\learn\\fairygui\\d_1\\out",
-		"codeType":"",
+		"codeType":"TS",
 		"getMemberByName":false,
 		"ignoreNoname":false,
 		"memberNamePrefix":"m_",
