@@ -1,0 +1,184 @@
+<!DOCTYPE html>
+
+<html>
+
+<head>
+  <title>Example 08.08 - Load collada model </title>
+  <script type="text/javascript" src="../../exemple/libs/three.js"></script>
+  <script type="text/javascript" src="../../exemple/libs/ColladaLoader.js"></script>
+
+  <script type="text/javascript" src="../../exemple/libs/stats.js"></script>
+  <script type="text/javascript" src="../../exemple/libs/dat.gui.js"></script>
+  <script type="text/javascript" src="../../exemple/libs/TrackballControls.js"></script>
+  <style>
+    body {
+            /* set margin to 0 and overflow to hidden, to go fullscreen */
+            margin: 0;
+            overflow: hidden;
+        }
+    </style>
+</head>
+
+<body>
+
+  <div id="Stats-output">
+  </div>
+  <!-- Div which will hold the Output -->
+  <div id="WebGL-output">
+  </div>
+
+  <!-- Javascript code that runs our Three.js examples -->
+  <script type="text/javascript">
+    // once everything is loaded, we run our Three.js stuff.
+    function init() {
+
+      var stats = initStats();
+
+      // create a scene, that will hold all our elements such as objects, cameras and lights.
+      var scene = new THREE.Scene();
+
+      // create a camera, which defines where we're looking at.
+      var camera = new THREE.PerspectiveCamera(45, window.innerWidth / window.innerHeight, 0.1, 10000);
+
+      // create a render and set the size
+      var webGLRenderer = new THREE.WebGLRenderer({alpha: true, antialias: true});
+      // webGLRenderer.setClearColor(new THREE.Color(0xcccccc, 1.0));
+      webGLRenderer.setSize(window.innerWidth, window.innerHeight);
+      webGLRenderer.shadowMapEnabled = true;
+
+      // position and point the camera to the center of the scene
+      camera.position.x = 150;
+      camera.position.y = 150;
+      camera.position.z = 150;
+      camera.lookAt(new THREE.Vector3(0, 20, 0));
+
+
+      const light = new THREE.HemisphereLight(0xFFFFFF, 0xFFFFFF, 0.85);
+      scene.add(light);
+
+      // add spotlight for the shadows
+      var spotLight = new THREE.SpotLight(0xffffff);
+      spotLight.position.set(150, 150, 150);
+      spotLight.intensity = 1;
+      // scene.add(spotLight);
+      getPointLightPos(150, 150, 150, scene)
+
+      // add spotlight for the shadows
+      var spotLight2 = new THREE.SpotLight(0xffffff);
+      spotLight2.position.set(-150, 150, 150);
+      spotLight2.intensity = 1;
+      // scene.add(spotLight2);
+      getPointLightPos(-150, 150, 150, scene)
+
+
+      // add spotlight for the shadows
+      var spotLight3 = new THREE.SpotLight(0xffffff);
+      spotLight3.position.set(-150, -150, -150);
+      spotLight3.intensity = 1;
+      // scene.add(spotLight3);
+      getPointLightPos(-150, -150, 150, scene)
+
+      // add spotlight for the shadows
+      var spotLight4 = new THREE.SpotLight(0xffffff);
+      spotLight4.position.set(150, -150, -150);
+      // spotLight4.intensity = 1;
+      // scene.add(spotLight4);
+      getPointLightPos(150, -150, -150, scene)
+
+      function getPointLightPos(x, y, z, parent) {
+
+        var CubeGemo = new THREE.BoxGeometry(10, 10, 10, 1, 1, 1)
+        var CubeMaterial = new THREE.MeshLambertMaterial({
+          color: 0xff0000
+        })
+        var Cube3 = new THREE.Mesh(CubeGemo, CubeMaterial);
+        Cube3.position.set(x, y, z);
+        parent.add(Cube3);
+
+      }
+
+      // add the output of the renderer to the html element
+      document.getElementById("WebGL-output").appendChild(webGLRenderer.domElement);
+
+      // model from http://www.thingiverse.com/thing:69709
+      var loader = new THREE.ColladaLoader();
+
+      var mesh;
+      var modeObject = new THREE.Object3D();
+      scene.add(modeObject);
+      var modeObject2 = new THREE.Object3D();
+      scene.add(modeObject2);
+
+
+      loader.load("./img/untitled.dae", function (result) {
+        console.log(result)
+        var mesh1 = result.scene.children[2].clone();
+        var mesh2 = result.scene.children[3].clone();
+        // mesh.scale.set(1, 1, 1);
+        modeObject.add(mesh1);
+        modeObject.add(mesh2);
+        modeObject.rotation.x = -90 * (Math.PI / 180);
+        modeObject.rotation.z = -45 * (Math.PI / 180);
+
+            // var child = result.skins[0];
+            // modeObject.add(child);
+
+
+            // var animation = new THREE.Animation(child, child.geometry.animation);
+            // animation.play();
+
+            // // position the mesh
+            // child.scale.set(0.15, 0.15, 0.15);
+            // child.rotation.x = -0.5 * Math.PI;
+            // child.position.x = -100;
+            // child.position.y = -60;
+      });
+
+
+      var trackballControls = new THREE.TrackballControls(camera);
+
+      trackballControls.rotateSpeed = 1.0;
+      trackballControls.zoomSpeed = 1.0;
+      trackballControls.panSpeed = 1.0;
+      trackballControls.staticMoving = true;
+
+
+      var clock = new THREE.Clock();
+
+      render();
+
+      function render() {
+        stats.update();
+
+
+        var delta = clock.getDelta();
+        THREE.AnimationHandler.update(delta);
+        trackballControls.update(delta);
+
+        // render using requestAnimationFrame
+        requestAnimationFrame(render);
+        webGLRenderer.render(scene, camera);
+      }
+
+
+      function initStats() {
+
+
+        var stats = new Stats();
+        stats.setMode(0); // 0: fps, 1: ms
+
+        // Align top-left
+        stats.domElement.style.position = 'absolute';
+        stats.domElement.style.left = '0px';
+        stats.domElement.style.top = '0px';
+
+        document.getElementById("Stats-output").appendChild(stats.domElement);
+
+        return stats;
+      }
+    }
+    window.onload = init;
+  </script>
+</body>
+
+</html>

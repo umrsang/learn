@@ -77,11 +77,11 @@
 
         // create a tween
         // http://sole.github.io/tween.js/examples/03_graphs.html
-        var posSrc = {pos: 1};
+        var posSrc = {pos: 2};
         var tween = new TWEEN.Tween(posSrc).to({pos: 0}, 5000);
         tween.easing(TWEEN.Easing.Sinusoidal.InOut);
 
-        var tweenBack = new TWEEN.Tween(posSrc).to({pos: 1}, 5000);
+        var tweenBack = new TWEEN.Tween(posSrc).to({pos: 2}, 5000);
         tweenBack.easing(TWEEN.Easing.Sinusoidal.InOut);
 
         tween.chain(tweenBack);

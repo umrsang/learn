@@ -27,6 +27,7 @@
 <script src="../../exemple/libs/stats.js" type="text/javascript" charset="utf-8"></script>
 <script src="../../exemple/libs/dat.gui.js" type="text/javascript" charset="utf-8"></script>
 <script src="../../lib/jquery-1.7.2.js" type="text/javascript" charset="utf-8"></script>
+<script src="../../exemple/libs/TrackballControls.js" type="text/javascript" charset="utf-8"></script>
 <script>
   // once everything is loaded, we run our Three.js stuff.
   var scene, camera, plane;
@@ -41,61 +42,120 @@
     renderer.setSize(window.innerWidth, window.innerHeight);
     renderer.shadowMapEnabled = true;
 
-    var planeGeometry = new THREE.PlaneGeometry(50, 50, 1, 1);
-    // var planeGeometry = new THREE.BoxGeometry(15, 15, 15);
-    // var planeMaterial = new THREE.MeshLambertMaterial({
-    //   color: 0x0000ff
-    // });
+    var loadManager = new THREE.LoadingManager(function () {
+      creatMap()
+      console.log("completed")
+    })
+    loadManager.onProgress = function (t, e, i) {
+      var n = e / i;
+      console.log(n)
+    }
 
+    var loader = new THREE.TextureLoader(loadManager);
+    loader.setCrossOrigin("");
 
+    var textures = {}
+    loader.load('./textures/map-height.jpg', function (t) {
+      textures.map_height = t
+    })
+    loader.load('./textures/map-texture.jpg', function (t) {
+      textures.map_tex = t
+    })
+    loader.load('./textures/mask.55c8840c.png', function (t) {
+      textures.map_mask = t
+    })
 
-    // var t = THREE.ImageUtils.loadTexture("../../exemple/assets/textures/general/plaster.jpg");
-    // var m = THREE.ImageUtils.loadTexture("../../exemple/assets/textures/general/plaster-normal.jpg");
-    var t = THREE.ImageUtils.loadTexture("./textures/map-texture.448897a4.jpg");
-    var m = THREE.ImageUtils.loadTexture("./textures/map-height.a133515f.jpg");
-    var mat2 = new THREE.MeshPhongMaterial();
-    mat2.map = t;
-    // mat2.bumpMap = m;
-    // mat2.normalScale.set(1, 1);
-    // mat2.bumpScale = 0.2
+    function creatMap() {
+      var map_height = textures.map_height;
+      map_height.needsUpdate = !0;
+      var map_tex = textures.map_tex;
+      map_tex.needsUpdate = !0;
+      var map_mask = textures.map_mask;
+      map_mask.needsUpdate = !0;
 
-    plane = new THREE.Mesh(planeGeometry, mat2);
-    plane.receiveShadow = true;
-    plane.castShadow = true;
-    // rotate and position the plane
-    // plane.rotation.x = -0.25 * Math.PI;
-    plane.position.x = 0;
-    plane.position.y = 0;
-    plane.position.z = 0;
+      var setting = {
+        heightTexture: {
+          type: "t",
+          value: map_height
+        },
+        heightScale: {
+          type: "f",
+          value: 2
+        },
+        mapTexture: {
+          type: "t",
+          value: map_tex
+        },
+        coverTexture: {
+          type: "t",
+          value: map_mask
+        },
+        fogR: {
+          type: "f",
+          value: .082
+        },
+        fogG: {
+          type: "f",
+          value: .176
+        },
+        fogB: {
+          type: "f",
+          value: .2509
+        }
+      }
 
-    // add the plane to the scene
-    scene.add(plane);
+      var vertex =`
+      uniform sampler2D heightTexture;
+      \nuniform sampler2D coverTexture;
+      \nuniform float heightScale;
+      \n\nvarying vec2 vUV;
+      \nvarying float vCover;
+      \n\nvoid main()
+       {
+         \nvUV = uv;
+         \nvec4 hData = texture2D( heightTexture, uv );
+         \nfloat vAmount = hData.r * heightScale;
+         \nvec4 coverData = texture2D( coverTexture, uv );
+         \nvCover = coverData.r;
+         \nvec3 newPosition = position + normal * vAmount;
+         \ngl_Position = projectionMatrix * modelViewMatrix * vec4( newPosition, 1.0 );
+         \n
+        }`;
+        fragment =`
+      uniform sampler2D mapTexture;
+      \nuniform float fogR;
+      \nuniform float fogG;
+      \nuniform float fogB;
+      \n\nvarying vec2 vUV;
+      \nvarying float vCover;
+      \n\nvoid main() {
+        \ngl_FragColor =  mix(texture2D( mapTexture, vUV ), vec4(fogR, fogG, fogB, 1.0), vCover);
+        \n
+      }`;
 
-    // create a cube
-    var cubeGeometry = new THREE.BoxGeometry(0.1, 0.1, 0.1);
-    var cubeMaterial = new THREE.MeshLambertMaterial({
-      color: 0xff0000
-    });
-    var cube = new THREE.Mesh(cubeGeometry, cubeMaterial);
-    cube.castShadow = true;
-    // cube.rotation.x = -0.3 * Math.PI;
-    // cube.rotation.y = -0.3 * Math.PI;
+      var mapMaterial = new THREE.ShaderMaterial({
+          uniforms: setting,
+          vertexShader: vertex,
+          fragmentShader: fragment
+        })
+      part = 100;
 
-    // position the cube
-    cube.position.x = 0;
-    cube.position.y = 0;
-    cube.position.z = 0;
+      var mapGeo = new THREE.PlaneGeometry(20,20,part,part);
+      var mapMesh = new THREE.Mesh(mapGeo , mapMaterial);
 
-    // add the cube to the scene
-    scene.add(cube);
+        
+      mapMesh.position.x = 0;
+      mapMesh.position.y = 0;
+      mapMesh.position.z = 0;
 
+      scene.add(mapMesh)
+    }
 
     camera.position.x = 0;
     camera.position.y = -2;
     camera.position.z = 10;
     camera.lookAt(new THREE.Vector3(0, 0, 0));
 
-    // add subtle ambient lighting
     var ambiColor = "#000000";
     var ambientLight = new THREE.AmbientLight(ambiColor);
     scene.add(ambientLight);
@@ -108,41 +168,31 @@
     document.getElementById("app").appendChild(renderer.domElement);
 
 
+    var trackballControls = new THREE.TrackballControls(camera);
+
+    trackballControls.rotateSpeed = 1.0;
+    trackballControls.zoomSpeed = 1.0;
+    trackballControls.panSpeed = 1.0;
+    trackballControls.staticMoving = true;
+
+
     var controls = new function () {
       this.rotation = 1;
-      this.handle = function (e) {
-        // camera.position.x = 2 + (10*Math.cos(step));
-        // camera.position.y = 2 + (10*Math.abs(Math.sin(step)));
-        cube.position.set(0, e * 0.2, 0)
-        camera.position.z = -e * 0.2 + 10
-        camera.lookAt(cube.position)
-      }
 
     }
     var gui = new dat.GUI();
-    gui.add(controls, "rotation", -10, 10).onChange(controls.handle);
-
+    gui.add(controls, "rotation", -10, 10);
 
     var step = 10;
     var flag = 1;
 
     function render() { // render using requestAnimationFrame
-      
-      step += 0.1*flag 
-      if(step>15){
-        flag = -1
-      }else if(step<-10){
-        flag = 1
-      }
 
-      console.log(step)
-      cube.position.set(0, step * 0.2, 0)
-      camera.position.z = -step * 0.3 + 30
-      camera.lookAt(cube.position)
+      var clock = new THREE.Clock();
+      var delta = clock.getDelta();
 
-      // camera.position.x = 2 + (10*Math.cos(step));
-      // camera.position.y = 2 + (10*Math.abs(Math.sin(step)));
-      // camera.lookAt(cube.position)
+      trackballControls.update(delta);
+
       requestAnimationFrame(render);
       renderer.render(scene, camera);
     }

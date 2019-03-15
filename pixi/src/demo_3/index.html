@@ -1,0 +1,63 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <meta http-equiv="X-UA-Compatible" content="ie=edge">
+  <title>Document</title>
+  <script src="../../resource/pixi.min.js"></script>
+</head>
+
+<body>
+  <script>
+    var app = new PIXI.Application();
+    document.body.appendChild(app.view);
+
+    app.stage.interactive = true;
+
+    var bg = PIXI.Sprite.fromImage('./map.jpg');
+    bg.x = 0;
+    bg.y = 0;
+    bg.width = 800;
+    bg.height = 600;
+
+    var mask = PIXI.Sprite.fromImage('./alpha_3.jpg');
+    var map = PIXI.Sprite.fromImage('./图层1.jpg');
+
+    mask.anchor.set(0.5, 0.5)
+    mask.position.set(400, 300)
+
+    map.x = 0;
+    map.y = 0;
+    map.width = 800;
+    map.height = 600;
+    map.anchor.set(0.5, 0.5)
+    map.position.set(400, 300)
+
+    app.stage.addChild(mask);
+    app.stage.addChild(bg);
+    app.stage.addChild(map);
+
+    // map.mask = mask;
+
+
+    setTimeout(function () {
+      map.mask = mask;
+    }, 500)
+
+    var target = new PIXI.Point();
+
+
+    step = 1
+
+    app.ticker.add(function () {
+      step = step > 25 ? step : step + 0.2
+      mask.scale.set(step, step)
+      bg.scale.set(step*0.005 + 0.3, step*0.005 + 0.3,)
+
+    });
+  </script>
+</body>
+
+</html>

@@ -1,4 +1,4 @@
-# tiny_1
+# Tiny
 
 > The Tiny.js game project build by tinyjs-cli
 
