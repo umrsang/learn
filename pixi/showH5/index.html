@@ -1,5 +1,5 @@
 <!DOCTYPE html>
-<html lang="en" style="font-size: 50px;">
+<html lang="en">
 
 <head>
     <meta charset="UTF-8">
@@ -42,7 +42,7 @@
         height: 80%;
         top: 0;
         opacity: 0;
-        z-index: 100;
+        z-index: 0;
     }
 
     .loading_page{
@@ -112,31 +112,24 @@
 }
 .to_photo{
     position: absolute;
-    bottom: 0rem;
+    bottom: 0.5rem;
     left: 0.5rem;
     width: 4.4rem;
     height: 0.77rem;
-    background-image: url("//www.100bt.com/tianti/waltz/activity/showH5/img/clothing/btn_go.png");
+    background-image: url("./img/clothing/btn_go.png");
     background-size: 100% 100%;
     z-index: 0;
     opacity: 0;
     -webkit-tap-highlight-color: transparent;
+    transform: translateY(2rem);
     transition: 0.3s;
     transition-delay: 1s;
 }
-
 .to_photo.show {
-    bottom: 0.5rem;
+    transform: translateY(0);
     opacity: 1;
     z-index: 100;
 }
-
-.hight_x  .to_photo.show {
-    bottom: 2rem;
-    opacity: 1;
-    z-index: 100;
-}
-
 
 .addr_input{
     position: absolute;
@@ -145,7 +138,7 @@
     width: 6.8rem;
     height: 7.29rem;
     z-index: 100;
-    background-image: url("//www.100bt.com/tianti/waltz/activity/showH5/img/photo/address.png");
+    background-image: url("./img/photo/address.png");
     background-size: 100% 100%;
     z-index: 0;
     opacity: 0;
@@ -186,7 +179,7 @@
     left: 2.4rem;
     width: 2.26rem;
     height: 0.62rem;
-    background-image: url("//www.100bt.com/tianti/waltz/activity/showH5/img/photo/finish.png");
+    background-image: url(./img/photo/finish.png);
     background-size: 100% 100%;
 }
 
@@ -250,15 +243,13 @@
 
 <script>
 
-    document.getElementById("bgm").src = currHeader + "/img/gamemusic3.mp3";
-    document.getElementsByClassName("loading_rotate")[0].src = currHeader + "/img/loading_rotate.png";
-    document.getElementsByClassName("loading_flower")[0].src = currHeader + "/img/loading_flower.png";
-
     document.addEventListener("WeixinJSBridgeReady", function () { //微信
         var bgm = document.getElementById("bgm");
         bgm.play();
     }, false);
     
+    document.getElementsByClassName("loading_rotate")[0].src = currHeader + "/img/loading_rotate.png";
+    document.getElementsByClassName("loading_flower")[0].src = currHeader + "/img/loading_flower.png";
 
     var resourceType = 0; //0, 16比9资源；1，全面屏资源
     var detalY = 0; //全面屏Y坐标补偿值
@@ -290,7 +281,8 @@
             container.style.marginLeft = -(width / 2) + 'px';
             document.documentElement.style.fontSize = width / (750) * 100 + 'px';
             resourceType = 1; //全面屏资源
-            document.body.setAttribute('class','hight_x')
+            document.querySelector(".to_photo").style.bottom = "1rem"
+            document.documentElement.style.fontSize = width / (750) * 100 + 'px';
         }
         detalY = (setH_X - setH) / 2; //全面屏资源Y坐标补偿值
     }
@@ -298,15 +290,15 @@
     // window.onresize = InitCanvas;
 </script>
 <script>
-    document.write('<scr' + 'ipt src="' + currHeader + '/js/jquery.js?v2018120301"></scr' + 'ipt>');
+    document.write('<scr' + 'ipt src="' + currHeader + '/js/jquery.min.js"></scr' + 'ipt>');
     document.write('<scr' + 'ipt src="' + currHeader + '/js/PixiPlugin.min.js"></scr' + 'ipt>');
     document.write('<scr' + 'ipt src="' + currHeader + '/js/TweenMax.min.js"></scr' + 'ipt>');
     document.write('<scr' + 'ipt src="' + currHeader + '/js/pixi.min.js"></scr' + 'ipt>');
     document.write('<scr' + 'ipt src="' + currHeader + '/js/pixi-extra-filters.js"></scr' + 'ipt>');
     document.write('<scr' + 'ipt src="' + currHeader + '/js/PixiPlugin.min.js"></scr' + 'ipt>');
-    document.write('<scr' + 'ipt src="' + currHeader + '/js/resource.js?v2018120301"></scr' + 'ipt>');
-    document.write('<scr' + 'ipt src="' + currHeader + '/js/view.js?v2018120301"></scr' + 'ipt>');
-    document.write('<scr' + 'ipt src="' + currHeader + '/js/index.js?v2018120301"></scr' + 'ipt>');
+    document.write('<scr' + 'ipt src="' + currHeader + '/js/resource.js?v20181130"></scr' + 'ipt>');
+    document.write('<scr' + 'ipt src="' + currHeader + '/js/view.js?v20181130"></scr' + 'ipt>');
+    document.write('<scr' + 'ipt src="' + currHeader + '/js/index.js?v20181130"></scr' + 'ipt>');
     document.write('<scr' + 'ipt src="' + currHeader + '/js/exif.js"></scr' + 'ipt>');
 </script>
 
