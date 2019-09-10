@@ -79,7 +79,10 @@ View.prototype.initUpload = function() {
 
 <<<<<<< HEAD:pixi/showH5/js/view.js
 <<<<<<< HEAD:pixi/showH5/js/view.js
+<<<<<<< HEAD:pixi/showH5/js/view.js
 =======
+=======
+>>>>>>> parent of 07fbeee... update:showH5/js/view.js
 =======
 >>>>>>> parent of 07fbeee... update:showH5/js/view.js
     reader.readAsDataURL(imageDate); //通过DataURL的方式返回图像
@@ -91,11 +94,14 @@ View.prototype.initUpload = function() {
     
         img.onload = function () { 
 <<<<<<< HEAD:pixi/showH5/js/view.js
+<<<<<<< HEAD:pixi/showH5/js/view.js
             me.bgOrientation = me.getPhotoOrientation(img);
             var cav=document.getElementById("cav");
             var width = parseInt(img.width)/2;
             var height = parseInt(img.width)/2;
 =======
+=======
+>>>>>>> parent of 07fbeee... update:showH5/js/view.js
             bgOrientation = me.getPhotoOrientation(img);
             var cav=document.getElementById("cav");
 
@@ -106,6 +112,9 @@ View.prototype.initUpload = function() {
                 var width = parseInt(img.width)*0.8;
                 var height = parseInt(img.height)*0.8;
             }
+<<<<<<< HEAD:pixi/showH5/js/view.js
+>>>>>>> parent of 07fbeee... update:showH5/js/view.js
+=======
 >>>>>>> parent of 07fbeee... update:showH5/js/view.js
     
             cav.width = width
@@ -113,7 +122,12 @@ View.prototype.initUpload = function() {
             var ctx=cav.getContext("2d");
     
 <<<<<<< HEAD:pixi/showH5/js/view.js
+<<<<<<< HEAD:pixi/showH5/js/view.js
             if(me.bgOrientation == 6){
+=======
+            console.log(bgOrientation)
+            if(bgOrientation == 6){
+>>>>>>> parent of 07fbeee... update:showH5/js/view.js
 =======
             console.log(bgOrientation)
             if(bgOrientation == 6){
@@ -140,6 +154,10 @@ View.prototype.initUpload = function() {
   $(".to_photo").click(function(){
       if(view.checkClothes()){
 <<<<<<< HEAD:pixi/showH5/js/view.js
+<<<<<<< HEAD:pixi/showH5/js/view.js
+=======
+        var imgFrom = document.getElementById("zimg-file");
+>>>>>>> parent of 07fbeee... update:showH5/js/view.js
 =======
         var imgFrom = document.getElementById("zimg-file");
 >>>>>>> parent of 07fbeee... update:showH5/js/view.js
@@ -152,7 +170,10 @@ View.prototype.initUpload = function() {
       }
   })
 <<<<<<< HEAD:pixi/showH5/js/view.js
+<<<<<<< HEAD:pixi/showH5/js/view.js
 >>>>>>> parent of 9ea80d3... uodate:showH5/js/view.js
+=======
+>>>>>>> parent of 07fbeee... update:showH5/js/view.js
 =======
 >>>>>>> parent of 07fbeee... update:showH5/js/view.js
 }
