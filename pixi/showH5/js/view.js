@@ -63,6 +63,56 @@ function View() {
 
 View.prototype.initUpload = function() {
 
+<<<<<<< HEAD:pixi/showH5/js/view.js
+=======
+    reader.readAsDataURL(imageDate); //通过DataURL的方式返回图像
+    reader.onload = function(e) {
+        me.bgsrc  = e.target.result;
+        
+        var img= new Image();
+        img.src = me.bgsrc
+    
+        img.onload = function () { 
+            me.bgOrientation = me.getPhotoOrientation(img);
+            var cav=document.getElementById("cav");
+            var width = parseInt(img.width)/2;
+            var height = parseInt(img.width)/2;
+    
+            cav.width = width
+            cav.height = height
+            var ctx=cav.getContext("2d");
+    
+            if(me.bgOrientation == 6){
+                ctx.save();
+                ctx.translate(width / 2, height / 2);
+                ctx.rotate(90 * Math.PI / 180);
+                ctx.drawImage(img, 0 - height / 2, 0 - width / 2, height, width);
+            }else {
+                ctx.drawImage(img, 0, 0, width, height);
+            }
+            var img64 = cav.toDataURL("image/png");
+
+            photoCount++
+            resources.loader.add("photo"+ photoCount, img64);
+            resources.loader.onComplete.once((a, b) => {
+                view.showView(2)
+                line.remove();
+            })
+        }
+    }
+  });
+
+  $(".to_photo").click(function(){
+      if(view.checkClothes()){
+        imgFrom.click();
+      }else{
+        var line = new TimelineMax();
+        line.to(view.SpritePool.clothes_tips, 0.3, {pixi:{ alpha: 1 }})
+            .to(view.SpritePool.clothes_tips, 0.3, {pixi:{ alpha: 0 }, delay: 1})
+          
+      }
+  })
+>>>>>>> parent of 9ea80d3... uodate:showH5/js/view.js
 }
 
 View.prototype.getPhotoOrientation = function(img){
