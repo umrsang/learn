@@ -1,0 +1,53 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <meta http-equiv="X-UA-Compatible" content="ie=edge">
+  <title>Document</title>
+  <script src="https://cdn.bootcss.com/jquery/3.4.0/jquery.min.js"></script>
+  <script src="https://cdn.bootcss.com/underscore.js/1.9.1/underscore-min.js"></script>
+  <script src="https://cdn.bootcss.com/backbone.js/1.4.0/backbone-min.js"></script>
+</head>
+
+<body>
+
+  <script>
+    var Man = Backbone.Model.extend({
+      initialize: function () {
+        //初始化时绑定监听
+        this.bind("change:name", function () {
+          var name = this.get("name");
+          alert("你改变了name属性为：" + name);
+        });
+        this.bind("invalid", function (model, error) {
+          alert(error);
+        });
+      },
+      defaults: {
+        name: '张三',
+        age: '38'
+      },
+      validate: function (attributes) {
+        if (attributes.name == '') {
+          return "name不能为空！";
+        }
+      },
+      aboutMe: function () {
+        return '我叫' + this.get('name') + ',今年' + this.get('age') + '岁';
+      }
+    });
+var man = new Man;
+
+    //默认set时不进行验证
+man.set({name:''});
+man.save();
+    //手动触发验证, set时会触发
+    //man.set({name:''}, {'validate':true});
+    //save时触发验证。根据验证规则，弹出错误提示。
+    // man.save();
+  </script>
+</body>
+
+</html>

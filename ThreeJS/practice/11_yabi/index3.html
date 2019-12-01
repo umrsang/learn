@@ -1,0 +1,216 @@
+<!DOCTYPE html>
+
+<html>
+
+<head>
+  <title>亚比展示馆 </title>
+  <script type="text/javascript" src="../../lib/three.min.v94.js"></script>
+  <script type="text/javascript" src="../../lib/FBXLoader.js"></script>
+  <script type="text/javascript" src="../../lib/inflate.min.js"></script>
+
+  <script type="text/javascript" src="../../lib/physi.js"></script>
+  <script type="text/javascript" src="../../exemple/libs/stats.js"></script>
+  <script type="text/javascript" src="../../exemple/libs/dat.gui.js"></script>
+  <script type="text/javascript" src="../../exemple/libs/OrbitControls.js"></script>
+  <style>
+    *{margin: 0;padding: 0;}
+    .bg img{width: 1440px;}
+    .pr{position: relative;}
+    .pa{position: absolute;top: 0;}
+    .inb{display: inline-block;}
+  </style>
+</head>
+
+<body>
+  <div id="app" class="pr inb">
+    <div class="bg"><img src="./img/bg.png" alt="" srcset=""></div>
+    <div id="WebGL-output" class="pa inb" style="right: 0">
+    </div>
+    <div id="Stats-output" class="pa inb">
+    </div>
+  </div>
+  <script>
+    var scene, camera, webGLRenderer;
+    function init(){
+
+      //设置webgl渲染器宽高
+      // var rendererw = document.querySelector('.bg img').width;
+      var rendererw = 1200;
+      var rendererh = document.querySelector('.bg img').height;
+      
+      var scene = new THREE.Scene;
+      window.scene = scene;
+
+      //新建正交相机
+      camera = new THREE.PerspectiveCamera(45, rendererw / rendererh, 0.1, 15000);
+      //设置相机位置朝向
+      // camera.position.x = 60;
+      // camera.position.y = 20;
+      // camera.position.z = 73;
+      // camera.lookAt(new THREE.Vector3(-10, 20, 0));
+
+      //初始化webgl渲染器
+      webGLRenderer = new THREE.WebGLRenderer({
+        alpha: true,
+        antialias: true
+      });
+      
+      webGLRenderer.setSize(rendererw, rendererh);
+      
+      //设置webgl渲染器背景
+      // webGLRenderer.setClearColor(0x000000);
+
+      //开启阴影
+      webGLRenderer.shadowMap.enabled = true;
+      //添加渲染器到Dom
+      document.getElementById("WebGL-output").appendChild(webGLRenderer.domElement);
+      //添加场景和相机到渲染器
+      webGLRenderer.render(scene, camera);
+
+      //添加环境光源
+      const light = new THREE.HemisphereLight(0xFFFFFF, 0xFFFFFF, 1);
+      scene.add(light);
+
+      var spotLight1 = new THREE.SpotLight(0xffffff);
+      spotLight1.position.set(-100, 160, 0);
+      spotLight1.intensity = 0.5;
+      scene.add(spotLight1);
+      showPosition(spotLight1.position)
+
+      var spotLight2 = new THREE.SpotLight(0xffffff);
+      spotLight2.position.set(100, 160, 0);
+      spotLight2.intensity = 0.5;
+      scene.add(spotLight2);
+      showPosition(spotLight2.position)
+      
+      var spotLight3 = new THREE.SpotLight(0xffffff);
+      spotLight3.position.set(100, -40, 0);
+      spotLight3.intensity = 0.5;
+      scene.add(spotLight3);
+      showPosition(spotLight3.position)
+
+      var spotLight4 = new THREE.SpotLight(0xffffff);
+      spotLight4.position.set(-100, -40, 0);
+      spotLight4.intensity = 0.5;
+      scene.add(spotLight4);
+      showPosition(spotLight4.position)
+
+      //用红色小方块显示点的位置 调试
+      function showPosition(pos){
+        console.log(pos);
+        var CubeGemo = new THREE.BoxGeometry(1, 1, 1, 1, 1, 1)
+        var CubeMaterial = new THREE.MeshLambertMaterial({
+          color: 0xff0000
+        })
+        var Cube = new THREE.Mesh(CubeGemo, CubeMaterial);
+        Cube.position.set(pos.x, pos.y, pos.z);
+        scene.add(Cube);
+      }
+
+      var mixers = [];
+      function createObject(parms) {
+        const loader = new THREE.FBXLoader();
+        loader.load(parms.skin, function (res) {
+
+          var object1
+
+            res.children.map(function(item){
+              if(item.type = "AmbientLight"){
+                item.intensity = 0
+              }
+            })
+            object1 = res;
+            scene.add(object1);
+            object1.position.x = parms.x;
+            object1.position.y = parms.y;
+            object1.rotation.y = parms.ry * Math.PI / 180;
+            object1.rotation.x = (parms.rx||0) * Math.PI / 180;
+            object1.position.z = parms.z;
+            if(parms.scale){
+              object1.scale.set(parms.scale,parms.scale,parms.scale)
+            }
+
+          console.log(object1)
+          loader.load(parms.action, function (object2) {
+            object1.mixer = new THREE.AnimationMixer(object1);
+            mixers.push(object1.mixer);
+            const action = object1.mixer.clipAction(object2.animations[0]);
+            console.log(object2)
+            action.timeScale = 0.7;
+            action.play();
+          });
+        });
+      }
+      createObject({
+        skin: './img/anubisi/anubisi@skin.FBX',
+        action: './img/anubisi/anubisi@anubisi@win01.FBX',
+        x: 0, y: 0, z: 0,
+        ry: 0,
+        rx: 0,
+        scale: 0.2
+      })
+
+
+
+      showPosition({x: 0, y: 0, z: 0})
+
+
+
+      //显示运行帧率
+      function initStats() {
+        var stats = new Stats();
+        stats.setMode(0); // 0: fps, 1: ms
+
+        stats.domElement.style.position = 'absolute';
+        stats.domElement.style.left = '0px';
+        stats.domElement.style.top = '0px';
+
+        document.getElementById("Stats-output").appendChild(stats.domElement);
+        return stats;
+      }
+      var stats = initStats();
+
+      //设置轨道控制器
+      var controls = new THREE.OrbitControls(camera, webGLRenderer.domElement);
+
+      controls.enableDamping = true; // an animation loop is required when either damping or auto-rotation are enabled
+			controls.dampingFactor = 0.25;
+      controls.screenSpacePanning = false;
+      controls.minPolarAngle = Math.PI/2
+      controls.maxPolarAngle = Math.PI/2
+      controls.userZoom = false
+      window.controls = controls;
+
+      // scene.position.set(0,0,0)
+      controls.center.set( 0, 24, 0 ); // set a new target
+      camera.position.set(40,34,100)
+
+      // controls.position0.set( -10, 40, 60 ); // set a new desired position
+      // controls.target0.set( 0, 0, 0 ); // set a new target
+      // controls.up0.set( 0, 0, 0 ); // set a new up vector
+      // controls.reset();
+
+
+      var clock = new THREE.Clock();
+      function render() {
+        var dx = clock.getDelta()
+
+        if (mixers.length > 0) {
+          for (let i = 0; i < mixers.length; i++) {
+            mixers[i].update(dx);
+          }
+        }
+
+        controls.update();
+        stats.update();
+        webGLRenderer.render(scene, camera);
+        requestAnimationFrame(render);
+      }
+      render()
+
+    }
+    window.onload = init;
+  </script>
+</body>
+
+</html>
