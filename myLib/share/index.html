@@ -6,30 +6,66 @@
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
   <meta http-equiv="X-UA-Compatible" content="ie=edge">
   <title>Document</title>
+
+  <script>
+
+  </script>
+
+
   <script src="https://umrsang.github.io/learn/myLib/share/share.js"></script>
   <script type="text/javascript" src="//cdn.jsdelivr.net/npm/eruda"></script>
-
   <script>
     eruda.init();
   </script>
+  
+  <script src="//open.mobile.qq.com/sdk/qqapi.js?_bid=152"></script>
 </head>
 
 <body>
-  <p>下载</p>
-  <p>下载</p>
-  <p>下载</p>
-  <p>下载</p>
-  <p>下载</p>
-  <p>下载</p>
+
   <a href="http://www.100bt.com/apk/publiclink/deliverLink.do?gameId=100040&deliverId=6590675" target="_blank">下载</a>
 
+  <p id='btn'>设置TD</p>
+
+  <a href="weixin://preInjectJSBridge/fail ">weixin</a>
+
+
   <script>
-    setShareInfo({
-      title: '父爱，在你看不到的地方',
-      summary: '父爱如山，感觉不到只因身在此山中',
-      pic: 'https://umrsang.github.io/learn/myLib/share/share_icon.jpg',
-      url: 'https://umrsang.github.io/learn/myLib/share/index.html',
+    // setShareInfo({
+    //   title: '父爱，在你看不到的地方',
+    //   summary: '父爱如山，感觉不到只因身在此山中',
+    //   pic: 'https://umrsang.github.io/learn/myLib/share/share_icon.jpg',
+    //   url: 'https://umrsang.github.io/learn/myLib/share/index.html',
+    // })
+    var btn = document.getElementById('btn');
+    btn.addEventListener('click', function () {
+      alert('123')
+
+
+      var head = document.getElementsByTagName('head')[0];
+
+      function parseDom(arg) {
+        var objE = document.createElement("div");
+        objE.innerHTML = arg;
+        return objE.childNodes;
+      };
+
+      var dom = parseDom(
+        `<meta itemprop="name" property="og:title" content="朋友！帮我拿张“星之契约券”好不咯~">
+        <meta property="og:url" content="http://10.18.20.41:5689/myLib/share/index.html?554545url">
+        <meta itemprop="image" content="https://umrsang.github.io/learn/myLib/share/share_icon.jpg" />
+        <meta name="description" itemprop="description" content="造物法则正统续作 ——超大抱枕，抽卡券等你来拿！" />`)
+
+      head.append(dom[0]);
+      head.append(dom[1]);
+      head.append(dom[2]);
+      head.append(dom[3]);
+
+      setTimeout(function () {
+        console.log(head.innerHTML);
+      }, 200)
     })
+
   </script>
 
 </body>

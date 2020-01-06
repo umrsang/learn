@@ -1,0 +1,80 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <meta http-equiv="X-UA-Compatible" content="ie=edge">
+  <title>倒计时</title>
+</head>
+
+<body>
+  <div class="display">60</div>
+  <button>start</button>
+  <script src="http://resource.a0bi.com/resource/js/lib/jquery/jquery.min-1.8.3.js"></script>
+  <script>
+    function countDown(count, update, callBack) {
+      var remain = count;
+
+      function step() {
+        update && update(remain);
+
+        setTimeout(function () {
+          remain--;
+          if (remain > 0) {
+            update && update(remain);
+            step()
+          } else {
+            callBack && callBack()
+          }
+        }, 1000)
+      }
+      step();
+    }
+
+    $('button').click(function () {
+      var btn = $(this);
+      if (btn.hasClass('busy')) {
+        return alert('操作过于频繁，请稍后再试')
+      }
+
+      btn.addClass('busy')
+      countDown(10, function (remain) {
+        $('.display').html(remain)
+      }, function () {
+        $('.display').html('倒计时完成！');
+        btn.removeClass('busy')
+      })
+    })
+  </script>
+
+  <script>
+    //PC端：http://www.100bt.com/zw2/activites/zwtt/
+    //wap端：http://www.100bt.com/zw2/activites/zwtt/m/
+    (function () {
+      var isMobile;
+      if ((/Android | webOs | iPhone | iPod | mobile/i.test(navigator.userAgent))) {
+        isMobile = true;
+      }
+      if (isMobile) {
+        location.replace(location.href.replace(/\/zwtt\//, "\/zwtt\/m"));
+      } else {
+        location.replace(location.href.replace(/\/zwtt\/m\//, "\/zwtt\/"));
+      }
+    })()
+  </script>
+  <style>
+    .display {
+      width: 200px;
+      text-align: center;
+      font-size: 24px;
+      line-height: 100px;
+    }
+
+    button {
+      margin-left: 80px;
+    }
+  </style>
+</body>
+
+</html>

@@ -26,5 +26,5 @@ m1().then(()=>{
   console.log('text', text);
   console.log('reject2');
 }).catch((error)=>{
-  console.log(error);
+  console.log('catch', error);
 })

@@ -1,0 +1,77 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <meta http-equiv="X-UA-Compatible" content="ie=edge">
+  <title>Document</title>
+</head>
+<body>
+  <button  class="run">run</button>
+  <h2 class="output"></h2>
+  <script>
+      var myPromise = function(fn){
+        var me = this;
+        me.state = 'pending'
+        fn(function(res){
+          if(me.handler.then){
+            me.handler.then(res);
+          }
+          me.state = 'done';
+          me.handler.always(me.state)
+        }, function(res){
+          if(me.handler.catch){
+            me.handler.catch(res);
+
+          }
+          me.state = 'fail'
+          me.handler.always(me.state)
+        })
+        this.handler = {}
+      }
+
+      myPromise.prototype = {
+        then(cb){
+          var me = this;
+          this.handler.then = function(res){
+            cb&&cb(res);
+          };
+          return new myPromise(function(done, fail){
+            me.finish(done, fail);
+          })
+        },
+        catch(cb){
+          this.handler.catch = cb;
+        },
+        finish(done, fail){
+          if(this.state != 'done'){
+            done&&done();
+          }else if(this.state != 'fail'){
+            fail&&fail();
+          }else if(this.state != 'pending'){
+            this.handler.always = function(state){
+              state == 'done'?done():fail();
+            }
+          }
+
+        }
+      }
+    
+      function run(){
+        var p1 = new myPromise(function(done, fail){
+          setTimeout(()=>{
+            done('setTimeout');
+          }, 2000)
+        })
+
+        p1.then(function(text){
+          document.querySelector('.output').innerHTML = text
+          console.log(text);
+        })
+      }
+      document.querySelector('.run').addEventListener('click', run)
+
+
+  </script>
+</body>
+</html>

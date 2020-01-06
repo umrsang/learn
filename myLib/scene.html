@@ -1,0 +1,189 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <meta http-equiv="X-UA-Compatible" content="ie=edge">
+  <title>Document</title>
+</head>
+
+<body>
+  <div class="container">
+    <div id="scene" class="roles">
+      <div data-depth="0.1" class="role role-bg layer">
+      </div>
+      <div data-depth="0.1" class="role logo layer">
+      </div>
+      <div data-depth="0.2" class="role role1 layer">
+      </div>
+      <div data-depth="0.15" class="role role2 layer">
+      </div>
+      <div data-depth="0.1" class="role role3 layer">
+      </div>
+      <div data-depth="0.16" class="role role4 layer">
+      </div>
+      <div data-depth="0.19" class="role role5 layer">
+      </div>
+    </div>
+    <div class="cover">
+
+    </div>
+  </div>
+  <script src="http://resource.a0bi.com/resource/js/lib/jquery/jquery.min-1.8.3.js"></script>
+  <script>
+    function InitParallax() {
+      var timeout = true;
+      var bg = $('#scene');
+      ctrlEl = $(".role");
+
+      var center = getCenter();
+
+      //console.log(centerX, centerY)
+      bg.mousemove(function (e) {
+        if (timeout) { //函数节流
+          setTransform(e);
+          timeout = false;
+          setTimeout(function () {
+            timeout = true;
+          }, 5)
+        }
+      })
+
+
+      function getCenter() {
+        var w = bg[0].offsetWidth;
+        var h = parseInt($('#scene').css('paddingTop'));
+
+        return {
+          x: w / 2,
+          y: h / 2
+        }
+      }
+
+      function setTransform(e) {
+        var x = e.pageX;
+        var y = e.pageY;
+        var ox = x - center.x;
+        var oy = y - center.y;
+
+        ctrlEl.map(function (index, item) {
+          var el = $(item);
+          var prop = parseFloat(el.data("depth"));
+          var tX = -ox * prop / 8;
+          var tY = -oy * prop / 8;
+          el.css("transform", "translate3D(" + tX + "px," + tY + "px, 0)");
+          el.css("-ms-transform", "translate(" + tX + "px," + tY + "px)");
+        })
+      }
+
+    }
+
+    InitParallax()
+  </script>
+  <style>
+    * {
+      margin: 0;
+      padding: 0;
+    }
+
+    #scene {
+      position: absolute;
+      left: 0;
+      top: 0;
+      width: 100%;
+      padding-top: 40.10417%
+    }
+
+    .cover {
+      position: absolute;
+      left: 0;
+      top: 0;
+      margin-top: 39.58333%;
+      z-index: 600;
+      width: 100%;
+      padding-top: 18.80208%;
+      background: url( http://static.biligame.com/girl/rabbit/pc/images/bg/bg1-2.png?65dfdfb8) no-repeat;
+      background-size: 100% 100%;
+    }
+
+    #scene .role {
+      position: absolute;
+      transition: all 0.5s ease-out;
+    }
+
+    #scene .role.role-bg {
+      left: -3.69792%;
+      top: 0;
+      z-index: 3;
+      width: 110%;
+      padding-top: 56.61458%;
+      background: url( http://static.biligame.com/girl/rabbit/pc/images/bg/bg1-1.jpg?cd81b1a4) no-repeat;
+      background-size: contain;
+      background-position: top center
+    }
+
+    #scene .role.logo {
+      left: 14.58333%;
+      top: 19.79167%;
+      z-index: 3;
+      width: 12.44792%;
+      padding-top: 4.0625%;
+      background: url( http://static.biligame.com/girl/rabbit/pc/images/page1/logo.png?675e4c08) no-repeat;
+      background-size: contain;
+      background-position: top center
+    }
+
+    #scene .role.role1 {
+      left: 16.66667%;
+      top: 44.79167%;
+      z-index: 3;
+      width: 19.16667%;
+      padding-top: 25.36458%;
+      background: url( http://static.biligame.com/girl/rabbit/pc/images/page1/role1.png?6ee4c33f) no-repeat;
+      background-size: contain
+    }
+
+    #scene .role.role2 {
+      left: 25.52083%;
+      top: 29.16667%;
+      z-index: 4;
+      width: 21.61458%;
+      padding-top: 31.61458%;
+      background: url( http://static.biligame.com/girl/rabbit/pc/images/page1/role2.png?c4693bb8) no-repeat;
+      background-size: contain
+    }
+
+    #scene .role.role3 {
+      left: 35.41667%;
+      top: 8.85417%;
+      z-index: 5;
+      width: 30.57292%;
+      padding-top: 46.97917%;
+      background: url( http://static.biligame.com/girl/rabbit/pc/images/page1/role3.png?8163b7f6) no-repeat;
+      background-size: contain
+    }
+
+    #scene .role.role4 {
+      left: 54.6875%;
+      top: 31.25%;
+      z-index: 4;
+      width: 20.57292%;
+      padding-top: 36.97917%;
+      background: url( http://static.biligame.com/girl/rabbit/pc/images/page1/role4.png?ec98b516) no-repeat;
+      background-size: contain
+    }
+
+    #scene .role.role5 {
+      left: 67.70833%;
+      top: 36.45833%;
+      z-index: 3;
+      width: 16.97917%;
+      padding-top: 28.69792%;
+      background: url( http://static.biligame.com/girl/rabbit/pc/images/page1/role5.png?467b8aa3) no-repeat;
+      background-size: contain
+    }
+  </style>
+</body>
+
+</html>

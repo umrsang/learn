@@ -63,7 +63,7 @@
             });
           });
         } else {
-          window.mqq.data.setShareInfo(info);
+          window.mqq.data.setShareInfo();
         }
       } catch (e) {
       }
