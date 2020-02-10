@@ -1,0 +1,23 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <meta http-equiv="X-UA-Compatible" content="ie=edge">
+  <title>Document</title>
+  <style>
+    h2{
+      font-size: 18px;
+      color: blue;
+    }
+  </style>
+</head>
+<body>
+  <h1>今日热点</h1>
+  <ul>
+    <% for(var i=0; i<list.length; i++){ %>
+      <li><a href="/news_detail/<%=list[i].aid%>"><h2><%= list[i].title %></h2></a></li>
+    <% } %>
+  </ul>
+</body>
+</html>

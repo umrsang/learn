@@ -1,11 +1,18 @@
 var fs = require('fs');
 
-var rs = fs.createReadStream('.\resource\test.txt', {highWaterMark: 10});
+var txt = __dirname + '/resource/test.txt';
+var rs = fs.createReadStream(txt, {highWaterMark: 10});
 
-var data = '';
-rs.on('data', function(chunk){
-  data += chunk;
-})
-rs.on('end', function(chunk){
-  console.log(data);
+/*读取文件 防止被隐式转换*/
+// var data = [];
+// rs.on('data', function(chunk){
+//   data.push(chunk);
+// })
+// rs.on('end', function(chunk){
+//   var buf = Buffer.concat(data);
+//   console.log(buf.toString());
+// })
+
+fs.stat(txt, function(err, res){
+  console.log(res);
 })
