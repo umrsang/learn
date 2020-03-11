@@ -1,0 +1,46 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <title>PC-video</title>
+    <style>
+        .v1 {
+            width: 100vw;
+            height: 100vh;
+        }
+    </style>
+</head>
+
+<body style="width: 100vw; height: 200vh;">
+    <video muted autoplay="autoplay" loop="loop" class="v1"  id="a"
+               x5-playsinline="true"
+               playsinline="true"
+               webkit-playsinline="true"
+               x-webkit-airplay="allow"
+               preload="auto"
+               x5-video-player-type="h5"
+               x5-video-player-fullscreen="true"
+               muted="muted"
+        >
+            <source src="https://www.w3school.com.cn/example/html5/mov_bbb.mp4" type="video/mp4">
+        </video>
+    <!-- <video loop="loop" class="v1" id="a" x5-playsinline="true" playsinline="true" webkit-playsinline="true"
+        x-webkit-airplay="allow" preload="auto" x5-video-player-type="h5" x5-video-player-fullscreen="true"
+        muted="muted">
+        <source src="https://img-ys011.didistatic.com/static/didiglobal/didi-home-video0626.mp4" type="video/mp4">
+    </video> -->
+    <script>
+        let vido = document.getElementById("a");
+        vido.addEventListener("touchstart", function () {
+            vido.play();
+        });
+        let ev = new Event("touchstart");
+        vido.dispatchEvent(ev);
+    </script>
+
+
+    </script>
+</body>
+
+</html>

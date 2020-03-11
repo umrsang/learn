@@ -10,7 +10,10 @@ resources.assetLoad = function(cb) {
   var loader = this.loader;
   var len = arr.length;
   for(var i = 0; i < len; i++) {
-    loader.add(arr[i].name, resourceUrlHead + arr[i].src);
+    loader.add(arr[i].name, resourceUrlHead + arr[i].src, {
+      // 跨域
+      crossOrigin: true
+    });
   }
   loader.onProgress.add((loader, res) => {
     var progress = Math.floor(loader.progress)
