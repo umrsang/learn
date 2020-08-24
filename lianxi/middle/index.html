@@ -1,0 +1,42 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <meta http-equiv="X-UA-Compatible" content="ie=edge">
+  <title>Document</title>
+</head>
+<body>
+  <div class="b1">
+    <div class="b2"></div>
+    <div class="b2"></div>
+    <div class="b2"></div>
+    <div class="b2"></div>
+    <div class="b2"></div>
+  </div>
+  <style>
+    .b1{
+      width: 100%;
+      height: 100px;
+      background: gray;
+      font-size: 0;
+      text-align: center;
+    }
+    .b1 span{
+    }
+    .b2{
+      display: inline-block;
+      width: 10%;
+      height: 60px;
+      background: lavender;
+      vertical-align: middle;
+    }
+    .b1::after{
+      display: inline;
+      line-height: 100px;
+      content: '';
+      vertical-align: middle;
+    }
+  </style>
+</body>
+</html>
