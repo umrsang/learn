@@ -36,7 +36,7 @@
     "webpack-cli": "^3.1.2",
     "webpack-merge": "^4.1.4",
     "css-loader": "^1.0.0",
-    "postcss": "^7.0.5",
+    "postcss": "^8.2.10",
     "postcss-loader": "^3.0.0",
     "style-loader": "^0.23.0",
     "url-loader": "^1.1.1",
