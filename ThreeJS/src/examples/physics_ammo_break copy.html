@@ -1,0 +1,89 @@
+<html lang="en">
+
+<head>
+	<title>Convex object breaking example</title>
+	<meta charset="utf-8">
+	<meta name="viewport" content="width=device-width, user-scalable=no, minimum-scale=1.0, maximum-scale=1.0"> // 设置视口
+	<link type="text/css" rel="stylesheet" href="main.css">
+	<style>
+		body {
+			color: #333;
+		}
+	</style>
+</head>
+
+<body>
+
+	<div id="info">Physics threejs demo with convex objects breaking in real time<br />Press mouse to throw balls and
+		move the camera.</div> // 信息提示
+	<div id="container"></div>
+
+	<script src="jsm/libs/ammo.wasm.js"></script>
+
+	<script type="importmap">
+		{
+			"imports": {
+				"three": "../build/three.module.js",
+				"three/addons/": "./jsm/" 
+			}
+		}
+	</script>
+
+	<script type="module">
+		import * as THREE from 'three'; // 导入 Three.js
+
+		import Stats from 'three/addons/libs/stats.module.js'; // 导入统计模块
+
+		import { OrbitControls } from 'three/addons/controls/OrbitControls.js'; // 导入轨道控制器
+		import { ConvexObjectBreaker } from 'three/addons/misc/ConvexObjectBreaker.js'; // 导入凸面物体破碎器
+		import { ConvexGeometry } from 'three/addons/geometries/ConvexGeometry.js'; // 导入凸面几何体
+
+		// 图形变量
+		let container, stats; // 定义容器和统计信息
+		let camera, controls, scene, renderer; // 定义相机、控制器、场景和渲染器
+		let textureLoader; // 定义纹理加载器
+		const clock = new THREE.Clock(); // 定义时钟
+
+		const mouseCoords = new THREE.Vector2(); // 定义鼠标坐标
+		const raycaster = new THREE.Raycaster(); // 定义射线投射器
+		const ballMaterial = new THREE.MeshPhongMaterial({ color: 0x202020 }); // 定义球体材质
+
+		// 物理变量
+		const gravityConstant = 7.8; // 定义重力常数
+		let collisionConfiguration; // 定义碰撞配置
+		let dispatcher; // 定义调度器
+		let broadphase; // 定义广义相位
+		let solver; // 定义求解器
+		let physicsWorld; // 定义物理世界
+		const margin = 0.05; // 定义边距
+
+		const convexBreaker = new ConvexObjectBreaker(); // 定义凸面物体破碎器
+
+		// 刚体包括所有可移动的物体
+		const rigidBodies = []; // 定义刚体数组
+
+		const pos = new THREE.Vector3(); // 定义位置向量
+		const quat = new THREE.Quaternion(); // 定义四元数
+		let transformAux1; // 定义辅助变换
+		let tempBtVec3_1; // 定义临时向量
+
+		const objectsToRemove = []; // 定义待移除对象数组
+
+		for (let i = 0; i < 500; i++) { // 初始化待移除对象数组
+			objectsToRemove[i] = null; // 将每个元素设为 null
+		}
+
+		function init() {
+
+		}
+
+
+		function initGraphics() { // 初始化图形
+			renderer = new THREE.
+		}
+
+	</script>
+
+</body>
+
+</html>
